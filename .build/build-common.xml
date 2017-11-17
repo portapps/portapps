@@ -254,7 +254,7 @@
   </target>
 
   <target name="dep">
-    <exec executable="dep" failonerror="false" dir="${app.basedir}">
+    <exec executable="dep" failonerror="true" dir="${app.basedir}">
       <arg value="ensure"/>
       <arg value="-v"/>
     </exec>
