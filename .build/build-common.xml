@@ -30,7 +30,7 @@
   <property name="iscc" location="${innosetup.path}\app\ISCC.exe"/>
 
   <!-- Base Properties -->
-  <property name="appres.path" value="${app.basedir}\${res.dir}"/>
+  <property name="res.path" value="${app.basedir}\${res.dir}"/>
   <property name="bin.path" value="${app.basedir}\${bin.dir}"/>
   <property name="build.path" value="${bin.path}\build"/>
   <property name="setup.path" location="${bin.path}\setup"/>
