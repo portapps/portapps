@@ -3,7 +3,7 @@
 <p align="center">
   <a href="https://github.com/portapps/portapps/releases/latest"><img src="https://img.shields.io/github/release/portapps/portapps.svg?style=flat-square" alt="GitHub release"></a>
   <a href="https://goreportcard.com/report/github.com/portapps/portapps"><img src="https://goreportcard.com/badge/github.com/portapps/portapps?style=flat-square" alt="Go Report"></a>
-  <a href="https://www.codacy.com/app/portapps/portapps"><img src="https://img.shields.io/codacy/grade/01eb6a7ceb8e46e8ab90d2d74ecdad01.svg?style=flat-square" alt="Code Quality"></a>
+  <a href="https://www.codacy.com/app/crazy-max/portapps"><img src="https://img.shields.io/codacy/grade/01eb6a7ceb8e46e8ab90d2d74ecdad01.svg?style=flat-square" alt="Code Quality"></a>
   <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WQD7AQGPDEPSG"><img src="https://img.shields.io/badge/donate-paypal-7057ff.svg?style=flat-square" alt="Donate Paypal"></a>
 </p>
 
