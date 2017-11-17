@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="papps-common" basedir=".">
+
+  <tstamp><format property="current.date" pattern="yyyyMMdd"/></tstamp>
+
+  <!-- Check required properties -->
+  <fail unless="app.basedir" message="Property 'app.basedir' must be defined before loading build-common.xml"/>
+  <fail unless="core.basedir" message="Property 'core.basedir' must be defined before loading build-common.xml"/>
+
+  <!-- Load properties -->
+  <dirname property="build.basedir" file="${ant.file.papps-common}"/>
+  <property name="root.basedir" location="${build.basedir}/.."/>
+  <property file="${build.basedir}\build-common.properties"/>
+  <property environment="env"/>
+
+  <!-- Build number -->
+  <condition property="app.release" value="${env.APPVEYOR_BUILD_NUMBER}"><isset property="env.APPVEYOR_BUILD_NUMBER"/></condition>
+  <condition property="app.release" value="0"><not><isset property="env.APPVEYOR_BUILD_NUMBER"/></not></condition>
+
+  <!-- Set defaults -->
+  <condition property="core.basedir" value="${root.basedir}"><not><isset property="core.basedir"/></not></condition>
+
+  <!-- Core properties -->
+  <property name="core.lib.path" value="${core.basedir}\${bin.dir}\lib"/>
+  <property name="core.res.path" value="${core.basedir}\${res.dir}"/>
+  <property name="7za" value="${core.lib.path}\7zipextra\7za.exe"/>
+  <property name="rcedit" value="${core.lib.path}\rcedit\rcedit.exe"/>
+  <property name="innoextract" location="${core.lib.path}\innoextract\innoextract.exe"/>
+  <property name="innosetup.path" location="${core.lib.path}\innosetup"/>
+  <property name="iscc" location="${innosetup.path}\app\ISCC.exe"/>
+
+  <!-- Base Properties -->
+  <property name="appres.path" value="${app.basedir}\${res.dir}"/>
+  <property name="bin.path" value="${app.basedir}\${bin.dir}"/>
+  <property name="build.path" value="${bin.path}\build"/>
+  <property name="setup.path" location="${bin.path}\setup"/>
+  <property name="release.path" value="${bin.path}\release"/>
+  <property name="tmp.path" value="${bin.path}\tmp"/>
+  <property name="extract.path" value="${tmp.path}\extract"/>
+  <property name="nupkg.path" value="${tmp.path}\nupkg"/>
+
+  <!-- Functions -->
+  <scriptdef name="randomstring" language="javascript">
+    <attribute name="property"/>
+    <![CDATA[
+    var SecureRandom = java.security.SecureRandom;
+    var BigInteger = java.math.BigInteger;
+    project.setProperty(attributes.get("property"), new BigInteger(130, new SecureRandom()).toString(32));
+    ]]>
+  </scriptdef>
+
+  <macrodef name="sevenzip">
+    <attribute name="src"/>
+    <attribute name="dest"/>
+    <attribute name="format" default="7z"/>
+    <sequential>
+      <if>
+        <equals arg1="@{format}" arg2="7z"/>
+        <then>
+          <echo message="Compressing @{src} to @{dest}..."/>
+          <exec executable="${7za}" failonerror="true">
+            <arg value="a"/>
+            <arg value="-t7z"/>
+            <arg value="@{dest}"/>
+            <arg value="@{src}"/>
+            <arg value="-m0=LZMA2"/>
+            <arg value="-mx9"/>
+            <arg value="-mmt2"/>
+          </exec>
+        </then>
+        <elseif>
+          <equals arg1="@{format}" arg2="zip"/>
+          <then>
+            <echo message="Compressing @{src} to @{dest}..."/>
+            <exec executable="${7za}" failonerror="true">
+              <arg value="a"/>
+              <arg value="-mm=Deflate"/>
+              <arg value="-mfb=258"/>
+              <arg value="-mpass=15"/>
+              <arg value="-r"/>
+              <arg value="@{dest}"/>
+              <arg value="@{src}"/>
+            </exec>
+          </then>
+        </elseif>
+        <else>
+          <fail message="Unknown format: @{format}"/>
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="unsevenzip">
+    <attribute name="src"/>
+    <attribute name="dest"/>
+    <sequential>
+      <echo message="Extracting @{src} to @{dest}..."/>
+      <exec executable="${7za}" failonerror="true">
+        <arg value="x"/>
+        <arg value="@{src}"/>
+        <arg value="-o@{dest}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="assertdir">
+    <attribute name="dir"/>
+    <sequential>
+      <fail message="Directory '@{dir}' does not exist">
+        <condition><not><available file="@{dir}" type="dir"/></not></condition>
+      </fail>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="assertfile">
+    <attribute name="file"/>
+    <sequential>
+      <fail message="File '@{file}' does not exist">
+        <condition><not><available file="@{file}" type="file"/></not></condition>
+      </fail>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="assertprop">
+    <attribute name="property"/>
+    <sequential>
+      <fail message="Property '@{property}' not defined">
+        <condition><not><isset property="@{property}"/></not></condition>
+      </fail>
+    </sequential>
+  </macrodef>
+
+  <!-- Targets -->
+  <target name="start">
+    <echo message="*** Start building ${app}"/>
+    <echo message="* ID       : ${papp.id} "/>
+    <echo message="* Name     : ${papp.name} "/>
+    <echo message="* Desc     : ${papp.desc} "/>
+    <echo message="* Atf arch : ${atf.arch} "/>
+    <echo message="* Atf url  : ${atf.url} "/>
+    <echo message="* GOARCH   : ${go.arch} "/>
+  </target>
+
+  <target name="init" depends="load.libs">
+    <mkdir dir="${bin.path}"/>
+    <mkdir dir="${core.lib.path}"/>
+    <delete dir="${build.path}"/>
+    <mkdir dir="${build.path}"/>
+    <delete dir="${setup.path}"/>
+    <mkdir dir="${setup.path}"/>
+    <delete dir="${extract.path}"/>
+    <mkdir dir="${extract.path}"/>
+    <delete dir="${nupkg.path}"/>
+    <mkdir dir="${nupkg.path}"/>
+  </target>
+
+  <target name="load.libs" unless="is.lib.loaded" depends="
+      load.lib.antcontrib,
+      load.lib.sevenzip,
+      load.lib.dep,
+      load.lib.rcedit,
+      load.lib.innosetup">
+    <var name="is.lib.loaded" value="true"/>
+  </target>
+
+  <target name="load.lib.antcontrib" unless="is.lib.loaded">
+    <echo message="Load ANT Contrib"/>
+    <mkdir dir="${core.lib.path}\ant-contrib"/>
+    <get dest="${core.lib.path}\ant-contrib\ant-contrib.jar" src="${antcontrib.url}" skipexisting="true"/>
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+      <classpath>
+        <fileset dir="${core.lib.path}/ant-contrib">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+    </taskdef>
+  </target>
+
+  <target name="load.lib.sevenzip" unless="is.lib.loaded">
+    <echo message="Load 7zip"/>
+    <get dest="${core.lib.path}\7zipextra.zip" src="${7zipextra.url}" skipexisting="true"/>
+    <if>
+      <not><available file="${core.lib.path}\7zipextra" type="dir"/></not>
+      <then>
+        <unzip src="${core.lib.path}\7zipextra.zip" dest="${core.lib.path}\7zipextra"/>
+      </then>
+    </if>
+  </target>
+
+  <target name="load.lib.dep" unless="is.lib.loaded">
+    <exec executable="go" failonerror="true" dir="${app.basedir}">
+      <arg value="get"/>
+      <arg value="-v"/>
+      <arg value="${dep.package}"/>
+    </exec>
+  </target>
+
+  <target name="load.lib.rcedit" unless="is.lib.loaded">
+    <echo message="Load Rcedit"/>
+    <mkdir dir="${core.lib.path}\rcedit"/>
+    <get dest="${core.lib.path}\rcedit\rcedit.exe" src="${rcedit.url}" skipexisting="true"/>
+  </target>
+
+  <target name="load.lib.innoextract" unless="is.lib.loaded">
+    <echo message="Load innoextract"/>
+    <get dest="${core.lib.path}\innoextract.zip" src="${innoextract.url}" skipexisting="true"/>
+    <if>
+      <not><available file="${core.lib.path}\innoextract" type="dir"/></not>
+      <then>
+        <unzip src="${core.lib.path}\innoextract.zip" dest="${core.lib.path}\innoextract"/>
+      </then>
+    </if>
+  </target>
+
+  <target name="load.lib.innosetup" depends="load.lib.innoextract" unless="is.lib.loaded">
+    <echo message="Load InnoSetup"/>
+    <get dest="${core.lib.path}\innosetup.exe" src="${innosetup.url}" skipexisting="true"/>
+    <if>
+      <not><available file="${innosetup.path}\app" type="dir"/></not>
+      <then>
+        <exec executable="${innoextract}">
+          <arg value="-d"/>
+          <arg value="${innosetup.path}"/>
+          <arg value="${core.lib.path}\innosetup.exe"/>
+        </exec>
+      </then>
+    </if>
+    <assertfile file="${iscc}"/>
+  </target>
+
+  <target name="clear">
+    <if>
+      <not><available file="${tmp.path}\${app.buildid}" type="file"/></not>
+      <then><delete dir="${release.path}"/></then>
+    </if>
+    <mkdir dir="${release.path}"/>
+  </target>
+
+  <target name="filterset">
+    <filterset id="filterset.app">
+      <filter token="APP_ID" value="${papp.id}"/>
+      <filter token="APP_NAME" value="${papp.name}"/>
+      <filter token="APP_DESC" value="${papp.desc}"/>
+      <filter token="APP_VERSION" value="${app.version}"/>
+      <filter token="APP_RELEASE" value="${app.release}"/>
+      <filter token="APP_COPYRIGHT" value="${papp.url}"/>
+    </filterset>
+    <echo message="APP_ID        : ${papp.id}"/>
+    <echo message="APP_NAME      : ${papp.name}"/>
+    <echo message="APP_DESC      : ${papp.desc}"/>
+    <echo message="APP_VERSION   : ${app.version}"/>
+    <echo message="APP_RELEASE   : ${app.release}"/>
+    <echo message="APP_COPYRIGHT : ${papp.url}"/>
+  </target>
+
+  <target name="dep">
+    <exec executable="dep" failonerror="false" dir="${app.basedir}">
+      <arg value="ensure"/>
+      <arg value="-v"/>
+    </exec>
+  </target>
+
+  <target name="generate">
+    <copy file="${core.res.path}/versioninfo.json" todir="${app.basedir}" overwrite="true">
+      <filterset refid="filterset.app"/>
+    </copy>
+    <exec executable="go" failonerror="true" dir="${app.basedir}">
+      <env key="GOARCH" value="${go.arch}"/>
+      <arg value="generate"/>
+      <arg value="-v"/>
+    </exec>
+  </target>
+
+  <target name="build" depends="dep, generate">
+    <exec executable="go" failonerror="true" dir="${app.basedir}">
+      <env key="GOARCH" value="${go.arch}"/>
+      <arg value="build"/>
+      <arg value="-o"/>
+      <arg value="${tmp.path}\${papp.id}.exe"/>
+      <arg value="-v"/>
+      <arg value="-ldflags"/>
+      <arg value="-s -w -H=windowsgui"/>
+    </exec>
+    <assertfile file="${tmp.path}\${papp.id}.exe"/>
+  </target>
+
+</project>

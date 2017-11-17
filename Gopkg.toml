@@ -1,0 +1,7 @@
+[metadata]
+package = "github.com/portapps/portapps"
+homepage = "https://github.com/portapps"
+license = "MIT"
+
+[[constraint]]
+  name = "github.com/google/logger"
