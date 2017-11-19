@@ -77,11 +77,6 @@ func FindElectronMainFolder(prefix string) string {
 	return electronMainPath
 }
 
-// OverrideUserprofilePath to override the USERPROFILE env var
-func OverrideUserprofilePath(path string) {
-	OverrideEnv("USERPROFILE", path)
-}
-
 // OverrideEnv to override an env var
 func OverrideEnv(key string, value string) {
 	if err := os.Setenv(key, value); err != nil {
