@@ -26,7 +26,7 @@ SetupIconFile=papp.ico
 Compression=lzma/max
 SolidCompression=yes
 
-DefaultDirName={sd}\{#appId}
+DefaultDirName={sd}\portapps\{#appId}
 CreateAppDir=yes
 Uninstallable=no
 PrivilegesRequired=lowest
