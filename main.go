@@ -84,10 +84,10 @@ func OverrideUserprofilePath(path string) {
 }
 
 func Launch() {
-	Log.Infof("Process: %s", Basepath(App.Process))
+	Log.Infof("Process: %s", App.Process)
 	Log.Infof("Args: %s", strings.Join(App.Args, " "))
-	Log.Infof("Working dir: %s", Basepath(App.WorkingDir))
-	Log.Infof("Data path: %s", Basepath(App.DataPath))
+	Log.Infof("Working dir: %s", App.WorkingDir)
+	Log.Infof("Data path: %s", App.DataPath)
 
 	Log.Infof("Launch %s...", App.Name)
 	execApp := exec.Command(App.Process, App.Args...)
@@ -111,10 +111,6 @@ func PathJoin(elem ...string) string {
 		}
 	}
 	return ""
-}
-
-func Basepath(path string) string {
-	return strings.TrimLeft(path, App.Path)
 }
 
 func RootPathJoin(elem ...string) string {
