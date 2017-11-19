@@ -36,8 +36,6 @@
   <property name="setup.path" location="${bin.path}\setup"/>
   <property name="release.path" value="${bin.path}\release"/>
   <property name="tmp.path" value="${bin.path}\tmp"/>
-  <property name="extract.path" value="${tmp.path}\extract"/>
-  <property name="nupkg.path" value="${tmp.path}\nupkg"/>
 
   <!-- Functions -->
   <scriptdef name="randomstring" language="javascript">
@@ -148,10 +146,6 @@
     <mkdir dir="${build.path}"/>
     <delete dir="${setup.path}"/>
     <mkdir dir="${setup.path}"/>
-    <delete dir="${extract.path}"/>
-    <mkdir dir="${extract.path}"/>
-    <delete dir="${nupkg.path}"/>
-    <mkdir dir="${nupkg.path}"/>
   </target>
 
   <target name="load.libs" unless="is.lib.loaded" depends="
@@ -254,10 +248,10 @@
   </target>
 
   <target name="dep">
-    <exec executable="dep" failonerror="true" dir="${app.basedir}">
+    <!--exec executable="dep" failonerror="true" dir="${app.basedir}">
       <arg value="ensure"/>
       <arg value="-v"/>
-    </exec>
+    </exec-->
   </target>
 
   <target name="generate">

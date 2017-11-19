@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="papps-type-electron" basedir=".">
+
+  <!-- Check required properties -->
+  <fail unless="atf.id" message="Property 'atf.id' must be defined before loading ${ant.file.papps-type-electron}"/>
+  <fail message="Property 'atf.ia32.url' or 'atf.x64.url' must be defined before loading ${ant.file.papps-type-electron}">
+    <condition>
+      <and>
+        <equals arg1="${atf.ia32.url}" arg2=""/>
+        <equals arg1="${atf.x64.url}" arg2=""/>
+      </and>
+    </condition>
+  </fail>
+
+  <dirname property="build.basedir" file="${ant.file.papps-type-electron}"/>
+  <property name="root.basedir" location="${build.basedir}/.."/>
+
+  <!-- Import common build.xml and load properties -->
+  <import file="${build.basedir}\build-common.xml"/>
+  <property file="${build.basedir}\build-type-electron.properties"/>
+
+  <!-- Properties -->
+  <property name="nupkg.path" value="${tmp.path}\nupkg"/>
+  <property name="extract.path" value="${tmp.path}\extract"/>
+
+  <!-- Targets -->
+  <target name="init" depends="papps-common.init">
+    <delete dir="${nupkg.path}"/>
+    <mkdir dir="${nupkg.path}"/>
+    <delete dir="${extract.path}"/>
+    <mkdir dir="${extract.path}"/>
+  </target>
+
+  <target name="release.app" depends="init">
+    <randomstring property="app.buildid"/>
+    <echo message="Generated build id: ${app.buildid}"/>
+    <if>
+      <not><equals arg1="${atf.ia32.url}" arg2=""/></not>
+      <then>
+        <fail unless="atf.ia32.filename" message="Property 'atf.ia32.filename' must be defined with 'atf.ia32.url'"/>
+        <fail unless="atf.ia32.ext" message="Property 'atf.ia32.ext' must be defined with 'atf.ia32.url'"/>
+        <fail unless="atf.ia32.assertextract" message="Property 'atf.ia32.assertextract' must be defined with 'atf.ia32.url'"/>
+        <antcall target="release.arch">
+          <param name="atf.arch" value="ia32"/>
+          <param name="atf.filename" value="${atf.ia32.filename}"/>
+          <param name="atf.ext" value="${atf.ia32.ext}"/>
+          <param name="atf.url" value="${atf.ia32.url}"/>
+          <param name="atf.assertextract" value="${atf.ia32.assertextract}"/>
+          <param name="go.arch" value="386"/>
+        </antcall>
+        <echo file="${tmp.path}\${app.buildid}" append="false">${app.buildid}</echo>
+      </then>
+    </if>
+    <if>
+      <not><equals arg1="${atf.x64.url}" arg2=""/></not>
+      <then>
+        <fail unless="atf.x64.filename" message="Property 'atf.x64.filename' must be defined with 'atf.x64.url'"/>
+        <fail unless="atf.x64.ext" message="Property 'atf.x64.ext' must be defined with 'atf.x64.url'"/>
+        <fail unless="atf.x64.assertextract" message="Property 'atf.x64.assertextract' must be defined with 'atf.x64.url'"/>
+        <antcall target="release.arch">
+          <param name="atf.arch" value="x64"/>
+          <param name="atf.filename" value="${atf.x64.filename}"/>
+          <param name="atf.ext" value="${atf.x64.ext}"/>
+          <param name="atf.url" value="${atf.x64.url}"/>
+          <param name="atf.assertextract" value="${atf.x64.assertextract}"/>
+          <param name="go.arch" value="amd64"/>
+        </antcall>
+        <echo file="${tmp.path}\${app.buildid}" append="false">${app.buildid}</echo>
+      </then>
+    </if>
+    <delete file="${tmp.path}\${app.buildid}"/>
+  </target>
+
+  <target name="release.arch" depends="start, init, clear, download, extract, nupkg, filterset, build">
+    <echo message="Packaging release..."/>
+
+    <!-- atf.executionstub -->
+    <if>
+      <available file="${nupkg.path}\${electron.libfolder}\${electron.executionstub}" type="file"/>
+      <then>
+        <copy file="${nupkg.path}\${electron.libfolder}\${electron.executionstub}" tofile="${build.path}\${atf.id}.exe" overwrite="true"/>
+        <copy todir="${build.path}\app-${app.version}">
+          <fileset dir="${atf.libpath}" excludes="${electron.executionstub}"/>
+        </copy>
+      </then>
+      <else>
+        <copy todir="${build.path}\app-${app.version}">
+          <fileset dir="${atf.libpath}"/>
+        </copy>
+      </else>
+    </if>
+
+    <!-- Move Squirrel Update.exe -->
+    <if>
+      <available file="${extract.path}\Update.exe" type="file"/>
+      <then>
+        <copy todir="${build.path}" file="${extract.path}\Update.exe"/>
+        <exec executable="${rcedit}" failonerror="true" dir="${build.path}">
+          <arg value="${build.path}/Update.exe"/>
+          <arg value="--set-icon"/>
+          <arg value="${res.path}/app.ico"/>
+        </exec>
+      </then>
+    </if>
+
+    <!-- Init nupkg package infos / updates folder -->
+    <mkdir dir="${build.path}\packages"/>
+    <copy file="${extract.path}\RELEASES" todir="${build.path}\packages" failonerror="false"/>
+
+    <!-- Add portapp README / CHANGELOG -->
+    <copy file="${app.basedir}\README.md" tofile="${build.path}\PAPP-README.md" overwrite="true"/>
+    <copy file="${app.basedir}\CHANGELOG.md" tofile="${build.path}\PAPP-CHANGELOG.md" overwrite="true"/>
+
+    <!-- Copy portable executable and app ico -->
+    <copy file="${tmp.path}\${papp.id}.exe" todir="${build.path}" overwrite="true"/>
+    <copy file="${res.path}\app.ico" todir="${build.path}" overwrite="true"/>
+
+    <!-- version.dat for CI -->
+    <echo message="Writing version.dat..."/>
+    <echo file="${tmp.path}\version.dat" append="false">${app.version}-${app.release}</echo>
+
+    <!-- Init release files -->
+    <echo message="Creating release files"/>
+    <copy file="${tmp.path}\${papp.id}.exe" tofile="${release.path}\${papp.id}-${atf.arch}.exe" overwrite="true"/>
+    <copy file="${atf.original}" tofile="${release.path}\${atf.filename}-${app.version}.exe" overwrite="true"/>
+    <copy file="${atf.nupkg}" tofile="${release.path}\${atf.id}-${atf.arch}-${app.version}-full.nupkg" overwrite="true"/>
+
+    <!-- .7z release -->
+    <sevenzip src="${build.path}/*" dest="${release.path}\${papp.id}-${atf.arch}-${app.version}-${app.release}.7z" format="7z"/>
+
+    <!-- setup.exe release -->
+    <echo message="Building setup"/>
+    <copy todir="${setup.path}\src">
+      <fileset dir="${build.path}"/>
+    </copy>
+    <copy todir="${setup.path}">
+      <fileset dir="${core.res.path}">
+        <include name="setup*"/>
+      </fileset>
+      <fileset dir="${res.path}">
+        <include name="setup*"/>
+        <include name="papp.ico"/>
+      </fileset>
+    </copy>
+    <copy file="${app.basedir}\LICENSE" tofile="${setup.path}\license.txt"/>
+    <copy file="${core.res.path}\setup-electron.iss" tofile="${setup.path}\setup.iss" overwrite="true">
+      <filterset>
+        <filter token="APP_ID" value="${papp.id}"/>
+        <filter token="APP_GUID" value="${papp.guid}"/>
+        <filter token="APP_NAME" value="${papp.name}"/>
+        <filter token="APP_VERSION" value="${app.version}-${app.release}"/>
+        <filter token="APP_URL" value="${papp.url}"/>
+        <filter token="PUBLISHER" value="${publisher}"/>
+      </filterset>
+    </copy>
+    <exec executable="${iscc}" dir="${setup.path}" failonerror="true">
+      <arg value="/O${release.path}"/>
+      <arg value="/F${papp.id}-${atf.arch}-${app.version}-${app.release}-setup"/>
+      <arg value="setup.iss"/>
+    </exec>
+  </target>
+
+  <target name="download">
+    <echo message="Downloading ${atf.id}..."/>
+    <property name="atf.original" location="${tmp.path}\${atf.filename}${atf.ext}"/>
+    <get dest="${atf.original}" src="${atf.url}" skipexisting="false"/>
+  </target>
+
+  <target name="extract">
+    <echo message="Extracting ${atf.original}..."/>
+    <unsevenzip src="${atf.original}" dest="${extract.path}"/>
+    <assertfile file="${extract.path}\${atf.assertextract}"/>
+  </target>
+
+  <target name="nupkg">
+    <first id="first.nupkg">
+      <fileset dir="${extract.path}" includes="*.nupkg"/>
+    </first>
+    <condition property="atf.nupkg" value="${toString:first.nupkg}">
+      <available file="${toString:first.nupkg}" type="file"/>
+    </condition>
+    <fail unless="atf.nupkg" message="Nupkg file not found"/>
+    <echo message="Nupkg found : ${atf.nupkg}"/>
+
+    <unsevenzip src="${atf.nupkg}" dest="${nupkg.path}"/>
+    <condition property="atf.libpath" value="${nupkg.path}\${electron.libfolder}">
+      <available file="${nupkg.path}\${electron.libfolder}\${atf.id}.exe" type="file"/>
+    </condition>
+    <fail unless="atf.libpath" message="Artefact lib path not found"/>
+
+    <echo message="Metadata found:"/>
+    <xmlproperty file="${nupkg.path}/${atf.id}.nuspec" collapseAttributes="true"/>
+    <echo message="* ID      : ${package.metadata.id}"/>
+    <echo message="* Title   : ${package.metadata.title}"/>
+    <echo message="* Version : ${package.metadata.version}"/>
+    <var name="app.version" value="${package.metadata.version}"/>
+  </target>
+
+</project>
