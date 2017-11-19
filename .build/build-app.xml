@@ -9,13 +9,13 @@
   <property file="${build.basedir}\build-app.properties"/>
 
   <!-- Targets -->
-  <target name="release" depends="init">
+  <target name="release.app" depends="init">
     <randomstring property="app.buildid"/>
     <echo message="Generated build id: ${app.buildid}"/>
     <if>
-      <isset property="atf.url.ia32"/>
+      <not><equals arg1="${atf.url.ia32}" arg2=""/></not>
       <then>
-        <antcall target="release.app">
+        <antcall target="release.arch">
           <param name="atf.arch" value="ia32"/>
           <param name="atf.url" value="${atf.url.ia32}"/>
           <param name="go.arch" value="386"/>
@@ -24,9 +24,9 @@
       </then>
     </if>
     <if>
-      <isset property="atf.url.x64"/>
+      <not><equals arg1="${atf.url.x64}" arg2=""/></not>
       <then>
-        <antcall target="release.app">
+        <antcall target="release.arch">
           <param name="atf.arch" value="x64"/>
           <param name="atf.url" value="${atf.url.x64}"/>
           <param name="go.arch" value="amd64"/>
@@ -37,12 +37,12 @@
     <delete file="${tmp.path}\${app.buildid}"/>
   </target>
 
-  <target name="release.app" depends="start, init, clear, download, extract, filterset, build">
+  <target name="release.arch" depends="start, init, clear, download, extract, filterset, build">
     <echo message="Packaging release..."/>
 
     <!-- atf.executionstub -->
     <if>
-      <isset property="atf.executionstub"/>
+      <available file="${atf.executionstub}" type="file"/>
       <then>
         <copy file="${nupkg.path}\${atf.libfolder}\${atf.executionstub}" tofile="${build.path}\${atf.id}.exe" overwrite="true"/>
         <copy todir="${build.path}\app-${app.version}">
@@ -72,7 +72,10 @@
     <!-- Init nupkg package infos / updates folder -->
     <mkdir dir="${build.path}\packages"/>
     <copy file="${extract.path}\RELEASES" todir="${build.path}\packages" failonerror="false"/>
+
+    <!-- Add portapp REAMDE / CHANGELOG -->
     <copy file="${app.basedir}\README.md" todir="${build.path}" overwrite="true"/>
+    <copy file="${app.basedir}\CHANGELOG.md" todir="${build.path}" overwrite="true"/>
 
     <!-- Copy portable executable and app ico -->
     <copy file="${tmp.path}\${papp.id}.exe" todir="${build.path}" overwrite="true"/>
@@ -105,7 +108,7 @@
         <include name="papp.ico"/>
       </fileset>
     </copy>
-    <copy file="${root.basedir}\LICENSE" tofile="${setup.path}\license.txt"/>
+    <copy file="${app.basedir}\LICENSE" tofile="${setup.path}\license.txt"/>
     <copy file="${core.res.path}\setup.iss" tofile="${setup.path}\setup.iss" overwrite="true">
       <filterset>
         <filter token="APP_ID" value="${papp.id}"/>
