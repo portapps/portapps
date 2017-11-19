@@ -42,7 +42,7 @@
 
     <!-- atf.executionstub -->
     <if>
-      <available file="${atf.executionstub}" type="file"/>
+      <available file="${nupkg.path}\${atf.libfolder}\${atf.executionstub}" type="file"/>
       <then>
         <copy file="${nupkg.path}\${atf.libfolder}\${atf.executionstub}" tofile="${build.path}\${atf.id}.exe" overwrite="true"/>
         <copy todir="${build.path}\app-${app.version}">
