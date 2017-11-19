@@ -248,10 +248,15 @@
   </target>
 
   <target name="dep">
-    <!--exec executable="dep" failonerror="true" dir="${app.basedir}">
-      <arg value="ensure"/>
-      <arg value="-v"/>
-    </exec-->
+    <if>
+      <equals arg1="${debug}" arg2="false"/>
+      <then>
+        <exec executable="dep" failonerror="true" dir="${app.basedir}">
+          <arg value="ensure"/>
+          <arg value="-v"/>
+        </exec>
+      </then>
+    </if>
   </target>
 
   <target name="generate">
