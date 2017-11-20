@@ -256,6 +256,9 @@
           <arg value="-v"/>
         </exec>
       </then>
+      <else>
+        <delete dir="vendor/github.com/portapps"/>
+      </else>
     </if>
   </target>
 
