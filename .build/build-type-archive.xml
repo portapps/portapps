@@ -118,6 +118,7 @@
         <filter token="APP_NAME" value="${papp.name}"/>
         <filter token="APP_VERSION" value="${app.version}-${app.release}"/>
         <filter token="APP_URL" value="${papp.url}"/>
+        <filter token="APP_FOLDER" value="${papp.folder}"/>
         <filter token="PUBLISHER" value="${publisher}"/>
       </filterset>
     </copy>

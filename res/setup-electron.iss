@@ -43,8 +43,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Source: "src\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [InstallDelete]
-Type: filesandordirs; Name: "{app}\{#appFolder}\app-*"
-Type: filesandordirs; Name: "{app}\{#appFolder}\packages"
+Type: filesandordirs; Name: "{app}\{#appFolder}"
 Type: filesandordirs; Name: "{app}\*.log"
 
 [Run]
