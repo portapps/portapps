@@ -73,7 +73,7 @@
     <echo message="Packaging release..."/>
 
     <!-- Copy files -->
-    <copy todir="${build.path}\${papp.path}">
+    <copy todir="${build.path}\${papp.folder}">
       <fileset dir="${extract.path}"/>
     </copy>
 

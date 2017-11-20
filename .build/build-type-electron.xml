@@ -78,13 +78,13 @@
     <if>
       <available file="${nupkg.path}\${electron.libfolder}\${electron.executionstub}" type="file"/>
       <then>
-        <copy file="${nupkg.path}\${electron.libfolder}\${electron.executionstub}" tofile="${build.path}\${atf.id}.exe" overwrite="true"/>
-        <copy todir="${build.path}\app-${app.version}">
+        <copy file="${nupkg.path}\${electron.libfolder}\${electron.executionstub}" tofile="${build.path}\${papp.folder}\${atf.id}.exe" overwrite="true"/>
+        <copy todir="${build.path}\${papp.folder}\app-${app.version}">
           <fileset dir="${atf.libpath}" excludes="${electron.executionstub}"/>
         </copy>
       </then>
       <else>
-        <copy todir="${build.path}\app-${app.version}">
+        <copy todir="${build.path}\${papp.folder}\app-${app.version}">
           <fileset dir="${atf.libpath}"/>
         </copy>
       </else>
@@ -94,9 +94,9 @@
     <if>
       <available file="${extract.path}\Update.exe" type="file"/>
       <then>
-        <copy todir="${build.path}" file="${extract.path}\Update.exe"/>
-        <exec executable="${rcedit}" failonerror="true" dir="${build.path}">
-          <arg value="${build.path}/Update.exe"/>
+        <copy todir="${build.path}\${papp.folder}" file="${extract.path}\Update.exe"/>
+        <exec executable="${rcedit}" failonerror="true" dir="${build.path}\${papp.folder}">
+          <arg value="${build.path}\${papp.folder}\Update.exe"/>
           <arg value="--set-icon"/>
           <arg value="${res.path}/app.ico"/>
         </exec>
@@ -104,16 +104,16 @@
     </if>
 
     <!-- Init nupkg package infos / updates folder -->
-    <mkdir dir="${build.path}\packages"/>
-    <copy file="${extract.path}\RELEASES" todir="${build.path}\packages" failonerror="false"/>
+    <mkdir dir="${build.path}\${papp.folder}\packages"/>
+    <copy file="${extract.path}\RELEASES" todir="${build.path}\${papp.folder}\packages" failonerror="false"/>
 
     <!-- Add portapp README / CHANGELOG -->
-    <copy file="${app.basedir}\README.md" tofile="${build.path}\PAPP-README.md" overwrite="true"/>
-    <copy file="${app.basedir}\CHANGELOG.md" tofile="${build.path}\PAPP-CHANGELOG.md" overwrite="true"/>
+    <copy file="${app.basedir}\README.md" todir="${build.path}" overwrite="true"/>
+    <copy file="${app.basedir}\CHANGELOG.md" todir="${build.path}" overwrite="true"/>
 
     <!-- Copy portable executable and app ico -->
     <copy file="${tmp.path}\${papp.id}.exe" todir="${build.path}" overwrite="true"/>
-    <copy file="${res.path}\app.ico" todir="${build.path}" overwrite="true"/>
+    <copy file="${res.path}\app.ico" todir="${build.path}\${papp.folder}" overwrite="true"/>
 
     <!-- version.dat for CI -->
     <echo message="Writing version.dat..."/>
