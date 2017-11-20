@@ -73,13 +73,13 @@
     <echo message="Packaging release..."/>
 
     <!-- Copy files -->
-    <copy todir="${build.path}">
+    <copy todir="${build.path}\${papp.path}">
       <fileset dir="${extract.path}"/>
     </copy>
 
     <!-- Add portapp README / CHANGELOG -->
-    <copy file="${app.basedir}\README.md" tofile="${build.path}\PAPP-README.md" overwrite="true"/>
-    <copy file="${app.basedir}\CHANGELOG.md" tofile="${build.path}\PAPP-CHANGELOG.md" overwrite="true"/>
+    <copy file="${app.basedir}\README.md" todir="${build.path}" overwrite="true"/>
+    <copy file="${app.basedir}\CHANGELOG.md" todir="${build.path}" overwrite="true"/>
 
     <!-- Copy portable executable -->
     <copy file="${tmp.path}\${papp.id}.exe" todir="${build.path}" overwrite="true"/>
