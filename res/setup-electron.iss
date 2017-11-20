@@ -4,6 +4,7 @@
 #define appVersion "@APP_VERSION@"
 #define appPublisher "@PUBLISHER@"
 #define appURL "@APP_URL@"
+#define appFolder "@APP_FOLDER@"
 #define currentYear GetDateTimeString('yyyy', '', '');
 
 [Setup]
@@ -42,9 +43,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Source: "src\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [InstallDelete]
-Type: filesandordirs; Name: "{app}\app-*"
-Type: filesandordirs; Name: "{app}\logs"
-Type: filesandordirs; Name: "{app}\packages"
+Type: filesandordirs; Name: "{app}\{#appFolder}\app-*"
+Type: filesandordirs; Name: "{app}\{#appFolder}\packages"
 Type: filesandordirs; Name: "{app}\*.log"
 
 [Run]

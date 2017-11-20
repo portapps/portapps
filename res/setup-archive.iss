@@ -4,6 +4,7 @@
 #define appVersion "@APP_VERSION@"
 #define appPublisher "@PUBLISHER@"
 #define appURL "@APP_URL@"
+#define appFolder "@APP_FOLDER@"
 #define currentYear GetDateTimeString('yyyy', '', '');
 
 [Setup]
