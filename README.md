@@ -21,6 +21,7 @@ In short, it's a wrapper that includes system records within the same directory 
 * [HLSW](https://github.com/portapps/hlsw-portable) : Half-Life Server Watch (HLSW) is a game server browser and administration tool.
 * [HostsMan](https://github.com/portapps/hostsman-portable) : A freeware application that lets you manage your Hosts file with ease.
 * [Slack](https://github.com/portapps/slack-portable) : A cloud-based set of team collaboration tools and services.
+* [Twitch](https://github.com/portapps/twitch-portable) : A live streaming video platform.
 
 ## Build
 
