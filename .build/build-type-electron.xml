@@ -69,11 +69,18 @@
       </then>
     </if>
     <delete file="${tmp.path}\${app.buildid}"/>
+
+    <!-- Finalizing -->
+    <antcall target="finalize"/>
   </target>
 
   <target name="prepare"/>
+  <target name="finalize"/>
 
   <target name="release.arch" depends="start, init, clear, download, extract, nupkg, filterset, build">
+    <!-- Preparing before packaging -->
+    <antcall target="prepare"/>
+
     <echo message="Copying files..."/>
 
     <!-- atf.executionstub -->

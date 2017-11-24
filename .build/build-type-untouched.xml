@@ -79,11 +79,18 @@
       </then>
     </if>
     <delete file="${tmp.path}\${app.buildid}"/>
+
+    <!-- Finalizing -->
+    <antcall target="finalize"/>
   </target>
 
   <target name="prepare"/>
+  <target name="finalize"/>
 
   <target name="release.arch" depends="start, init, clear, download, extract, filterset, build">
+    <!-- Preparing before packaging -->
+    <antcall target="prepare"/>
+
     <echo message="Copying files..."/>
 
     <!-- Copy files -->
@@ -106,9 +113,6 @@
     <echo message="Creating release files"/>
     <copy file="${tmp.path}\${papp.id}.exe" tofile="${release.path}\${papp.id}-${atf.arch}.exe" overwrite="true"/>
     <copy file="${atf.original}" todir="${release.path}" overwrite="true"/>
-
-    <!-- Preparing before packaging -->
-    <antcall target="prepare"/>
 
     <echo message="Packaging release..."/>
 
