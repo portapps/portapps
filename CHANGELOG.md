@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4 (2017/11/24)
+
+* Disable UPX in debug mode
+* Mutualize InnoSetup tpls
+* Add NSIS Multi arch type
+* Add prepare and finalize targets
+
 ## 1.3 (2017/11/23)
 
 * Add untouched type
