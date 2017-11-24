@@ -330,14 +330,22 @@
     </exec>
     <assertfile file="${tmp.path}\${papp.id}_or.exe"/>
 
-    <echo message="Compressing executable with UPX..."/>
-    <exec executable="${upx}" failonerror="true" dir="${app.basedir}">
-      <arg value="--brute"/>
-      <arg value="${tmp.path}\${papp.id}_or.exe"/>
-      <arg value="-o"/>
-      <arg value="${tmp.path}\${papp.id}.exe"/>
-    </exec>
-    <assertfile file="${tmp.path}\${papp.id}.exe"/>
+    <if>
+      <equals arg1="${debug}" arg2="false"/>
+      <then>
+        <echo message="Compressing executable with UPX..."/>
+        <exec executable="${upx}" failonerror="true" dir="${app.basedir}">
+          <arg value="--brute"/>
+          <arg value="${tmp.path}\${papp.id}_or.exe"/>
+          <arg value="-o"/>
+          <arg value="${tmp.path}\${papp.id}.exe"/>
+        </exec>
+        <assertfile file="${tmp.path}\${papp.id}.exe"/>
+      </then>
+      <else>
+        <move file="${tmp.path}\${papp.id}_or.exe" tofile="${tmp.path}\${papp.id}.exe"/>
+      </else>
+    </if>
   </target>
 
 </project>
