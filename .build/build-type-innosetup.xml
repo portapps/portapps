@@ -70,8 +70,10 @@
     <delete file="${tmp.path}\${app.buildid}"/>
   </target>
 
+  <target name="prepare"/>
+
   <target name="release.arch" depends="start, init, clear, download, extract, filterset, build">
-    <echo message="Packaging release..."/>
+    <echo message="Copying files..."/>
 
     <!-- Copy files -->
     <copy todir="${build.path}\${papp.folder}">
@@ -94,6 +96,11 @@
     <copy file="${tmp.path}\${papp.id}.exe" tofile="${release.path}\${papp.id}-${atf.arch}.exe" overwrite="true"/>
     <copy file="${atf.original}" tofile="${release.path}\${atf.filename}${atf.ext}" overwrite="true"/>
 
+    <!-- Preparing before packaging -->
+    <antcall target="prepare"/>
+
+    <echo message="Packaging release..."/>
+
     <!-- .7z release -->
     <sevenzip src="${build.path}/*" dest="${release.path}\${papp.id}-${atf.arch}-${innosetup.version}-${app.release}.7z" format="7z"/>
 
@@ -112,7 +119,7 @@
       </fileset>
     </copy>
     <copy file="${app.basedir}\LICENSE" tofile="${setup.path}\license.txt"/>
-    <copy file="${core.res.path}\setup-archive.iss" tofile="${setup.path}\setup.iss" overwrite="true">
+    <copy file="${core.res.path}\setup.iss" todir="${setup.path}" overwrite="true">
       <filterset>
         <filter token="APP_ID" value="${papp.id}"/>
         <filter token="APP_GUID" value="${papp.guid}"/>
