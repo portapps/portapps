@@ -140,39 +140,49 @@
     <echo message="Packaging release..."/>
 
     <!-- .7z release -->
-    <sevenzip src="${build.path}/*" dest="${release.path}\${papp.id}-${atf.arch}-${app.version}-${app.release}.7z" format="7z"/>
+    <if>
+      <istrue value="${papp.out.7z}"/>
+      <then>
+        <sevenzip src="${build.path}/*" dest="${release.path}\${papp.id}-${atf.arch}-${app.version}-${app.release}.7z" format="7z"/>
+      </then>
+    </if>
 
     <!-- setup.exe release -->
-    <echo message="Building setup"/>
-    <copy todir="${setup.path}\src">
-      <fileset dir="${build.path}"/>
-    </copy>
-    <copy todir="${setup.path}">
-      <fileset dir="${core.res.path}">
-        <include name="setup*"/>
-      </fileset>
-      <fileset dir="${res.path}">
-        <include name="setup*"/>
-        <include name="papp.ico"/>
-      </fileset>
-    </copy>
-    <copy file="${app.basedir}\LICENSE" tofile="${setup.path}\license.txt"/>
-    <copy file="${core.res.path}\setup.iss" todir="${setup.path}" overwrite="true">
-      <filterset>
-        <filter token="APP_ID" value="${papp.id}"/>
-        <filter token="APP_GUID" value="${papp.guid}"/>
-        <filter token="APP_NAME" value="${papp.name}"/>
-        <filter token="APP_VERSION" value="${app.version}-${app.release}"/>
-        <filter token="APP_URL" value="${papp.url}"/>
-        <filter token="APP_FOLDER" value="${papp.folder}"/>
-        <filter token="PUBLISHER" value="${publisher}"/>
-      </filterset>
-    </copy>
-    <exec executable="${iscc}" dir="${setup.path}" failonerror="true">
-      <arg value="/O${release.path}"/>
-      <arg value="/F${papp.id}-${atf.arch}-${app.version}-${app.release}-setup"/>
-      <arg value="setup.iss"/>
-    </exec>
+    <if>
+      <istrue value="${papp.out.exe}"/>
+      <then>
+        <echo message="Building setup"/>
+        <copy todir="${setup.path}\src">
+          <fileset dir="${build.path}"/>
+        </copy>
+        <copy todir="${setup.path}">
+          <fileset dir="${core.res.path}">
+            <include name="setup*"/>
+          </fileset>
+          <fileset dir="${res.path}">
+            <include name="setup*"/>
+            <include name="papp.ico"/>
+          </fileset>
+        </copy>
+        <copy file="${app.basedir}\LICENSE" tofile="${setup.path}\license.txt"/>
+        <copy file="${core.res.path}\setup.iss" todir="${setup.path}" overwrite="true">
+          <filterset>
+            <filter token="APP_ID" value="${papp.id}"/>
+            <filter token="APP_GUID" value="${papp.guid}"/>
+            <filter token="APP_NAME" value="${papp.name}"/>
+            <filter token="APP_VERSION" value="${app.version}-${app.release}"/>
+            <filter token="APP_URL" value="${papp.url}"/>
+            <filter token="APP_FOLDER" value="${papp.folder}"/>
+            <filter token="PUBLISHER" value="${publisher}"/>
+          </filterset>
+        </copy>
+        <exec executable="${iscc}" dir="${setup.path}" failonerror="true">
+          <arg value="/O${release.path}"/>
+          <arg value="/F${papp.id}-${atf.arch}-${app.version}-${app.release}-setup"/>
+          <arg value="setup.iss"/>
+        </exec>
+      </then>
+    </if>
   </target>
 
   <target name="download">
