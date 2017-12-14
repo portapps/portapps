@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5 (2017/12/14)
+
+* Remove atf.original from untouched releases (can be found in the untouched repo)
+* Add output type (7z or exe)
+
 ## 1.4 (2017/11/24)
 
 * Disable UPX in debug mode
