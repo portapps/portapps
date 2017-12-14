@@ -4,14 +4,6 @@
   <!-- Check required properties -->
   <fail unless="atf.id" message="Property 'atf.id' must be defined before loading ${ant.file.papps-type-untouched}"/>
   <fail unless="untouched.version" message="Property 'untouched.version' must be defined before loading ${ant.file.papps-type-untouched}"/>
-  <fail message="Property 'atf.ia32.original' or 'atf.x64.original' must be defined before loading ${ant.file.papps-type-untouched}">
-    <condition>
-      <and>
-        <equals arg1="${atf.ia32.original}" arg2=""/>
-        <equals arg1="${atf.x64.original}" arg2=""/>
-      </and>
-    </condition>
-  </fail>
   <fail message="Property 'atf.ia32.url' or 'atf.x64.url' must be defined before loading ${ant.file.papps-type-untouched}">
     <condition>
       <and>
@@ -46,14 +38,12 @@
         <fail unless="atf.ia32.filename" message="Property 'atf.ia32.filename' must be defined with 'atf.ia32.url'"/>
         <fail unless="atf.ia32.ext" message="Property 'atf.ia32.ext' must be defined with 'atf.x64.url'"/>
         <fail unless="atf.ia32.assertextract" message="Property 'atf.ia32.assertextract' must be defined with 'atf.ia32.url'"/>
-        <fail unless="atf.ia32.original" message="Property 'atf.ia32.original' must be defined with 'atf.ia32.url'"/>
         <antcall target="release.arch">
           <param name="atf.arch" value="ia32"/>
           <param name="atf.filename" value="${atf.ia32.filename}"/>
           <param name="atf.ext" value="${atf.ia32.ext}"/>
           <param name="atf.url" value="${atf.ia32.url}"/>
           <param name="atf.assertextract" value="${atf.ia32.assertextract}"/>
-          <param name="atf.original.url" value="${atf.ia32.original}"/>
           <param name="go.arch" value="386"/>
         </antcall>
         <echo file="${tmp.path}\${app.buildid}" append="false">${app.buildid}</echo>
@@ -65,14 +55,12 @@
         <fail unless="atf.x64.filename" message="Property 'atf.x64.filename' must be defined with 'atf.x64.url'"/>
         <fail unless="atf.x64.ext" message="Property 'atf.x64.ext' must be defined with 'atf.x64.url'"/>
         <fail unless="atf.x64.assertextract" message="Property 'atf.x64.assertextract' must be defined with 'atf.x64.url'"/>
-        <fail unless="atf.x64.original" message="Property 'atf.x64.original' must be defined with 'atf.x64.url'"/>
         <antcall target="release.arch">
           <param name="atf.arch" value="x64"/>
           <param name="atf.filename" value="${atf.x64.filename}"/>
           <param name="atf.ext" value="${atf.x64.ext}"/>
           <param name="atf.url" value="${atf.x64.url}"/>
           <param name="atf.assertextract" value="${atf.x64.assertextract}"/>
-          <param name="atf.original.url" value="${atf.x64.original}"/>
           <param name="go.arch" value="amd64"/>
         </antcall>
         <echo file="${tmp.path}\${app.buildid}" append="false">${app.buildid}</echo>
@@ -112,7 +100,6 @@
     <!-- Init release files -->
     <echo message="Creating release files"/>
     <copy file="${tmp.path}\${papp.id}.exe" tofile="${release.path}\${papp.id}-${atf.arch}.exe" overwrite="true"/>
-    <copy file="${atf.original}" todir="${release.path}" overwrite="true"/>
 
     <echo message="Packaging release..."/>
 
@@ -166,16 +153,10 @@
     <echo message="Downloading untouched ${atf.id}..."/>
     <property name="atf.untouched" location="${tmp.path}\${atf.filename}${atf.ext}"/>
     <get dest="${atf.untouched}" src="${atf.url}" skipexisting="true"/>
-
-    <echo message="Downloading original ${atf.id}..."/>
-    <basename property="atf.original.basename" file="${atf.original.url}"/>
-    <propertyregex property="atf.original.ext" input="${atf.original.basename}" regexp="(.*)\.(.*)" select="\2"/>
-    <property name="atf.original" location="${tmp.path}\${atf.filename}.${atf.original.ext}"/>
-    <get dest="${atf.original}" src="${atf.original.url}" skipexisting="true"/>
   </target>
 
   <target name="extract">
-    <echo message="Extracting ${atf.original}..."/>
+    <echo message="Extracting ${atf.untouched}..."/>
     <sevenzip-ax src="${atf.untouched}" dest="${extract.path}"/>
     <assertfile file="${extract.path}\${atf.assertextract}"/>
   </target>
