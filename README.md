@@ -20,6 +20,7 @@ In short, it's a wrapper that includes system records within the same directory 
 * [DiscordPTB](https://github.com/portapps/discord-ptb-portable) : The Public Test Build (PTB) of Discord.
 * [HLSW](https://github.com/portapps/hlsw-portable) : Half-Life Server Watch (HLSW) is a game server browser and administration tool.
 * [HostsMan](https://github.com/portapps/hostsman-portable) : A freeware application that lets you manage your Hosts file with ease.
+* [Skype](https://github.com/portapps/skype-portable) : A telecommunications application software product that specializes in providing video chat and voice calls.
 * [Slack](https://github.com/portapps/slack-portable) : A cloud-based set of team collaboration tools and services.
 * [Twitch](https://github.com/portapps/twitch-portable) : A live streaming video platform.
 
