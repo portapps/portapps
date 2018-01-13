@@ -228,73 +228,10 @@
         <not><equals arg1="${electron.userdata.replace}" arg2=""/></not>
       </and>
       <then>
-        <echo message="Installing asar..."/>
-        <exec executable="npm.cmd" failonerror="true">
-          <arg value="install"/>
-          <arg value="-g"/>
-          <arg value="asar"/>
-        </exec>
-
-        <echo message="Extracting electron.asar..."/>
-        <exec executable="asar.cmd" failonerror="true" dir="${nupkg.path}\${electron.libfolder}\resources">
-          <arg value="extract"/>
-          <arg value="electron.asar"/>
-          <arg value="electron.unpacked"/>
-        </exec>
-
-        <echo message="Replacing userData in electron.asar..."/>
-        <assertfile file="${nupkg.path}\${electron.libfolder}\resources\electron.unpacked\browser\init.js"/>
-        <replace file="${nupkg.path}\${electron.libfolder}\resources\electron.unpacked\browser\init.js">
-          <replacefilter token="${electron.userdata.search}" value="${electron.userdata.replace}"/>
-        </replace>
-
-        <echo message="Packing electron.asar..."/>
-        <exec executable="asar.cmd" failonerror="true" dir="${nupkg.path}\${electron.libfolder}\resources">
-          <arg value="pack"/>
-          <arg value="electron.unpacked"/>
-          <arg value="electron.asar"/>
-        </exec>
-        <delete dir="${nupkg.path}\${electron.libfolder}\resources\electron.unpacked"/>
-      </then>
-    </if>
-    <if>
-      <not><equals arg1="${electron.appasar.file}" arg2=""/></not>
-      <then>
-        <echo message="Installing asar..."/>
-        <exec executable="npm.cmd" failonerror="true">
-          <arg value="install"/>
-          <arg value="-g"/>
-          <arg value="asar"/>
-        </exec>
-
-        <echo message="Extracting app.asar..."/>
-        <exec executable="asar.cmd" failonerror="true" dir="${nupkg.path}\${electron.libfolder}\resources">
-          <arg value="extract"/>
-          <arg value="app.asar"/>
-          <arg value="app"/>
-        </exec>
-
-        <echo message="Replacing in app.asar..."/>
-        <assertfile file="${nupkg.path}\${electron.libfolder}\resources\app\${electron.appasar.file}"/>
-        <replace file="${nupkg.path}\${electron.libfolder}\resources\app\${electron.appasar.file}">
-          <replacefilter token="${electron.appasar.search}" value="${electron.appasar.replace}"/>
-        </replace>
-        <if>
-          <not><equals arg1="${electron.appasar.file2}" arg2=""/></not>
-          <then>
-            <replace file="${nupkg.path}\${electron.libfolder}\resources\app\${electron.appasar.file2}">
-              <replacefilter token="${electron.appasar.search2}" value="${electron.appasar.replace2}"/>
-            </replace>
-          </then>
-        </if>
-        <if>
-          <not><equals arg1="${electron.appasar.file3}" arg2=""/></not>
-          <then>
-            <replace file="${nupkg.path}\${electron.libfolder}\resources\app\${electron.appasar.file3}">
-              <replacefilter token="${electron.appasar.search3}" value="${electron.appasar.replace3}"/>
-            </replace>
-          </then>
-        </if>
+        <setelectronuserdata path="${nupkg.path}\${electron.libfolder}"
+          search="${electron.userdata.search}"
+          replace="${electron.userdata.replace}"
+        />
       </then>
     </if>
   </target>
