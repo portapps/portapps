@@ -243,8 +243,6 @@
         </exec>
 
         <echo message="Replacing userData in electron.asar..."/>
-        <echo message="replace: ${electron.userdata.search}"/>
-        <echo message="with: ${electron.userdata.replace}"/>
         <assertfile file="${nupkg.path}\${electron.libfolder}\resources\electron.unpacked\browser\init.js"/>
         <replace file="${nupkg.path}\${electron.libfolder}\resources\electron.unpacked\browser\init.js">
           <replacefilter token="${electron.userdata.search}" value="${electron.userdata.replace}"/>
