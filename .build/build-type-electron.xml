@@ -77,7 +77,7 @@
   <target name="prepare"/>
   <target name="finalize"/>
 
-  <target name="release.arch" depends="start, init, clear, download, extract, nupkg, filterset, build">
+  <target name="release.arch" depends="start, init, clear, download, extract, nupkg, asar, filterset, build">
     <!-- Preparing before packaging -->
     <antcall target="prepare"/>
 
@@ -219,6 +219,46 @@
     <echo message="* Title   : ${package.metadata.title}"/>
     <echo message="* Version : ${package.metadata.version}"/>
     <var name="app.version" value="${package.metadata.version}"/>
+  </target>
+
+  <target name="asar">
+    <if>
+      <and>
+        <not><equals arg1="${electron.userdata.search}" arg2=""/></not>
+        <not><equals arg1="${electron.userdata.replace}" arg2=""/></not>
+      </and>
+      <then>
+        <echo message="Installing asar..."/>
+        <exec executable="npm.cmd" failonerror="true">
+          <arg value="install"/>
+          <arg value="-g"/>
+          <arg value="asar"/>
+        </exec>
+
+        <echo message="Extracting electron.asar..."/>
+        <exec executable="asar.cmd" failonerror="true" dir="${nupkg.path}\${electron.libfolder}\resources">
+          <arg value="extract"/>
+          <arg value="electron.asar"/>
+          <arg value="electron.unpacked"/>
+        </exec>
+
+        <echo message="Replacing userData in electron.asar..."/>
+        <echo message="replace: ${electron.userdata.search}"/>
+        <echo message="with: ${electron.userdata.replace}"/>
+        <assertfile file="${nupkg.path}\${electron.libfolder}\resources\electron.unpacked\browser\init.js"/>
+        <replace file="${nupkg.path}\${electron.libfolder}\resources\electron.unpacked\browser\init.js">
+          <replacefilter token="${electron.userdata.search}" value="${electron.userdata.replace}"/>
+        </replace>
+
+        <echo message="Packing electron.asar..."/>
+        <exec executable="asar.cmd" failonerror="true" dir="${nupkg.path}\${electron.libfolder}\resources">
+          <arg value="pack"/>
+          <arg value="electron.unpacked"/>
+          <arg value="electron.asar"/>
+        </exec>
+        <delete dir="${nupkg.path}\${electron.libfolder}\resources\electron.unpacked"/>
+      </then>
+    </if>
   </target>
 
 </project>

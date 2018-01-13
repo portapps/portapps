@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6 (2018/01/13)
+
+* Replace userData in electron.asar for electron build type
+
 ## 1.5 (2017/12/14)
 
 * Remove atf.original from untouched releases (can be found in the untouched repo)
