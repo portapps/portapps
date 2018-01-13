@@ -143,6 +143,36 @@
     </sequential>
   </macrodef>
 
+  <macrodef name="setelectronuserdata">
+    <attribute name="path"/>
+    <attribute name="search"/>
+    <attribute name="replace"/>
+    <sequential>
+      <antcall target="load.lib.asar"/>
+
+      <echo message="Extracting electron.asar..."/>
+      <exec executable="asar.cmd" failonerror="true" dir="@{path}\resources">
+        <arg value="extract"/>
+        <arg value="electron.asar"/>
+        <arg value="electron.unpacked"/>
+      </exec>
+
+      <echo message="Replacing userData in electron.asar..."/>
+      <assertfile file="@{path}\resources\electron.unpacked\browser\init.js"/>
+      <replace file="@{path}\resources\electron.unpacked\browser\init.js">
+        <replacefilter token="@{search}" value="@{replace}"/>
+      </replace>
+
+      <echo message="Packaging electron.asar..."/>
+      <exec executable="asar.cmd" failonerror="true" dir="@{path}\resources">
+        <arg value="pack"/>
+        <arg value="electron.unpacked"/>
+        <arg value="electron.asar"/>
+      </exec>
+      <delete dir="@{path}\resources\electron.unpacked"/>
+    </sequential>
+  </macrodef>
+
   <!-- Targets -->
   <target name="start">
     <echo message="*** Start building ${app}"/>
@@ -264,6 +294,15 @@
         </unzip>
       </then>
     </if>
+  </target>
+
+  <target name="load.lib.asar">
+    <echo message="Load Asar"/>
+    <exec executable="npm.cmd" failonerror="true">
+      <arg value="install"/>
+      <arg value="-g"/>
+      <arg value="asar"/>
+    </exec>
   </target>
 
   <target name="clear">
