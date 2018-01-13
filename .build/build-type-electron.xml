@@ -258,7 +258,7 @@
       </then>
     </if>
     <if>
-      <not><equals arg1="${electron.custom.asar}" arg2=""/></not>
+      <not><equals arg1="${electron.appasar.file}" arg2=""/></not>
       <then>
         <echo message="Installing asar..."/>
         <exec executable="npm.cmd" failonerror="true">
@@ -267,26 +267,18 @@
           <arg value="asar"/>
         </exec>
 
-        <echo message="Extracting ${electron.custom.asar}..."/>
+        <echo message="Extracting app.asar..."/>
         <exec executable="asar.cmd" failonerror="true" dir="${nupkg.path}\${electron.libfolder}\resources">
           <arg value="extract"/>
-          <arg value="${electron.custom.asar}"/>
-          <arg value="custom.unpacked"/>
+          <arg value="app.asar"/>
+          <arg value="app"/>
         </exec>
 
-        <echo message="Replacing in ${electron.custom.asar}..."/>
-        <assertfile file="${nupkg.path}\${electron.libfolder}\resources\custom.unpacked\${electron.custom.file}"/>
-        <replace file="${nupkg.path}\${electron.libfolder}\resources\custom.unpacked\${electron.custom.file}">
-          <replacefilter token="${electron.custom.search}" value="${electron.custom.replace}"/>
+        <echo message="Replacing in app.asar..."/>
+        <assertfile file="${nupkg.path}\${electron.libfolder}\resources\app\${electron.appasar.file}"/>
+        <replace file="${nupkg.path}\${electron.libfolder}\resources\app\${electron.appasar.file}">
+          <replacefilter token="${electron.appasar.search}" value="${electron.appasar.replace}"/>
         </replace>
-
-        <echo message="Packing ${electron.custom.asar}..."/>
-        <exec executable="asar.cmd" failonerror="true" dir="${nupkg.path}\${electron.libfolder}\resources">
-          <arg value="pack"/>
-          <arg value="custom.unpacked"/>
-          <arg value="${electron.custom.asar}"/>
-        </exec>
-        <delete dir="${nupkg.path}\${electron.libfolder}\resources\custom.unpacked"/>
       </then>
     </if>
   </target>
