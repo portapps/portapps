@@ -158,7 +158,7 @@
 
   <target name="extract">
     <echo message="Extracting ${atf.original}..."/>
-    <sevenzip-ax src="${atf.original}" dest="${extract.path}"/>
+    <sevenzip-x src="${atf.original}" dest="${extract.path}"/>
     <assertfile file="${extract.path}\${atf.assertextract}"/>
   </target>
 

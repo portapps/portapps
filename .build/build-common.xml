@@ -25,7 +25,8 @@
   <property name="core.res.path" value="${core.basedir}\${res.dir}"/>
   <property name="7za" value="${core.lib.path}\7zipextra\7za.exe"/>
   <property name="7z" value="${core.lib.path}\7zip\7z.exe"/>
-  <property name="rcedit" value="${core.lib.path}\rcedit\rcedit.exe"/>
+  <property name="rcedit.x86" value="${core.lib.path}\rcedit\rcedit-x86.exe"/>
+  <property name="rcedit.x64" value="${core.lib.path}\rcedit\rcedit-x64.exe"/>
   <property name="innoextract" location="${core.lib.path}\innoextract\innoextract.exe"/>
   <property name="innosetup.path" location="${core.lib.path}\innosetup"/>
   <property name="iscc" location="${innosetup.path}\app\ISCC.exe"/>
@@ -173,6 +174,28 @@
     </sequential>
   </macrodef>
 
+  <macrodef name="rcedit">
+    <attribute name="arch"/>
+    <attribute name="dir"/>
+    <element name="args"/>
+    <sequential>
+      <echo message="Extracting @{src} to @{dest}..."/>
+      <if>
+        <equals arg1="@{arch}" arg2="ia32"/>
+        <then>
+          <exec executable="${rcedit.x86}" failonerror="true" dir="@{dir}">
+            <args/>
+          </exec>
+        </then>
+        <else>
+          <exec executable="${rcedit.x64}" failonerror="true" dir="@{dir}">
+            <args/>
+          </exec>
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+
   <!-- Targets -->
   <target name="start">
     <echo message="*** Start building ${app}"/>
@@ -250,7 +273,8 @@
   <target name="load.lib.rcedit" unless="is.lib.loaded">
     <echo message="Load Rcedit"/>
     <mkdir dir="${core.lib.path}\rcedit"/>
-    <get dest="${core.lib.path}\rcedit\rcedit.exe" src="${rcedit.url}" skipexisting="true"/>
+    <get dest="${core.lib.path}\rcedit\rcedit-x86.exe" src="${rcedit.x86.url}" skipexisting="true"/>
+    <get dest="${core.lib.path}\rcedit\rcedit-x64.exe" src="${rcedit.x64.url}" skipexisting="true"/>
   </target>
 
   <target name="load.lib.innoextract" unless="is.lib.loaded">

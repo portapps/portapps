@@ -104,11 +104,13 @@
       <available file="${extract.path}\Update.exe" type="file"/>
       <then>
         <copy todir="${build.path}\${papp.folder}" file="${extract.path}\Update.exe"/>
-        <exec executable="${rcedit}" failonerror="true" dir="${build.path}\${papp.folder}">
-          <arg value="${build.path}\${papp.folder}\Update.exe"/>
-          <arg value="--set-icon"/>
-          <arg value="${res.path}/app.ico"/>
-        </exec>
+        <rcedit arch="${atf.arch}" dir="${build.path}\${papp.folder}">
+          <args>
+            <arg value="Update.exe"/>
+            <arg value="--set-icon"/>
+            <arg value="${res.path}\app.ico"/>
+          </args>
+        </rcedit>
       </then>
     </if>
 
