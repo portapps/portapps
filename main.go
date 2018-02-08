@@ -152,20 +152,20 @@ func ImportRegKey(reg RegExportImport) {
 }
 
 // Launch to execute the app
-func Launch() {
+func Launch(args []string) {
 	Log.Infof("Process: %s", Papp.Process)
-	Log.Infof("Args: %s", strings.Join(Papp.Args, " "))
+	Log.Infof("Args: %s %s", strings.Join(Papp.Args, " "), strings.Join(args, " "))
 	Log.Infof("Working dir: %s", Papp.WorkingDir)
 	Log.Infof("Data path: %s", Papp.DataPath)
 
 	Log.Infof("Launch %s...", Papp.Name)
-	execute := exec.Command(Papp.Process, Papp.Args...)
+	execute := exec.Command(Papp.Process, append(Papp.Args, args...)...)
 	execute.Dir = Papp.WorkingDir
 
 	execute.Stdout = Logfile
 	execute.Stderr = Logfile
 
-	Log.Infof("Exec %s %s", Papp.Process, strings.Join(Papp.Args, " "))
+	Log.Infof("Exec %s %s %s", Papp.Process, strings.Join(Papp.Args, " "), strings.Join(args, " "))
 	if err := execute.Start(); err != nil {
 		Log.Fatalf("Command failed: %v", err)
 	}
