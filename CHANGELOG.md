@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.7 (2018/02/08)
+
+* Ability to pass custom args to the portable process
+* Update to rcedit 1.0.0
+* Remove appasar from global electron build
+* Add setelectronuserdata macro and load.lib.asar target
+* Allow multi replacements in app.asar
+* Ability to process a custom asar file
+
 ## 1.6 (2018/01/13)
 
 * Replace userData in electron.asar for electron build type
