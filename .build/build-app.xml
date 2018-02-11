@@ -6,9 +6,80 @@
 
   <!-- Check required properties -->
   <fail unless="app.type" message="Property 'app.type' must be defined before loading build-app.xml"/>
+  <fail message="Property 'atf.win3264.url' or 'atf.win32.url' or 'atf.win64.url' must be defined before loading build-app.xml">
+    <condition>
+      <and>
+        <equals arg1="${atf.win3264.url}" arg2=""/>
+        <equals arg1="${atf.win32.url}" arg2=""/>
+        <equals arg1="${atf.win64.url}" arg2=""/>
+      </and>
+    </condition>
+  </fail>
 
   <!-- Import common build-type-${app.type}.xml and load properties -->
   <import file="${build.basedir}\build-type-${app.type}.xml"/>
   <property file="${build.basedir}\build-app.properties"/>
+
+  <target name="release.app" depends="init">
+    <randomstring property="app.buildid"/>
+    <echo message="Generated build id: ${app.buildid}"/>
+    <if>
+      <not><equals arg1="${atf.win3264.url}" arg2=""/></not>
+      <then>
+        <fail unless="atf.win3264.filename" message="Property 'atf.win3264.filename' must be defined with 'atf.win3264.url'"/>
+        <fail unless="atf.win3264.ext" message="Property 'atf.win3264.ext' must be defined with 'atf.win3264.url'"/>
+        <fail unless="atf.win3264.assertextract" message="Property 'atf.win3264.assertextract' must be defined with 'atf.win3264.url'"/>
+        <antcall target="release.arch">
+          <param name="atf.arch" value="win3264"/>
+          <param name="atf.filename" value="${atf.win3264.filename}"/>
+          <param name="atf.ext" value="${atf.win3264.ext}"/>
+          <param name="atf.url" value="${atf.win3264.url}"/>
+          <param name="atf.assertextract" value="${atf.win3264.assertextract}"/>
+        </antcall>
+        <echo file="${tmp.path}\${app.buildid}" append="false">${app.buildid}</echo>
+      </then>
+    </if>
+    <if>
+      <not><equals arg1="${atf.win32.url}" arg2=""/></not>
+      <then>
+        <fail unless="atf.win32.filename" message="Property 'atf.win32.filename' must be defined with 'atf.win32.url'"/>
+        <fail unless="atf.win32.ext" message="Property 'atf.win32.ext' must be defined with 'atf.win32.url'"/>
+        <fail unless="atf.win32.assertextract" message="Property 'atf.win32.assertextract' must be defined with 'atf.win32.url'"/>
+        <antcall target="release.arch">
+          <param name="atf.arch" value="win32"/>
+          <param name="atf.filename" value="${atf.win32.filename}"/>
+          <param name="atf.ext" value="${atf.win32.ext}"/>
+          <param name="atf.url" value="${atf.win32.url}"/>
+          <param name="atf.assertextract" value="${atf.win32.assertextract}"/>
+          <param name="go.arch" value="386"/>
+        </antcall>
+        <echo file="${tmp.path}\${app.buildid}" append="false">${app.buildid}</echo>
+      </then>
+    </if>
+    <if>
+      <not><equals arg1="${atf.win64.url}" arg2=""/></not>
+      <then>
+        <fail unless="atf.win64.filename" message="Property 'atf.win64.filename' must be defined with 'atf.win64.url'"/>
+        <fail unless="atf.win64.ext" message="Property 'atf.win64.ext' must be defined with 'atf.win64.url'"/>
+        <fail unless="atf.win64.assertextract" message="Property 'atf.win64.assertextract' must be defined with 'atf.win64.url'"/>
+        <antcall target="release.arch">
+          <param name="atf.arch" value="win64"/>
+          <param name="atf.filename" value="${atf.win64.filename}"/>
+          <param name="atf.ext" value="${atf.win64.ext}"/>
+          <param name="atf.url" value="${atf.win64.url}"/>
+          <param name="atf.assertextract" value="${atf.win64.assertextract}"/>
+          <param name="go.arch" value="amd64"/>
+        </antcall>
+        <echo file="${tmp.path}\${app.buildid}" append="false">${app.buildid}</echo>
+      </then>
+    </if>
+    <delete file="${tmp.path}\${app.buildid}"/>
+
+    <!-- Finalizing -->
+    <antcall target="finalize"/>
+  </target>
+
+  <target name="prepare"/>
+  <target name="finalize"/>
 
 </project>

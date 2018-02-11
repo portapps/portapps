@@ -3,14 +3,6 @@
 
   <!-- Check required properties -->
   <fail unless="atf.id" message="Property 'atf.id' must be defined before loading ${ant.file.papps-type-electron}"/>
-  <fail message="Property 'atf.ia32.url' or 'atf.x64.url' must be defined before loading ${ant.file.papps-type-electron}">
-    <condition>
-      <and>
-        <equals arg1="${atf.ia32.url}" arg2=""/>
-        <equals arg1="${atf.x64.url}" arg2=""/>
-      </and>
-    </condition>
-  </fail>
 
   <dirname property="build.basedir" file="${ant.file.papps-type-electron}"/>
   <property name="root.basedir" location="${build.basedir}/.."/>
@@ -30,52 +22,6 @@
     <delete dir="${extract.path}"/>
     <mkdir dir="${extract.path}"/>
   </target>
-
-  <target name="release.app" depends="init">
-    <randomstring property="app.buildid"/>
-    <echo message="Generated build id: ${app.buildid}"/>
-    <if>
-      <not><equals arg1="${atf.ia32.url}" arg2=""/></not>
-      <then>
-        <fail unless="atf.ia32.filename" message="Property 'atf.ia32.filename' must be defined with 'atf.ia32.url'"/>
-        <fail unless="atf.ia32.ext" message="Property 'atf.ia32.ext' must be defined with 'atf.ia32.url'"/>
-        <fail unless="atf.ia32.assertextract" message="Property 'atf.ia32.assertextract' must be defined with 'atf.ia32.url'"/>
-        <antcall target="release.arch">
-          <param name="atf.arch" value="ia32"/>
-          <param name="atf.filename" value="${atf.ia32.filename}"/>
-          <param name="atf.ext" value="${atf.ia32.ext}"/>
-          <param name="atf.url" value="${atf.ia32.url}"/>
-          <param name="atf.assertextract" value="${atf.ia32.assertextract}"/>
-          <param name="go.arch" value="386"/>
-        </antcall>
-        <echo file="${tmp.path}\${app.buildid}" append="false">${app.buildid}</echo>
-      </then>
-    </if>
-    <if>
-      <not><equals arg1="${atf.x64.url}" arg2=""/></not>
-      <then>
-        <fail unless="atf.x64.filename" message="Property 'atf.x64.filename' must be defined with 'atf.x64.url'"/>
-        <fail unless="atf.x64.ext" message="Property 'atf.x64.ext' must be defined with 'atf.x64.url'"/>
-        <fail unless="atf.x64.assertextract" message="Property 'atf.x64.assertextract' must be defined with 'atf.x64.url'"/>
-        <antcall target="release.arch">
-          <param name="atf.arch" value="x64"/>
-          <param name="atf.filename" value="${atf.x64.filename}"/>
-          <param name="atf.ext" value="${atf.x64.ext}"/>
-          <param name="atf.url" value="${atf.x64.url}"/>
-          <param name="atf.assertextract" value="${atf.x64.assertextract}"/>
-          <param name="go.arch" value="amd64"/>
-        </antcall>
-        <echo file="${tmp.path}\${app.buildid}" append="false">${app.buildid}</echo>
-      </then>
-    </if>
-    <delete file="${tmp.path}\${app.buildid}"/>
-
-    <!-- Finalizing -->
-    <antcall target="finalize"/>
-  </target>
-
-  <target name="prepare"/>
-  <target name="finalize"/>
 
   <target name="release.arch" depends="start, init, clear, download, extract, nupkg, asar, filterset, build">
     <!-- Preparing before packaging -->
@@ -132,20 +78,42 @@
 
     <!-- Init release files -->
     <echo message="Creating release files"/>
-    <copy file="${tmp.path}\${papp.id}.exe" tofile="${release.path}\${papp.id}-${atf.arch}.exe" overwrite="true"/>
-    <copy file="${atf.original}" tofile="${release.path}\${atf.filename}-${app.version}.exe" overwrite="true"/>
-    <copy file="${atf.nupkg}" tofile="${release.path}\${atf.id}-${atf.arch}-${app.version}-full.nupkg" overwrite="true"/>
+    <if>
+      <not><equals arg1="${atf.win3264.url}" arg2=""/></not>
+      <then>
+        <copy todir="${release.path}" overwrite="true">
+          <fileset dir="${tmp.path}">
+            <include name="${papp.id}*exe"/>
+          </fileset>
+        </copy>
+      </then>
+      <else>
+        <copy file="${tmp.path}\${papp.id}.exe" tofile="${release.path}\${papp.id}-${atf.arch}.exe" overwrite="true"/>
+      </else>
+    </if>
+    <copy file="${atf.original}" tofile="${release.path}\${atf.filename}${atf.ext}" overwrite="true"/>
 
     <!-- Preparing before packaging -->
     <antcall target="prepare"/>
 
     <echo message="Packaging release..."/>
+    <if>
+      <not><equals arg1="${atf.win3264.url}" arg2=""/></not>
+      <then>
+        <property name="release.7z.filename" value="${papp.id}-${app.version}-${app.release}.7z"/>
+        <property name="release.setup.filename" value="${papp.id}-${app.version}-${app.release}-setup"/>
+      </then>
+      <else>
+        <property name="release.7z.filename" value="${papp.id}-${atf.arch}-${app.version}-${app.release}.7z"/>
+        <property name="release.setup.filename" value="${papp.id}-${atf.arch}-${app.version}-${app.release}-setup"/>
+      </else>
+    </if>
 
     <!-- .7z release -->
     <if>
       <istrue value="${papp.out.7z}"/>
       <then>
-        <sevenzip src="${build.path}/*" dest="${release.path}\${papp.id}-${atf.arch}-${app.version}-${app.release}.7z" format="7z"/>
+        <sevenzip src="${build.path}/*" dest="${release.7z.filename}" format="7z"/>
       </then>
     </if>
 
@@ -180,7 +148,7 @@
         </copy>
         <exec executable="${iscc}" dir="${setup.path}" failonerror="true">
           <arg value="/O${release.path}"/>
-          <arg value="/F${papp.id}-${atf.arch}-${app.version}-${app.release}-setup"/>
+          <arg value="/F${release.setup.filename}"/>
           <arg value="setup.iss"/>
         </exec>
       </then>

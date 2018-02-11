@@ -181,7 +181,7 @@
     <sequential>
       <echo message="Extracting @{src} to @{dest}..."/>
       <if>
-        <equals arg1="@{arch}" arg2="ia32"/>
+        <equals arg1="@{arch}" arg2="win32"/>
         <then>
           <exec executable="${rcedit.x86}" failonerror="true" dir="@{dir}">
             <args/>
@@ -381,32 +381,80 @@
   </target>
 
   <target name="build" depends="dep, generate">
-    <delete file="${tmp.path}\${papp.id}.exe"/>
-    <exec executable="go" failonerror="true" dir="${app.basedir}">
-      <env key="GOARCH" value="${go.arch}"/>
-      <arg value="build"/>
-      <arg value="-o"/>
-      <arg value="${tmp.path}\${papp.id}_or.exe"/>
-      <arg value="-v"/>
-      <arg value="-ldflags"/>
-      <arg value="-H=windowsgui"/>
-    </exec>
-    <assertfile file="${tmp.path}\${papp.id}_or.exe"/>
-
     <if>
-      <equals arg1="${debug}" arg2="false"/>
+      <equals arg1="${atf.arch}" arg2="win3264"/>
       <then>
-        <echo message="Compressing executable with UPX..."/>
-        <exec executable="${upx}" failonerror="true" dir="${app.basedir}">
-          <arg value="--brute"/>
-          <arg value="${tmp.path}\${papp.id}_or.exe"/>
+        <delete file="${tmp.path}\${papp.id}-win32.exe"/>
+        <exec executable="go" failonerror="true" dir="${app.basedir}">
+          <env key="GOARCH" value="386"/>
+          <arg value="build"/>
           <arg value="-o"/>
-          <arg value="${tmp.path}\${papp.id}.exe"/>
+          <arg value="${tmp.path}\${papp.id}-win32.exe"/>
+          <arg value="-v"/>
+          <arg value="-ldflags"/>
+          <arg value="-H=windowsgui"/>
         </exec>
-        <assertfile file="${tmp.path}\${papp.id}.exe"/>
+        <assertfile file="${tmp.path}\${papp.id}-win32.exe"/>
+        <delete file="${tmp.path}\${papp.id}-win64.exe"/>
+        <exec executable="go" failonerror="true" dir="${app.basedir}">
+          <env key="GOARCH" value="amd64"/>
+          <arg value="build"/>
+          <arg value="-o"/>
+          <arg value="${tmp.path}\${papp.id}-win64.exe"/>
+          <arg value="-v"/>
+          <arg value="-ldflags"/>
+          <arg value="-H=windowsgui"/>
+        </exec>
+        <assertfile file="${tmp.path}\${papp.id}-win64.exe"/>
+        <if>
+          <equals arg1="${debug}" arg2="false"/>
+          <then>
+            <echo message="Compressing executables with UPX..."/>
+            <exec executable="${upx}" failonerror="true" dir="${app.basedir}">
+              <arg value="--brute"/>
+              <arg value="${tmp.path}\${papp.id}-win32.exe"/>
+              <arg value="-o"/>
+              <arg value="${tmp.path}\${papp.id}-win32_upx.exe"/>
+            </exec>
+            <assertfile file="${tmp.path}\${papp.id}-win32_upx.exe"/>
+            <move file="${tmp.path}\${papp.id}-win32_upx.exe" tofile="${tmp.path}\${papp.id}-win32.exe"/>
+            <exec executable="${upx}" failonerror="true" dir="${app.basedir}">
+              <arg value="--brute"/>
+              <arg value="${tmp.path}\${papp.id}-win64.exe"/>
+              <arg value="-o"/>
+              <arg value="${tmp.path}\${papp.id}-win64_upx.exe"/>
+            </exec>
+            <assertfile file="${tmp.path}\${papp.id}-win64_upx.exe"/>
+            <move file="${tmp.path}\${papp.id}-win64_upx.exe" tofile="${tmp.path}\${papp.id}-win64.exe"/>
+          </then>
+        </if>
       </then>
       <else>
-        <move file="${tmp.path}\${papp.id}_or.exe" tofile="${tmp.path}\${papp.id}.exe"/>
+        <delete file="${tmp.path}\${papp.id}.exe"/>
+        <exec executable="go" failonerror="true" dir="${app.basedir}">
+          <env key="GOARCH" value="${go.arch}"/>
+          <arg value="build"/>
+          <arg value="-o"/>
+          <arg value="${tmp.path}\${papp.id}.exe"/>
+          <arg value="-v"/>
+          <arg value="-ldflags"/>
+          <arg value="-H=windowsgui"/>
+        </exec>
+        <assertfile file="${tmp.path}\${papp.id}.exe"/>
+        <if>
+          <equals arg1="${debug}" arg2="false"/>
+          <then>
+            <echo message="Compressing executable with UPX..."/>
+            <exec executable="${upx}" failonerror="true" dir="${app.basedir}">
+              <arg value="--brute"/>
+              <arg value="${tmp.path}\${papp.id}.exe"/>
+              <arg value="-o"/>
+              <arg value="${tmp.path}\${papp.id}_upx.exe"/>
+            </exec>
+            <assertfile file="${tmp.path}\${papp.id}_upx.exe"/>
+            <move file="${tmp.path}\${papp.id}_upx.exe" tofile="${tmp.path}\${papp.id}.exe"/>
+          </then>
+        </if>
       </else>
     </if>
   </target>
