@@ -182,6 +182,20 @@ func CreateFolder(path string) string {
 	return path
 }
 
+// CreateFile creates / overwrites a file with content
+func CreateFile(path string, content string) error {
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	_, err = file.WriteString(content)
+	if err = file.Sync(); err != nil {
+		return err
+	}
+	return nil
+}
+
 // PathJoin to join paths
 func PathJoin(elem ...string) string {
 	for i, e := range elem {
@@ -195,6 +209,16 @@ func PathJoin(elem ...string) string {
 // AppPathJoin to join paths from Papp.Path
 func AppPathJoin(elem ...string) string {
 	return PathJoin(append([]string{Papp.Path}, elem...)...)
+}
+
+// FormatUnixPath to format a path for unix
+func FormatUnixPath(path string) string {
+	return strings.Replace(path, `\`, `/`, -1)
+}
+
+// FormatWindowsPath to format a path for windows
+func FormatWindowsPath(path string) string {
+	return strings.Replace(path, `/`, `\`, -1)
 }
 
 // ExecCmd to execute a system command
