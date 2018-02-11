@@ -47,7 +47,7 @@ Type: filesandordirs; Name: "{app}\{#appFolder}"
 Type: filesandordirs; Name: "{app}\*.log"
 
 [Run]
-Filename: {app}\{#appId}.exe; Description: Run {#appName}; Flags: nowait postinstall skipifsilent
+Filename: {app}\{#appId}.exe; Description: Run {#appName}; Flags: nowait postinstall skipifsilent unchecked
 
 [Code]
 
