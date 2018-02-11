@@ -2,6 +2,7 @@
 <project name="papps-common" basedir=".">
 
   <tstamp><format property="current.date" pattern="yyyyMMdd"/></tstamp>
+  <tstamp><format property="build.date" pattern="yyyy/MM/dd HH:mm:ss"/></tstamp>
 
   <!-- Check required properties -->
   <fail unless="app.basedir" message="Property 'app.basedir' must be defined before loading build-common.xml"/>
@@ -381,6 +382,7 @@
   </target>
 
   <target name="build" depends="dep, generate">
+    <!-- GO build -->
     <if>
       <equals arg1="${atf.arch}" arg2="win3264"/>
       <then>
@@ -457,6 +459,20 @@
         </if>
       </else>
     </if>
+
+    <!-- Portapp JSON -->
+    <copy file="${core.res.path}\portapp.json" todir="${build.path}" overwrite="true">
+      <filterset>
+        <filter token="APP_ID" value="${papp.id}"/>
+        <filter token="APP_GUID" value="${papp.guid}"/>
+        <filter token="APP_NAME" value="${papp.name}"/>
+        <filter token="APP_VERSION" value="${app.version}"/>
+        <filter token="APP_RELEASE" value="${app.release}"/>
+        <filter token="APP_DATE" value="${build.date}"/>
+        <filter token="APP_URL" value="${papp.url}"/>
+        <filter token="APP_PUBLISHER" value="${publisher}"/>
+      </filterset>
+    </copy>
   </target>
 
 </project>

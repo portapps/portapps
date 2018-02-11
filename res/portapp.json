@@ -1,0 +1,10 @@
+{
+  "id": "@APP_ID@",
+  "guid": "@APP_GUID@",
+  "name": "@APP_NAME@",
+  "version": "@APP_VERSION@",
+  "release": "@APP_RELEASE@",
+  "date": "@APP_DATE@",
+  "publisher": "@APP_PUBLISHER@",
+  "url": "@APP_URL@"
+}
