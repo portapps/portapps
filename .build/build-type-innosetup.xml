@@ -78,7 +78,7 @@
     <if>
       <istrue value="${papp.out.7z}"/>
       <then>
-        <sevenzip src="${build.path}/*" dest="${release.7z.filename}" format="7z"/>
+        <sevenzip src="${build.path}/*" dest="${release.path}\${release.7z.filename}" format="7z"/>
       </then>
     </if>
 
