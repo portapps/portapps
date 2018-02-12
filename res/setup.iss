@@ -88,10 +88,18 @@ begin
     if DirExists(ExpandConstant('{app}')) and not isEmptyDir(ExpandConstant('{app}')) then begin
       IsUpgrade := True;
     end;
-    if IsUpgrade and not FileExists(ExpandConstant('{app}\{#appId}.exe')) then begin
-      MsgBox(ExpandConstant('The selected dir is not empty or you are performing an upgrade of {#appName} but {#appId}.exe is not found. Please select a correct folder.'), mbError, MB_OK);
-      Result := False;
-      exit;
+    if IsUpgrade then begin
+      if FileExists(ExpandConstant('{app}\portapp.json')) or FileExists(ExpandConstant('{app}\{#appId}.exe')) then begin
+        Result := True;
+      end
+      else if FileExists(ExpandConstant('{app}\{#appId}.exe')) then begin
+        Result := True;
+      end
+      else begin
+        MsgBox(ExpandConstant('The selected dir is not empty or you are performing an upgrade of {#appName} but required files cannot be found. Please select a correct folder.'), mbError, MB_OK);
+        Result := False;
+        exit;
+      end;
     end;
   end;
 end;
