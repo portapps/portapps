@@ -28,9 +28,19 @@
     <echo message="Copying files..."/>
 
     <!-- Copy files -->
-    <copy todir="${build.path}\${papp.folder}">
-      <fileset dir="${extract.path}"/>
-    </copy>
+    <if>
+      <equals arg1="${debug}" arg2="false"/>
+      <then>
+        <move todir="${build.path}\${papp.folder}">
+          <fileset dir="${extract.path}"/>
+        </move>
+      </then>
+      <else>
+        <copy todir="${build.path}\${papp.folder}">
+          <fileset dir="${extract.path}"/>
+        </copy>
+      </else>
+    </if>
 
     <!-- Add portapp README / CHANGELOG -->
     <copy file="${app.basedir}\README.md" todir="${build.path}" overwrite="true"/>
@@ -88,6 +98,12 @@
         <copy todir="${setup.path}\src">
           <fileset dir="${build.path}"/>
         </copy>
+        <if>
+          <equals arg1="${debug}" arg2="false"/>
+          <then>
+            <delete dir="${build.path}"/>
+          </then>
+        </if>
         <copy todir="${setup.path}">
           <fileset dir="${core.res.path}">
             <include name="setup*"/>

@@ -91,7 +91,15 @@
         <copy file="${tmp.path}\${papp.id}.exe" tofile="${release.path}\${papp.id}-${atf.arch}.exe" overwrite="true"/>
       </else>
     </if>
-    <copy file="${atf.original}" tofile="${release.path}\${atf.filename}${atf.ext}" overwrite="true"/>
+    <if>
+      <equals arg1="${debug}" arg2="false"/>
+      <then>
+        <move file="${atf.original}" tofile="${release.path}\${atf.filename}${atf.ext}" overwrite="true"/>
+      </then>
+      <else>
+        <copy file="${atf.original}" tofile="${release.path}\${atf.filename}${atf.ext}" overwrite="true"/>
+      </else>
+    </if>
 
     <!-- Preparing before packaging -->
     <antcall target="prepare"/>
@@ -125,6 +133,12 @@
         <copy todir="${setup.path}\src">
           <fileset dir="${build.path}"/>
         </copy>
+        <if>
+          <equals arg1="${debug}" arg2="false"/>
+          <then>
+            <delete dir="${build.path}"/>
+          </then>
+        </if>
         <copy todir="${setup.path}">
           <fileset dir="${core.res.path}">
             <include name="setup*"/>

@@ -28,9 +28,19 @@
     <echo message="Copying files..."/>
 
     <!-- Copy files -->
-    <copy todir="${build.path}\${papp.folder}">
-      <fileset dir="${extract.path}"/>
-    </copy>
+    <if>
+      <equals arg1="${debug}" arg2="false"/>
+      <then>
+        <move todir="${build.path}\${papp.folder}">
+          <fileset dir="${extract.path}"/>
+        </move>
+      </then>
+      <else>
+        <copy todir="${build.path}\${papp.folder}">
+          <fileset dir="${extract.path}"/>
+        </copy>
+      </else>
+    </if>
 
     <!-- Add portapp README / CHANGELOG -->
     <copy file="${app.basedir}\README.md" todir="${build.path}" overwrite="true"/>
@@ -62,7 +72,15 @@
         <copy file="${tmp.path}\${papp.id}.exe" tofile="${release.path}\${papp.id}-${atf.arch}.exe" overwrite="true"/>
       </else>
     </if>
-    <copy file="${atf.original}" tofile="${release.path}\${atf.filename}${atf.ext}" overwrite="true"/>
+    <if>
+      <equals arg1="${debug}" arg2="false"/>
+      <then>
+        <move file="${atf.original}" tofile="${release.path}\${atf.filename}${atf.ext}" overwrite="true"/>
+      </then>
+      <else>
+        <copy file="${atf.original}" tofile="${release.path}\${atf.filename}${atf.ext}" overwrite="true"/>
+      </else>
+    </if>
 
     <echo message="Packaging release..."/>
     <if>
@@ -93,6 +111,12 @@
         <copy todir="${setup.path}\src">
           <fileset dir="${build.path}"/>
         </copy>
+        <if>
+          <equals arg1="${debug}" arg2="false"/>
+          <then>
+            <delete dir="${build.path}"/>
+          </then>
+        </if>
         <copy todir="${setup.path}">
           <fileset dir="${core.res.path}">
             <include name="setup*"/>
