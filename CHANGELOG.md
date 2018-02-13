@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.8 (2018/02/11)
+
+* Add portapp.json file
+* Uncheck run app in setup
+* Mutualise release.app task
+* App version not set in executable
+* New artifact target (atf.win3264) for multi arch apps
+* Move ia32/x64 to win32/win64 for arch def
+* Add file creation, format unix / windows path
+* Remove nupkg file
+* Remove unnecessary files if not in debug mode
+
 ## 1.7 (2018/02/08)
 
 * Ability to pass custom args to the portable process
