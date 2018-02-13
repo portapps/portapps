@@ -3,7 +3,7 @@
 <p align="center">
   <a href="https://github.com/portapps/portapps/releases/latest"><img src="https://img.shields.io/github/release/portapps/portapps.svg?style=flat-square" alt="GitHub release"></a>
   <a href="https://goreportcard.com/report/github.com/portapps/portapps"><img src="https://goreportcard.com/badge/github.com/portapps/portapps?style=flat-square" alt="Go Report"></a>
-  <a href="https://www.codacy.com/app/crazy-max/portapps"><img src="https://img.shields.io/codacy/grade/01eb6a7ceb8e46e8ab90d2d74ecdad01.svg?style=flat-square" alt="Code Quality"></a>
+  <a href="https://www.codacy.com/app/portapps/portapps"><img src="https://img.shields.io/codacy/grade/01eb6a7ceb8e46e8ab90d2d74ecdad01.svg?style=flat-square" alt="Code Quality"></a>
   <a href="https://beerpay.io/portapps/portapps"><img src="https://img.shields.io/beerpay/portapps/portapps.svg?style=flat-square" alt="Beerpay"></a>
   <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WQD7AQGPDEPSG"><img src="https://img.shields.io/badge/donate-paypal-7057ff.svg?style=flat-square" alt="Donate Paypal"></a>
 </p>
@@ -21,6 +21,7 @@ In short, it's a wrapper that includes system records within the same directory 
 * [DiscordPTB](https://github.com/portapps/discord-ptb-portable) : The Public Test Build (PTB) of Discord.
 * [HLSW](https://github.com/portapps/hlsw-portable) : Half-Life Server Watch (HLSW) is a game server browser and administration tool.
 * [HostsMan](https://github.com/portapps/hostsman-portable) : A freeware application that lets you manage your Hosts file with ease.
+* [IntelliJ IDEA Community](https://github.com/portapps/intellij-idea-community-portable) : Code-centric IDE, focused on your productivity.
 * [Skype](https://github.com/portapps/skype-portable) : A telecommunications application software product that specializes in providing video chat and voice calls.
 * [Slack](https://github.com/portapps/slack-portable) : A cloud-based set of team collaboration tools and services.
 * [TeamSpeak Client](https://github.com/portapps/teamspeak-client-portable) : A VoIP app for audio communication between users on a chat channel.
