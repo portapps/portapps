@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.8 (2018/02/11)
+## 1.8 (2018/02/12)
 
 * Add portapp.json file
 * Uncheck run app in setup
