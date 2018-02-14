@@ -22,6 +22,7 @@ In short, it's a wrapper that includes system records within the same directory 
 * [HLSW](https://github.com/portapps/hlsw-portable) : Half-Life Server Watch (HLSW) is a game server browser and administration tool.
 * [HostsMan](https://github.com/portapps/hostsman-portable) : A freeware application that lets you manage your Hosts file with ease.
 * [IntelliJ IDEA Community](https://github.com/portapps/intellij-idea-community-portable) : Code-centric IDE, focused on your productivity.
+* [IntelliJ IDEA Ultimate](https://github.com/portapps/intellij-idea-ultimate-portable) : Code-centric IDE, focused on your productivity.
 * [Rocket.Chat](https://github.com/portapps/rocketchat-portable) : Free, Open Source, Enterprise Team Chat.
 * [Skype](https://github.com/portapps/skype-portable) : A telecommunications application software product that specializes in providing video chat and voice calls.
 * [Slack](https://github.com/portapps/slack-portable) : A cloud-based set of team collaboration tools and services.
@@ -39,7 +40,7 @@ The most basic way to show your support is to star :star2: the project, or to ra
 But we're not gonna lie to each other, I'd rather you buy me a beer or two :beers:!
 
 [![Beerpay](https://beerpay.io/portapps/portapps/badge.svg?style=beer-square)](https://beerpay.io/portapps/portapps)
-or [![Paypal](res/paypal.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WQD7AQGPDEPSG)
+or [![Paypal](res/paypal.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WQD7AQGPDEPSG)
 
 ## License
 
