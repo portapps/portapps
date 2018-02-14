@@ -22,6 +22,7 @@ In short, it's a wrapper that includes system records within the same directory 
 * [HLSW](https://github.com/portapps/hlsw-portable) : Half-Life Server Watch (HLSW) is a game server browser and administration tool.
 * [HostsMan](https://github.com/portapps/hostsman-portable) : A freeware application that lets you manage your Hosts file with ease.
 * [IntelliJ IDEA Community](https://github.com/portapps/intellij-idea-community-portable) : Code-centric IDE, focused on your productivity.
+* [Rocket.Chat](https://github.com/portapps/rocketchat-portable) : Free, Open Source, Enterprise Team Chat.
 * [Skype](https://github.com/portapps/skype-portable) : A telecommunications application software product that specializes in providing video chat and voice calls.
 * [Slack](https://github.com/portapps/slack-portable) : A cloud-based set of team collaboration tools and services.
 * [TeamSpeak Client](https://github.com/portapps/teamspeak-client-portable) : A VoIP app for audio communication between users on a chat channel.
