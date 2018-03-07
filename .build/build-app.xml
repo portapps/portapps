@@ -84,7 +84,11 @@
       <then>
         <delete dir="${build.path}"/>
         <delete dir="${setup.path}"/>
-        <delete dir="${tmp.path}"/>
+        <delete includeemptydirs="true">
+          <fileset dir="${tmp.path}">
+            <exclude name="version.dat"/>
+          </fileset>
+        </delete>
       </then>
     </if>
   </target>
