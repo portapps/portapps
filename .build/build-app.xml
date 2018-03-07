@@ -77,6 +77,16 @@
 
     <!-- Finalizing -->
     <antcall target="finalize"/>
+
+    <!-- Cleaning -->
+    <if>
+      <equals arg1="${debug}" arg2="false"/>
+      <then>
+        <delete dir="${build.path}"/>
+        <delete dir="${setup.path}"/>
+        <delete dir="${tmp.path}"/>
+      </then>
+    </if>
   </target>
 
   <target name="prepare"/>
