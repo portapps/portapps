@@ -23,6 +23,7 @@ In short, it's a wrapper that includes system records within the same directory 
 * [HostsMan](https://github.com/portapps/hostsman-portable) : A freeware application that lets you manage your Hosts file with ease.
 * [IntelliJ IDEA Community](https://github.com/portapps/intellij-idea-community-portable) : Code-centric IDE, focused on your productivity.
 * [IntelliJ IDEA Ultimate](https://github.com/portapps/intellij-idea-ultimate-portable) : Code-centric IDE, focused on your productivity.
+* [Postman](https://github.com/portapps/portman-portable) : A complete toolchain for API developers.
 * [Rocket.Chat](https://github.com/portapps/rocketchat-portable) : Free, Open Source, Enterprise Team Chat.
 * [Skype](https://github.com/portapps/skype-portable) : A telecommunications application software product that specializes in providing video chat and voice calls.
 * [Slack](https://github.com/portapps/slack-portable) : A cloud-based set of team collaboration tools and services.
