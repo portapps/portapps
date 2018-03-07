@@ -47,7 +47,10 @@
 
     <!-- Move Squirrel Update.exe -->
     <if>
-      <available file="${extract.path}\Update.exe" type="file"/>
+      <and>
+        <istrue value="${electron.enableautoupdate}"/>
+        <available file="${extract.path}\Update.exe" type="file"/>
+      </and>
       <then>
         <copy todir="${build.path}\${papp.folder}" file="${extract.path}\Update.exe"/>
         <rcedit arch="${atf.arch}" dir="${build.path}\${papp.folder}">
@@ -202,7 +205,12 @@
     <echo message="* ID      : ${package.metadata.id}"/>
     <echo message="* Title   : ${package.metadata.title}"/>
     <echo message="* Version : ${package.metadata.version}"/>
-    <var name="app.version" value="${package.metadata.version}"/>
+    <if>
+      <equals arg1="${app.version}" arg2=""/>
+      <then>
+        <var name="app.version" value="${package.metadata.version}"/>
+      </then>
+    </if>
   </target>
 
   <target name="asar">
