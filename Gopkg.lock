@@ -5,13 +5,17 @@
   branch = "master"
   name = "github.com/google/logger"
   packages = ["."]
-  revision = "8fe7758b4c5f42c3df32b77c5c2bc3ccd65ea257"
+  revision = "54b4ae679a63f6d6fd5c0009b2471e637eabf784"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
-  packages = ["windows","windows/registry","windows/svc/eventlog"]
-  revision = "bf42f188b9bc6f2cf5b8ee5a912ef1aedd0eba4c"
+  packages = [
+    "windows",
+    "windows/registry",
+    "windows/svc/eventlog"
+  ]
+  revision = "dd2ff4accc098aceecb86b36eaa7829b2a17b1c9"
 
 [solve-meta]
   analyzer-name = "dep"
