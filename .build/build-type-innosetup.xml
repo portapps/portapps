@@ -108,12 +108,6 @@
         <copy todir="${setup.path}\src">
           <fileset dir="${build.path}"/>
         </copy>
-        <if>
-          <equals arg1="${debug}" arg2="false"/>
-          <then>
-            <delete dir="${build.path}"/>
-          </then>
-        </if>
         <copy todir="${setup.path}">
           <fileset dir="${core.res.path}">
             <include name="setup*"/>
