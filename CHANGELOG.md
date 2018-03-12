@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.9 (2018/03/13)
+
+* Add SetConsoleTitle function to set window console title
+* Add a check while creating folders
+* ldflags can be customized
+
 ## 1.8 (2018/02/12)
 
 * Add portapp.json file

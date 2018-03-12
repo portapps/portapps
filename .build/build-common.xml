@@ -393,8 +393,9 @@
           <arg value="-o"/>
           <arg value="${tmp.path}\${papp.id}-win32.exe"/>
           <arg value="-v"/>
+          <arg value="-x"/>
           <arg value="-ldflags"/>
-          <arg value="-H=windowsgui"/>
+          <arg value="${go.ldflags}"/>
         </exec>
         <assertfile file="${tmp.path}\${papp.id}-win32.exe"/>
         <delete file="${tmp.path}\${papp.id}-win64.exe"/>
@@ -404,8 +405,9 @@
           <arg value="-o"/>
           <arg value="${tmp.path}\${papp.id}-win64.exe"/>
           <arg value="-v"/>
+          <arg value="-x"/>
           <arg value="-ldflags"/>
-          <arg value="-H=windowsgui"/>
+          <arg value="${go.ldflags}"/>
         </exec>
         <assertfile file="${tmp.path}\${papp.id}-win64.exe"/>
         <if>
@@ -439,8 +441,9 @@
           <arg value="-o"/>
           <arg value="${tmp.path}\${papp.id}.exe"/>
           <arg value="-v"/>
+          <arg value="-x"/>
           <arg value="-ldflags"/>
-          <arg value="-H=windowsgui"/>
+          <arg value="${go.ldflags}"/>
         </exec>
         <assertfile file="${tmp.path}\${papp.id}.exe"/>
         <if>

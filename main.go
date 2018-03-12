@@ -10,6 +10,7 @@ import (
 	"strings"
 	"syscall"
 	"time"
+	"unsafe"
 
 	"github.com/google/logger"
 )
@@ -173,10 +174,18 @@ func Launch(args []string) {
 	execute.Wait()
 }
 
+// CreateFolderCheck to create a folder and get its path and return error
+func CreateFolderCheck(path string) (string, error) {
+	if err := os.MkdirAll(path, 777); err != nil {
+		return "", err
+	}
+	return path, nil
+}
+
 // CreateFolder to create a folder and get its path
 func CreateFolder(path string) string {
 	Log.Infof("Create folder %s...", path)
-	if err := os.MkdirAll(path, 777); err != nil {
+	if _, err := CreateFolderCheck(path); err != nil {
 		Log.Fatalf("Cannot create folder: %v", err)
 	}
 	return path
@@ -249,4 +258,26 @@ func ExecCmd(options CmdOptions) (CmdResult, error) {
 	result.Stderr = strings.TrimSpace(commandStderr.String())
 
 	return result, nil
+}
+
+// SetConsoleTitle sets windows console title
+func SetConsoleTitle(title string) (int, error) {
+	handle, err := syscall.LoadLibrary("kernel32.dll")
+	if err != nil {
+		return 0, err
+	}
+	defer syscall.FreeLibrary(handle)
+
+	proc, err := syscall.GetProcAddress(handle, "SetConsoleTitleW")
+	if err != nil {
+		return 0, err
+	}
+
+	rTitle, err := syscall.UTF16PtrFromString(title)
+	if err != nil {
+		return 0, err
+	}
+
+	r, _, err := syscall.Syscall(proc, 1, uintptr(unsafe.Pointer(rTitle)), 0, 0)
+	return int(r), err
 }
