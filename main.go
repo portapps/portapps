@@ -13,6 +13,7 @@ import (
 	"unsafe"
 
 	"github.com/google/logger"
+	"github.com/pkg/errors"
 )
 
 type papp struct {
@@ -258,6 +259,27 @@ func ExecCmd(options CmdOptions) (CmdResult, error) {
 	result.Stderr = strings.TrimSpace(commandStderr.String())
 
 	return result, nil
+}
+
+func QuickExecCmd(command string, args []string) error {
+	cmdResult, err := ExecCmd(CmdOptions{
+		Command:    command,
+		Args:       args,
+		HideWindow: true,
+	})
+
+	if err != nil {
+		var errorOutput string
+		if cmdResult.ExitCode != 0 {
+			errorOutput = fmt.Sprintf(" (exit code %d)", cmdResult.ExitCode)
+			if len(cmdResult.Stderr) > 0 {
+				errorOutput += fmt.Sprintf("\n%s\n", cmdResult.Stderr)
+			}
+		}
+		return errors.New(fmt.Sprintf("%s%s", err.Error(), errorOutput))
+	}
+
+	return nil
 }
 
 // SetConsoleTitle sets windows console title

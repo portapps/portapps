@@ -8,6 +8,12 @@
   revision = "54b4ae679a63f6d6fd5c0009b2471e637eabf784"
 
 [[projects]]
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = [
@@ -15,11 +21,11 @@
     "windows/registry",
     "windows/svc/eventlog"
   ]
-  revision = "dd2ff4accc098aceecb86b36eaa7829b2a17b1c9"
+  revision = "8c0ece68c28377f4c326d85b94f8df0dace46f80"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5bd40205658cf177f0a8fa3f430464288e7d95b0c6d1d7c845ac7e43b372d161"
+  inputs-digest = "375a29d5bfc7629db554870060dc82e56b26519d737d03f03f8aeef33393402a"
   solver-name = "gps-cdcl"
   solver-version = 1
