@@ -19,6 +19,7 @@ In short, it's a wrapper that includes system records within the same directory 
 * [Brave](https://github.com/portapps/brave-portable) : A free and open-source web browser based on the Chromium web browser and its Blink engine.
 * [Discord](https://github.com/portapps/discord-portable) : A proprietary freeware VoIP application designed for gaming communities.
 * [DiscordPTB](https://github.com/portapps/discord-ptb-portable) : The Public Test Build (PTB) of Discord.
+* [Docker Toolbox](https://github.com/portapps/docker-toolbox-portable) : Docker Toolbox provides a way to use Docker on Windows systems.
 * [HLSW](https://github.com/portapps/hlsw-portable) : Half-Life Server Watch (HLSW) is a game server browser and administration tool.
 * [HostsMan](https://github.com/portapps/hostsman-portable) : A freeware application that lets you manage your Hosts file with ease.
 * [IntelliJ IDEA Community](https://github.com/portapps/intellij-idea-community-portable) : Code-centric IDE, focused on your productivity.
