@@ -2,6 +2,7 @@
 
 ## 1.9 (2018/03/13)
 
+* Add QuickExecCmd function
 * Add SetConsoleTitle function to set window console title
 * Add a check while creating folders
 * ldflags can be customized
