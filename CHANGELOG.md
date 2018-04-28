@@ -1,9 +1,17 @@
 # Changelog
 
+## 1.10 (2018/04/28)
+
+* Duplicated prepare target
+* Update 7zip download link
+
 ## 1.9 (2018/03/13)
 
+* Update libs
 * Add QuickExecCmd function
 * Add SetConsoleTitle function to set window console title
+* Exclude version.dat from deletion
+* Allow to use custom version for electron apps
 * Add a check while creating folders
 * ldflags can be customized
 
