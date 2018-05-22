@@ -1,4 +1,4 @@
-<p align="center"><a href="https://github.com/portapps" target="_blank"><img width="100" src="https://github.com/portapps/portapps/blob/master/res/portapps.png"></a></p>
+<p align="center"><a href="https://portapps.github.io" target="_blank"><img width="100" src="https://github.com/portapps/portapps/blob/master/res/portapps.png"></a></p>
 
 <p align="center">
   <a href="https://github.com/portapps/portapps/releases/latest"><img src="https://img.shields.io/github/release/portapps/portapps.svg?style=flat-square" alt="GitHub release"></a>
@@ -16,20 +16,20 @@ In short, it's a wrapper that includes system records within the same directory 
 
 ## Portapps available
 
-* [Brave](https://github.com/portapps/brave-portable) : A free and open-source web browser based on the Chromium web browser and its Blink engine.
-* [Discord](https://github.com/portapps/discord-portable) : A proprietary freeware VoIP application designed for gaming communities.
-* [DiscordPTB](https://github.com/portapps/discord-ptb-portable) : The Public Test Build (PTB) of Discord.
-* [Docker Toolbox](https://github.com/portapps/docker-toolbox-portable) : Docker Toolbox provides a way to use Docker on Windows systems.
-* [HLSW](https://github.com/portapps/hlsw-portable) : Half-Life Server Watch (HLSW) is a game server browser and administration tool.
-* [HostsMan](https://github.com/portapps/hostsman-portable) : A freeware application that lets you manage your Hosts file with ease.
-* [IntelliJ IDEA Community](https://github.com/portapps/intellij-idea-community-portable) : Code-centric IDE, focused on your productivity.
-* [IntelliJ IDEA Ultimate](https://github.com/portapps/intellij-idea-ultimate-portable) : Code-centric IDE, focused on your productivity.
-* [Postman](https://github.com/portapps/postman-portable) : A complete toolchain for API developers.
-* [Rocket.Chat](https://github.com/portapps/rocketchat-portable) : Free, Open Source, Enterprise Team Chat.
-* [Skype](https://github.com/portapps/skype-portable) : A telecommunications application software product that specializes in providing video chat and voice calls.
-* [Slack](https://github.com/portapps/slack-portable) : A cloud-based set of team collaboration tools and services.
-* [TeamSpeak Client](https://github.com/portapps/teamspeak-client-portable) : A VoIP app for audio communication between users on a chat channel.
-* [Twitch](https://github.com/portapps/twitch-portable) : A live streaming video platform.
+* [Brave](https://portapps.github.io/app/brave-portable) : A free and open-source web browser based on the Chromium web browser and its Blink engine.
+* [Discord](https://portapps.github.io/app/discord-portable) : A proprietary freeware VoIP application designed for gaming communities.
+* [DiscordPTB](https://portapps.github.io/app/discord-ptb-portable) : The Public Test Build (PTB) of Discord.
+* [Docker Toolbox](https://portapps.github.io/app/docker-toolbox-portable) : Docker Toolbox provides a way to use Docker on Windows systems.
+* [HLSW](https://portapps.github.io/app/hlsw-portable) : Half-Life Server Watch (HLSW) is a game server browser and administration tool.
+* [HostsMan](https://portapps.github.io/app/hostsman-portable) : A freeware application that lets you manage your Hosts file with ease.
+* [IntelliJ IDEA Community](https://portapps.github.io/app/intellij-idea-community-portable) : Code-centric IDE, focused on your productivity.
+* [IntelliJ IDEA Ultimate](https://portapps.github.io/app/intellij-idea-ultimate-portable) : Code-centric IDE, focused on your productivity.
+* [Postman](https://portapps.github.io/app/postman-portable) : A complete toolchain for API developers.
+* [Rocket.Chat](https://portapps.github.io/app/rocketchat-portable) : Free, Open Source, Enterprise Team Chat.
+* [Skype](https://portapps.github.io/app/skype-portable) : A telecommunications application software product that specializes in providing video chat and voice calls.
+* [Slack](https://portapps.github.io/app/slack-portable) : A cloud-based set of team collaboration tools and services.
+* [TeamSpeak Client](https://portapps.github.io/app/teamspeak-client-portable) : A VoIP app for audio communication between users on a chat channel.
+* [Twitch](https://portapps.github.io/app/twitch-portable) : A live streaming video platform.
 
 ## Build
 
