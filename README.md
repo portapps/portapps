@@ -30,6 +30,7 @@ In short, it's a wrapper that includes system records within the same directory 
 * [Slack](https://portapps.github.io/app/slack-portable) : A cloud-based set of team collaboration tools and services.
 * [TeamSpeak Client](https://portapps.github.io/app/teamspeak-client-portable) : A VoIP app for audio communication between users on a chat channel.
 * [Twitch](https://portapps.github.io/app/twitch-portable) : A live streaming video platform.
+* [Visual Studio Code](https://portapps.github.io/app/vscode-portable) : A source code editor developed by Microsoft for Windows, Linux and macOS.
 
 ## Build
 
