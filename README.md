@@ -20,9 +20,9 @@ In short, it's a wrapper that includes system records within the same directory 
 * [DiscordPTB](https://portapps.github.io/app/discord-ptb-portable) : The Public Test Build (PTB) of Discord.
 * [Docker Toolbox](https://portapps.github.io/app/docker-toolbox-portable) : Docker Toolbox provides a way to use Docker on Windows systems.
 * [HandBrake](https://portapps.github.io/app/handbrake-portable) : A tool for converting video from nearly any format to a selection of modern, widely supported codecs.
-* [Insomnia REST Client](https://portapps.github.io/app/insomnia-portable) : Debug APIs like a human, not a robot.
 * [HLSW](https://portapps.github.io/app/hlsw-portable) : Half-Life Server Watch (HLSW) is a game server browser and administration tool.
 * [HostsMan](https://portapps.github.io/app/hostsman-portable) : A freeware application that lets you manage your Hosts file with ease.
+* [Insomnia REST Client](https://portapps.github.io/app/insomnia-portable) : Debug APIs like a human, not a robot.
 * [IntelliJ IDEA Community](https://portapps.github.io/app/intellij-idea-community-portable) : Code-centric IDE, focused on your productivity.
 * [IntelliJ IDEA Ultimate](https://portapps.github.io/app/intellij-idea-ultimate-portable) : Code-centric IDE, focused on your productivity.
 * [Postman](https://portapps.github.io/app/postman-portable) : A complete toolchain for API developers.
