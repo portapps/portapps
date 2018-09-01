@@ -324,6 +324,7 @@
   <target name="load.lib.asar">
     <echo message="Load Asar"/>
     <exec executable="npm.cmd" failonerror="true">
+      <env key="NODE_TLS_REJECT_UNAUTHORIZED" value="0"/>
       <arg value="install"/>
       <arg value="-g"/>
       <arg value="asar"/>
