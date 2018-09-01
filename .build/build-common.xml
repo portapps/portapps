@@ -333,7 +333,7 @@
     <exec executable="npm.cmd" failonerror="true">
       <arg value="install"/>
       <arg value="-g"/>
-      <arg value="asar"/>
+      <arg value="asar@${asar.version}"/>
     </exec>
   </target>
 
