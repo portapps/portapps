@@ -1,6 +1,9 @@
-package portableapps
+//go:generate go install -v -i github.com/josephspurrier/goversioninfo/cmd/goversioninfo
+package portapps
 
 import (
+	_ "github.com/josephspurrier/goversioninfo"
+
 	"bytes"
 	"fmt"
 	"io/ioutil"

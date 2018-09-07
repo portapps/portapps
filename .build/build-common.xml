@@ -221,7 +221,6 @@
       load.lib.antcontrib,
       load.lib.7za,
       load.lib.7z,
-      load.lib.dep,
       load.lib.rcedit,
       load.lib.innosetup,
       load.lib.upx">
@@ -261,14 +260,6 @@
         <sevenzip-ax src="${core.lib.path}\7z.exe" dest="${core.lib.path}\7zip"/>
       </then>
     </if>
-  </target>
-
-  <target name="load.lib.dep" unless="is.lib.loaded">
-    <exec executable="go" failonerror="true" dir="${app.basedir}">
-      <arg value="get"/>
-      <arg value="-v"/>
-      <arg value="${dep.package}"/>
-    </exec>
   </target>
 
   <target name="load.lib.rcedit" unless="is.lib.loaded">
@@ -362,19 +353,11 @@
     <echo message="APP_COPYRIGHT : ${papp.url}"/>
   </target>
 
-  <target name="dep">
-    <if>
-      <equals arg1="${debug}" arg2="false"/>
-      <then>
-        <exec executable="dep" failonerror="true" dir="${app.basedir}">
-          <arg value="ensure"/>
-          <arg value="-v"/>
-        </exec>
-      </then>
-      <else>
-        <delete dir="vendor/github.com/portapps"/>
-      </else>
-    </if>
+  <target name="downmod" description="Download modules">
+    <exec executable="go" failonerror="true" dir="${app.basedir}">
+      <arg value="mod"/>
+      <arg value="download"/>
+    </exec>
   </target>
 
   <target name="generate">
@@ -388,7 +371,7 @@
     </exec>
   </target>
 
-  <target name="build" depends="dep, generate">
+  <target name="build" depends="downmod, generate">
     <!-- GO build -->
     <if>
       <equals arg1="${atf.arch}" arg2="win3264"/>

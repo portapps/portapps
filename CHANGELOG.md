@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.11 (2018/09/07)
+
+* Upgrade to Go 1.11
+* Use [go mod](https://golang.org/cmd/go/#hdr-Module_maintenance) instead of `dep`
+* Fix asar lib version
+* Disable strict-ssl on asar
+* Update libs
+
 ## 1.10 (2018/04/28)
 
 * Duplicated prepare target

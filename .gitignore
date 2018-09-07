@@ -6,4 +6,4 @@
 /.dev
 /bin
 /res/*.pspimage
-/vendor
+/go.sum
