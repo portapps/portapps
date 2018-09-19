@@ -99,6 +99,7 @@
       <echo message="Extracting @{src} to @{dest}..."/>
       <exec executable="${7za}" failonerror="true">
         <arg value="x"/>
+        <arg value="-y"/>
         <arg value="@{src}"/>
         <arg value="-o@{dest}"/>
       </exec>
@@ -112,6 +113,7 @@
       <echo message="Extracting @{src} to @{dest}..."/>
       <exec executable="${7z}" failonerror="true">
         <arg value="x"/>
+        <arg value="-y"/>
         <arg value="@{src}"/>
         <arg value="-o@{dest}"/>
       </exec>
