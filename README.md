@@ -25,6 +25,7 @@ In short, it's a wrapper that includes system records within the same directory 
 * [Insomnia REST Client](https://portapps.github.io/app/insomnia-portable) : Debug APIs like a human, not a robot.
 * [IntelliJ IDEA Community](https://portapps.github.io/app/intellij-idea-community-portable) : Code-centric IDE, focused on your productivity.
 * [IntelliJ IDEA Ultimate](https://portapps.github.io/app/intellij-idea-ultimate-portable) : Code-centric IDE, focused on your productivity.
+* [Nextcloud](https://portapps.github.io/app/nextcloud-portable) : An open source, self-hosted file share and communication platform.
 * [Postman](https://portapps.github.io/app/postman-portable) : A complete toolchain for API developers.
 * [Rocket.Chat](https://portapps.github.io/app/rocketchat-portable) : Free, Open Source, Enterprise Team Chat.
 * [Skype](https://portapps.github.io/app/skype-portable) : A telecommunications application software product that specializes in providing video chat and voice calls.
