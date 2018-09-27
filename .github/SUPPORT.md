@@ -2,7 +2,7 @@
 
 ## Portable application request
 
-If you want an application to be *portapped*, submit a [new issue](https://github.com/portapps/portapps/issues/new) and we look forward to putting that in place!
+If you want an application to be *portapped*, please follow [this guide](http://portapps.github.io/doc/request-apps/) to file a proper request report.
 
 ## Closure policy
 
