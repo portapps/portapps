@@ -1,9 +1,9 @@
 ---
 name: App request
-about: Want an app to be *portapped* ?
+about: Want an app to be portapped ?
 ---
 
-> Please follow [this guide](http://portapps.github.io/doc/request-apps/) to file a proper request report.
+> Please follow the following guide to file a proper request report : http://portapps.github.io/doc/request-apps/
 
 * Name : 
 * Description : 
