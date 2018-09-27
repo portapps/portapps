@@ -34,9 +34,12 @@ In short, it's a wrapper that includes system records within the same directory 
 * [Twitch](https://portapps.github.io/app/twitch-portable) : A live streaming video platform.
 * [Visual Studio Code](https://portapps.github.io/app/vscode-portable) : A source code editor developed by Microsoft for Windows, Linux and macOS.
 
-## Build
+## Documentation
 
-*TODO*
+* [FAQ](https://portapps.github.io/doc/faq/)
+* [Reporting an issue](https://portapps.github.io/doc/reporting-issue/)
+* [Request an app](https://portapps.github.io/doc/request-app/)
+* [Contribute](https://portapps.github.io/doc/contribute/)
 
 ## How can I help ?
 
