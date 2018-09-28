@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.13 (2018/09/29)
+
+* `RegAdd` function added to create a registry key
+* Allow to pass overwrite option while extracting files (default `-aoa`)
+* Remove nsis-muarch build mode (use archive mode instead)
+
+## 1.12 (2018/09/19)
+
+* Assume Yes on all queries while extracting files
+* Add go.sum
+
 ## 1.11 (2018/09/07)
 
 * Upgrade to Go 1.11

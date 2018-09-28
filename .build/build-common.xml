@@ -95,11 +95,12 @@
   <macrodef name="sevenzip-ax">
     <attribute name="src"/>
     <attribute name="dest"/>
+    <attribute name="overwrite" default="-aoa"/>
     <sequential>
       <echo message="Extracting @{src} to @{dest}..."/>
       <exec executable="${7za}" failonerror="true">
         <arg value="x"/>
-        <arg value="-y"/>
+        <arg value="@{overwrite}"/>
         <arg value="@{src}"/>
         <arg value="-o@{dest}"/>
       </exec>
@@ -109,11 +110,12 @@
   <macrodef name="sevenzip-x">
     <attribute name="src"/>
     <attribute name="dest"/>
+    <attribute name="overwrite" default="-aoa"/>
     <sequential>
       <echo message="Extracting @{src} to @{dest}..."/>
       <exec executable="${7z}" failonerror="true">
         <arg value="x"/>
-        <arg value="-y"/>
+        <arg value="@{overwrite}"/>
         <arg value="@{src}"/>
         <arg value="-o@{dest}"/>
       </exec>
