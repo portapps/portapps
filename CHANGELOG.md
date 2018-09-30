@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.14 (2018/09/30)
+
+* Update InnoSetup to 5.6.1
+* Update UPX to 3.95
+
 ## 1.13 (2018/09/29)
 
 * `RegAdd` function added to create a registry key
