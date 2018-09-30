@@ -16,6 +16,7 @@ In short, it's a wrapper that includes system records within the same directory 
 ## Portapps available
 
 * [Brave](https://portapps.github.io/app/brave-portable) : A free and open-source web browser based on the Chromium web browser and its Blink engine.
+* [DBeaver](https://portapps.github.io/app/dbeaver-portable) : A free universal database tool and SQL client.
 * [Discord](https://portapps.github.io/app/discord-portable) : A proprietary freeware VoIP application designed for gaming communities.
 * [DiscordPTB](https://portapps.github.io/app/discord-ptb-portable) : The Public Test Build (PTB) of Discord.
 * [Docker Toolbox](https://portapps.github.io/app/docker-toolbox-portable) : Docker Toolbox provides a way to use Docker on Windows systems.
