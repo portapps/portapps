@@ -14,6 +14,7 @@ import (
 	"github.com/go-ole/go-ole/oleutil"
 )
 
+// WindowsShortcut the Windows shortcut structure
 type WindowsShortcut struct {
 	ShortcutPath     string
 	TargetPath       string
@@ -23,6 +24,7 @@ type WindowsShortcut struct {
 	WorkingDirectory string
 }
 
+// CreateShortcut creates a windows shortcut
 func CreateShortcut(shortcut WindowsShortcut) error {
 	Log.Infof("Create shortcut for %s in %s...", shortcut.TargetPath, shortcut.ShortcutPath)
 	runtime.LockOSThread()
@@ -68,6 +70,7 @@ func CreateShortcut(shortcut WindowsShortcut) error {
 	return err
 }
 
+// SetFileAttributes set attributes to a file
 func SetFileAttributes(path string, attrs uint32) error {
 	pointer, err := syscall.UTF16PtrFromString(path)
 	if err != nil {

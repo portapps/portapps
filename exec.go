@@ -2,7 +2,6 @@ package portapps
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"os/exec"
 	"strings"
@@ -77,6 +76,7 @@ func ExecCmd(options CmdOptions) (CmdResult, error) {
 	return result, nil
 }
 
+// QuickExecCmd executes a cmd with args with default options
 func QuickExecCmd(command string, args []string) error {
 	cmdResult, err := ExecCmd(CmdOptions{
 		Command:    command,
@@ -92,7 +92,7 @@ func QuickExecCmd(command string, args []string) error {
 				errorOutput += fmt.Sprintf("\n%s\n", cmdResult.Stderr)
 			}
 		}
-		return errors.New(fmt.Sprintf("%s%s", err.Error(), errorOutput))
+		return fmt.Errorf("%s%s", err.Error(), errorOutput)
 	}
 
 	return nil

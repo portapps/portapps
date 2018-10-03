@@ -6,12 +6,14 @@ import (
 	"time"
 )
 
+// RegExportImport the registry export/import structure
 type RegExportImport struct {
 	Key  string
 	Arch string
 	File string
 }
 
+// RegKey the registry key structure
 type RegKey struct {
 	Key  string
 	Arch string
