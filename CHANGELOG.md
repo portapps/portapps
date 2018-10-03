@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.15 (2018/10/03)
+
+* Add functions `CreateShortcut`, `SetFileAttributes`, `CopyFile`, `CopyFolder`, `RemoveContents`
+
 ## 1.14 (2018/09/30)
 
 * Update InnoSetup to 5.6.1
