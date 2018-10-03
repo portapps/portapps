@@ -1,5 +1,7 @@
 github.com/akavel/rsrc v0.0.0-20170831122431-f6a15ece2cfd h1:yumR8733CaQ3P76MFbIbBKdrJmy4EqnQ5DIhqq8gq2Q=
 github.com/akavel/rsrc v0.0.0-20170831122431-f6a15ece2cfd/go.mod h1:2+aQMrY0hBFBaIr2xxnZ/ctfwnYmMRMbTczYLAC34v4=
+github.com/go-ole/go-ole v1.2.1 h1:2lOsA72HgjxAuMlKpFiCbHTvu44PIVkZ5hqm3RSdI/E=
+github.com/go-ole/go-ole v1.2.1/go.mod h1:7FAglXiTm7HKlQRDeOQ6ZNUHidzCWXuZWq/1dTyBNF8=
 github.com/google/logger v0.0.0-20180208223940-54b4ae679a63 h1:rn2mY9gLAFndN3MKXUp8XvoyyNGX4pud5CJ8EClypDY=
 github.com/google/logger v0.0.0-20180208223940-54b4ae679a63/go.mod h1:tQN+I/DyBt051hEHNEzPgIeyy/GD1WJaKbqPScoDKdY=
 github.com/josephspurrier/goversioninfo v0.0.0-20180220052333-42534847954b h1:66x3jAln/h7rEkx8V1c6zAP/IW4tOlN21OLAJ9d1Vvg=
