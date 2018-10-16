@@ -6,7 +6,5 @@ github.com/google/logger v0.0.0-20180208223940-54b4ae679a63 h1:rn2mY9gLAFndN3MKX
 github.com/google/logger v0.0.0-20180208223940-54b4ae679a63/go.mod h1:tQN+I/DyBt051hEHNEzPgIeyy/GD1WJaKbqPScoDKdY=
 github.com/josephspurrier/goversioninfo v0.0.0-20180220052333-42534847954b h1:66x3jAln/h7rEkx8V1c6zAP/IW4tOlN21OLAJ9d1Vvg=
 github.com/josephspurrier/goversioninfo v0.0.0-20180220052333-42534847954b/go.mod h1:eJTEwMjXb7kZ633hO3Ln9mBUCOjX2+FlTljvpl9SYdE=
-github.com/pkg/errors v0.8.0 h1:WdK/asTD0HN+q6hsWO3/vpuAkAr+tw6aNJNDFFf0+qw=
-github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 golang.org/x/sys v0.0.0-20180313075820-8c0ece68c283 h1:DE/w7won1Ns86VoWjUZ4cJS6//TObJntGkxuZ63asRc=
 golang.org/x/sys v0.0.0-20180313075820-8c0ece68c283/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=

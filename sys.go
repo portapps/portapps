@@ -12,6 +12,7 @@ import (
 
 	"github.com/go-ole/go-ole"
 	"github.com/go-ole/go-ole/oleutil"
+	"golang.org/x/sys/windows"
 )
 
 // WindowsShortcut the Windows shortcut structure
@@ -231,4 +232,47 @@ func FormatUnixPath(path string) string {
 // FormatWindowsPath to format a path for windows
 func FormatWindowsPath(path string) string {
 	return strings.Replace(path, `/`, `\`, -1)
+}
+
+// Exists reports whether the named file or directory exists
+func Exists(name string) bool {
+	if _, err := os.Stat(name); err != nil {
+		if os.IsNotExist(err) {
+			return false
+		}
+	}
+	return true
+}
+
+// WriteToFile reports writes content to a file
+func WriteToFile(name string, content string) error {
+	fo, err := os.Create(name)
+	defer fo.Close()
+	if err != nil {
+		return err
+	}
+	if _, err = io.Copy(fo, strings.NewReader(content)); err != nil {
+		return err
+	}
+	return nil
+}
+
+// RawWinver returns Windows OS version
+// TODO: Replace with `windows.GetVersion()` when this is resolved: https://github.com/golang/go/issues/17835
+func RawWinver() (major, minor, build uint32) {
+	type rtlOSVersionInfo struct {
+		dwOSVersionInfoSize uint32
+		dwMajorVersion      uint32
+		dwMinorVersion      uint32
+		dwBuildNumber       uint32
+		dwPlatformId        uint32
+		szCSDVersion        [128]byte
+	}
+	ntoskrnl := windows.MustLoadDLL("ntoskrnl.exe")
+	defer ntoskrnl.Release()
+	proc := ntoskrnl.MustFindProc("RtlGetVersion")
+	var verStruct rtlOSVersionInfo
+	verStruct.dwOSVersionInfoSize = uint32(unsafe.Sizeof(verStruct))
+	proc.Call(uintptr(unsafe.Pointer(&verStruct)))
+	return verStruct.dwMajorVersion, verStruct.dwMinorVersion, verStruct.dwBuildNumber
 }
