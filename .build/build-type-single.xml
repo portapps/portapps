@@ -21,26 +21,9 @@
     <mkdir dir="${extract.path}"/>
   </target>
 
-  <target name="release.arch" depends="start, init, clear, download, filterset, build">
+  <target name="release.arch" depends="start, init, clear, download, copy, filterset, build">
     <!-- Preparing before packaging -->
     <antcall target="prepare"/>
-
-    <echo message="Copying files..."/>
-
-    <!-- Copy files -->
-    <if>
-      <equals arg1="${debug}" arg2="false"/>
-      <then>
-        <move todir="${build.path}\${papp.folder}">
-          <fileset dir="${extract.path}"/>
-        </move>
-      </then>
-      <else>
-        <copy todir="${build.path}\${papp.folder}">
-          <fileset dir="${extract.path}"/>
-        </copy>
-      </else>
-    </if>
 
     <!-- Add portapp README / CHANGELOG -->
     <copy file="${app.basedir}\README.md" todir="${build.path}" overwrite="true"/>
@@ -145,6 +128,11 @@
     <echo message="Downloading ${atf.id}..."/>
     <property name="atf.original" location="${tmp.path}\${atf.filename}${atf.ext}"/>
     <get dest="${atf.original}" src="${atf.url}" skipexisting="true"/>
+  </target>
+
+  <target name="copy">
+    <echo message="Copying ${atf.original}..."/>
+    <copy file="${atf.original}" tofile="${build.path}\${papp.folder}\${single.filename}"/>
   </target>
 
 </project>
