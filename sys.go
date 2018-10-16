@@ -2,6 +2,7 @@ package portapps
 
 import (
 	"io"
+	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -275,4 +276,27 @@ func RawWinver() (major, minor, build uint32) {
 	verStruct.dwOSVersionInfoSize = uint32(unsafe.Sizeof(verStruct))
 	proc.Call(uintptr(unsafe.Pointer(&verStruct)))
 	return verStruct.dwMajorVersion, verStruct.dwMinorVersion, verStruct.dwBuildNumber
+}
+
+// ReplaceByPrefix replaces line in file starting with a specific prefix
+func ReplaceByPrefix(filename string, prefix string, replace string) error {
+	input, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+
+	lines := strings.Split(string(input), "\n")
+	for i, line := range lines {
+		if strings.HasPrefix(line, prefix) {
+			lines[i] = replace
+		}
+	}
+
+	output := strings.Join(lines, "\n")
+	err = ioutil.WriteFile(filename, []byte(output), 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
