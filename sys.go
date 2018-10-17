@@ -300,3 +300,18 @@ func ReplaceByPrefix(filename string, prefix string, replace string) error {
 
 	return nil
 }
+
+// IsDirEmpty determines if directory is empty
+func IsDirEmpty(name string) (bool, error) {
+	f, err := os.Open(name)
+	if err != nil {
+		return false, err
+	}
+	defer f.Close()
+
+	if _, err = f.Readdir(1); err == io.EOF {
+		return true, nil
+	}
+
+	return false, err
+}
