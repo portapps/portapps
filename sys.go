@@ -20,10 +20,16 @@ import (
 type WindowsShortcut struct {
 	ShortcutPath     string
 	TargetPath       string
-	Arguments        string
-	Description      string
-	IconLocation     string
-	WorkingDirectory string
+	Arguments        WindowsShortcutProperty
+	Description      WindowsShortcutProperty
+	IconLocation     WindowsShortcutProperty
+	WorkingDirectory WindowsShortcutProperty
+}
+
+// WindowsShortcutProperty the Windows shortcut property
+type WindowsShortcutProperty struct {
+	Value string
+	Clear bool
 }
 
 // CreateShortcut creates a windows shortcut
@@ -54,18 +60,17 @@ func CreateShortcut(shortcut WindowsShortcut) error {
 
 	idispatch := cs.ToIDispatch()
 	oleutil.PutProperty(idispatch, "TargetPath", shortcut.TargetPath)
-	oleutil.PutProperty(idispatch, `"{9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3}",5`, shortcut.TargetPath)
-	if shortcut.Arguments != "" {
-		oleutil.PutProperty(idispatch, "Arguments", shortcut.Arguments)
+	if shortcut.Arguments.Value != "" || shortcut.Arguments.Clear {
+		oleutil.PutProperty(idispatch, "Arguments", shortcut.Arguments.Value)
 	}
-	if shortcut.Description != "" {
-		oleutil.PutProperty(idispatch, "Description", shortcut.Description)
+	if shortcut.Description.Value != "" || shortcut.Description.Clear {
+		oleutil.PutProperty(idispatch, "Description", shortcut.Description.Value)
 	}
-	if shortcut.IconLocation != "" {
-		oleutil.PutProperty(idispatch, "IconLocation", shortcut.IconLocation)
+	if shortcut.IconLocation.Value != "" || shortcut.IconLocation.Clear {
+		oleutil.PutProperty(idispatch, "IconLocation", shortcut.IconLocation.Value)
 	}
-	if shortcut.WorkingDirectory != "" {
-		oleutil.PutProperty(idispatch, "WorkingDirectory", shortcut.WorkingDirectory)
+	if shortcut.WorkingDirectory.Value != "" || shortcut.WorkingDirectory.Clear {
+		oleutil.PutProperty(idispatch, "WorkingDirectory", shortcut.WorkingDirectory.Value)
 	}
 	_, err = oleutil.CallMethod(idispatch, "Save")
 
