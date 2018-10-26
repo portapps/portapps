@@ -420,6 +420,7 @@
         <delete file="${tmp.path}\${papp.id}-win32.exe"/>
         <exec executable="go" failonerror="true" dir="${app.basedir}">
           <env key="GOARCH" value="386"/>
+          <env key="CGO_ENABLED" value="${go.cgo}"/>
           <arg value="build"/>
           <arg value="-o"/>
           <arg value="${tmp.path}\${papp.id}-win32.exe"/>
@@ -432,6 +433,7 @@
         <delete file="${tmp.path}\${papp.id}-win64.exe"/>
         <exec executable="go" failonerror="true" dir="${app.basedir}">
           <env key="GOARCH" value="amd64"/>
+          <env key="CGO_ENABLED" value="${go.cgo}"/>
           <arg value="build"/>
           <arg value="-o"/>
           <arg value="${tmp.path}\${papp.id}-win64.exe"/>
@@ -472,6 +474,7 @@
         <delete file="${tmp.path}\${papp.id}.exe"/>
         <exec executable="go" failonerror="true" dir="${app.basedir}">
           <env key="GOARCH" value="${go.arch}"/>
+          <env key="CGO_ENABLED" value="${go.cgo}"/>
           <arg value="build"/>
           <arg value="-o"/>
           <arg value="${tmp.path}\${papp.id}.exe"/>
