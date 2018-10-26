@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.16 (2018/10/26)
+
+* Allow to enable CGO
+* Review `CreateShortcut` function
+* Add functions `Exists`, `IsDirEmpty`, `RawWinver`, `ReplaceByPrefix`, `WriteToFile`
+* Add build type single
+
 ## 1.15 (2018/10/03)
 
 * Add functions `CreateShortcut`, `SetFileAttributes`, `CopyFile`, `CopyFolder`, `RemoveContents`
