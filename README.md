@@ -27,6 +27,7 @@ In short, it's a wrapper that includes system records within the same directory 
 * [IntelliJ IDEA Community](https://portapps.github.io/app/intellij-idea-community-portable) : Code-centric IDE, focused on your productivity.
 * [IntelliJ IDEA Ultimate](https://portapps.github.io/app/intellij-idea-ultimate-portable) : Code-centric IDE, focused on your productivity.
 * [KiTTY](https://portapps.github.io/app/kitty-portable) : A fork of PuTTY, the best telnet / SSH client in the world.
+* [mRemoteNG](https://portapps.github.io/app/mremoteng-portable) : An open source, tabbed, multi-protocol, remote connections manager.
 * [Nextcloud](https://portapps.github.io/app/nextcloud-portable) : An open source, self-hosted file share and communication platform.
 * [OpenVPN](https://portapps.github.io/app/openvpn-portable) : A free and open-source software application that implements virtual private network (VPN) techniques.
 * [Postman](https://portapps.github.io/app/postman-portable) : A complete toolchain for API developers.
