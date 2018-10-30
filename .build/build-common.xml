@@ -446,6 +446,8 @@
         <if>
           <equals arg1="${debug}" arg2="false"/>
           <then>
+            <delete file="${tmp.path}\${papp.id}-win32_upx.exe"/>
+            <delete file="${tmp.path}\${papp.id}-win64_upx.exe"/>
             <echo message="Compressing executables with UPX..."/>
             <upx arch="win32" dir="${app.basedir}">
               <args>
@@ -487,6 +489,7 @@
         <if>
           <equals arg1="${debug}" arg2="false"/>
           <then>
+            <delete file="${tmp.path}\${papp.id}_upx.exe"/>
             <echo message="Compressing executable with UPX..."/>
             <upx arch="${atf.arch}" dir="${app.basedir}">
               <args>
