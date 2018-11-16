@@ -414,6 +414,9 @@
 
   <target name="build" depends="downmod, generate">
     <!-- GO build -->
+    <delete>
+      <fileset dir="${tmp.path}" includes="*_upx.exe"/>
+    </delete>
     <if>
       <equals arg1="${atf.arch}" arg2="win3264"/>
       <then>
@@ -446,8 +449,6 @@
         <if>
           <equals arg1="${debug}" arg2="false"/>
           <then>
-            <delete file="${tmp.path}\${papp.id}-win32_upx.exe"/>
-            <delete file="${tmp.path}\${papp.id}-win64_upx.exe"/>
             <echo message="Compressing executables with UPX..."/>
             <upx arch="win32" dir="${app.basedir}">
               <args>
@@ -489,7 +490,6 @@
         <if>
           <equals arg1="${debug}" arg2="false"/>
           <then>
-            <delete file="${tmp.path}\${papp.id}_upx.exe"/>
             <echo message="Compressing executable with UPX..."/>
             <upx arch="${atf.arch}" dir="${app.basedir}">
               <args>

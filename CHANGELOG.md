@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.16.1 (2018/11/16)
+
+* Fix error while compressing using UPX
+
 ## 1.16 (2018/10/26)
 
 * Allow to enable CGO
