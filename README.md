@@ -31,6 +31,7 @@ In short, it's a wrapper that includes system records within the same directory 
 * [Nextcloud](https://portapps.github.io/app/nextcloud-portable) : An open source, self-hosted file share and communication platform.
 * [OpenVPN](https://portapps.github.io/app/openvpn-portable) : A free and open-source software application that implements virtual private network (VPN) techniques.
 * [Postman](https://portapps.github.io/app/postman-portable) : A complete toolchain for API developers.
+* [qBittorrent](https://portapps.github.io/app/qbittorrent-portable) : A free and open-source software alternative to µTorrent.
 * [Rocket.Chat](https://portapps.github.io/app/rocketchat-portable) : Free, Open Source, Enterprise Team Chat.
 * [Skype](https://portapps.github.io/app/skype-portable) : A telecommunications application software product that specializes in providing video chat and voice calls.
 * [Slack](https://portapps.github.io/app/slack-portable) : A cloud-based set of team collaboration tools and services.
