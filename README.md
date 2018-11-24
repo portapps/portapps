@@ -35,6 +35,7 @@ In short, it's a wrapper that includes system records within the same directory 
 * [Rocket.Chat](https://portapps.github.io/app/rocketchat-portable) : Free, Open Source, Enterprise Team Chat.
 * [Skype](https://portapps.github.io/app/skype-portable) : A telecommunications application software product that specializes in providing video chat and voice calls.
 * [Slack](https://portapps.github.io/app/slack-portable) : A cloud-based set of team collaboration tools and services.
+* [SmartGit](https://portapps.github.io/app/smartgit-portable) : A graphical Git client with support for SVN and Pull Requests for GitHub and Bitbucket.
 * [TeamSpeak Client](https://portapps.github.io/app/teamspeak-client-portable) : A VoIP app for audio communication between users on a chat channel.
 * [Twitch](https://portapps.github.io/app/twitch-portable) : A live streaming video platform.
 * [Visual Studio Code](https://portapps.github.io/app/vscode-portable) : A source code editor developed by Microsoft for Windows, Linux and macOS.
