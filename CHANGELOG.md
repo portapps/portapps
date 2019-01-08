@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.17.0 (2019/01/08)
+
+* Add function `CreateMutex`
+
 ## 1.16.1 (2018/11/16)
 
 * Fix error while compressing using UPX
