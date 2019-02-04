@@ -16,7 +16,6 @@
 
   <!-- Build number -->
   <condition property="app.release" value="${env.TRAVIS_BUILD_NUMBER}"><isset property="env.TRAVIS_BUILD_NUMBER"/></condition>
-  <condition property="app.release" value="${env.APPVEYOR_BUILD_NUMBER}"><isset property="env.APPVEYOR_BUILD_NUMBER"/></condition>
   <condition property="app.release" value="0"><not><isset property="app.release"/></not></condition>
 
   <!-- Set defaults -->
