@@ -136,6 +136,9 @@
         </exec>
       </then>
     </if>
+
+    <!-- checksum -->
+    <hashfolder folder="${release.path}"/>
   </target>
 
   <target name="download">

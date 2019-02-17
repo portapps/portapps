@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.18.0 (2019/02/17)
+
+* Add checksums file to releases (Issue #11)
+* Switch to TravisCI
+
 ## 1.17.0 (2019/01/08)
 
 * Add function `CreateMutex`

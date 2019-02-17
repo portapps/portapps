@@ -33,6 +33,7 @@
   <property name="iscc" location="${innosetup.path}\app\ISCC.exe"/>
   <property name="upx32" location="${core.lib.path}\upx\upx32.exe"/>
   <property name="upx64" location="${core.lib.path}\upx\upx64.exe"/>
+  <property name="hashmyfiles" location="${core.lib.path}\hashmyfiles\HashMyFiles.exe"/>
 
   <!-- Base Properties -->
   <property name="res.path" value="${app.basedir}\${res.dir}"/>
@@ -150,6 +151,40 @@
     </sequential>
   </macrodef>
 
+  <macrodef name="hashfolder">
+    <attribute name="folder"/>
+    <sequential>
+      <delete file="@{folder}/checksums.txt"/>
+      <echo message="Hashing files in @{folder}..."/>
+      <for param="file">
+        <path>
+          <fileset dir="@{folder}" excludes="**/checksums.txt"/>
+        </path>
+        <sequential>
+          <var name="hashfile.tmp.path" value="${tmp.path}\hashfile"/>
+          <mkdir dir="${hashfile.tmp.path}"/>
+          <var name="hashfile.filename" unset="true"/>
+          <basename property="hashfile.filename" file="@{file}"/>
+          <var name="hashfile.xml" value="${hashfile.tmp.path}\${hashfile.filename}.xml"/>
+
+          <exec executable="${hashmyfiles}" failonerror="true">
+            <arg value="/file"/>
+            <arg value="@{file}"/>
+            <arg value="/sxml"/>
+            <arg value="${hashfile.xml}"/>
+          </exec>
+
+          <var name="hash_list.item.sha-256" unset="true"/>
+          <var name="hash_list.item.filename" unset="true"/>
+          <fixcrlf file="${hashfile.xml}" eol="lf" encoding="UTF-16LE" outputencoding="UTF-8"/>
+          <xmlproperty file="${hashfile.xml}" collapseAttributes="true"/>
+          <echo message="${hash_list.item.sha-256}  ${hash_list.item.filename}"/>
+          <echo file="@{folder}\checksums.txt" append="true">${hash_list.item.sha-256}  ${hash_list.item.filename}${line.separator}</echo>
+        </sequential>
+      </for>
+    </sequential>
+  </macrodef>
+
   <macrodef name="assertdir">
     <attribute name="dir"/>
     <sequential>
@@ -255,7 +290,8 @@
       load.lib.7z,
       load.lib.rcedit,
       load.lib.innosetup,
-      load.lib.upx">
+      load.lib.upx,
+      load.lib.hashmyfiles">
     <var name="is.lib.loaded" value="true"/>
   </target>
 
@@ -351,6 +387,18 @@
         <move file="${core.lib.path}\upx\upx.exe" tofile="${core.lib.path}\upx\upx64.exe"/>
       </then>
     </if>
+  </target>
+
+  <target name="load.lib.hashmyfiles" unless="is.lib.loaded">
+    <echo message="Load hashmyfiles"/>
+    <get dest="${core.lib.path}\hashmyfiles.zip" src="${hashmyfiles.url}" skipexisting="true"/>
+    <if>
+      <not><available file="${core.lib.path}\hashmyfiles" type="dir"/></not>
+      <then>
+        <unzip src="${core.lib.path}\hashmyfiles.zip" dest="${core.lib.path}\hashmyfiles"/>
+      </then>
+    </if>
+    <assertfile file="${hashmyfiles}"/>
   </target>
 
   <target name="load.lib.asar">
