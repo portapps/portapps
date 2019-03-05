@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1 (2019/03/05)
+
+* Fix project structure
+
 ## 2.0.0 (2019/03/05)
 
 * Implement global configuration file (Issue #12)
