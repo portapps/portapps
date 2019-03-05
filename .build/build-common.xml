@@ -185,6 +185,25 @@
     </sequential>
   </macrodef>
 
+  <macrodef name="coreversion">
+    <attribute name="path"/>
+    <attribute name="prop"/>
+    <sequential>
+      <loadfile property="gomod" srcfile="@{path}/go.mod"/>
+      <for param="line" list="${gomod}" delimiter="${line.separator}">
+        <sequential>
+          <if>
+            <contains string="@{line}" substring="${go.package}"/>
+            <then>
+              <propertyregex property="@{prop}" input="@{line}" regexp="\sv(.*)" select="\1"/>
+              <echo message="Portapps version found: ${@{prop}}"/>
+            </then>
+          </if>
+        </sequential>
+      </for>
+    </sequential>
+  </macrodef>
+
   <macrodef name="assertdir">
     <attribute name="dir"/>
     <sequential>
@@ -460,7 +479,11 @@
     </exec>
   </target>
 
-  <target name="build" depends="downmod, generate">
+  <target name="coreversion">
+    <coreversion path="${app.basedir}" prop="papp.coreversion"/>
+  </target>
+
+  <target name="build" depends="downmod, generate, coreversion">
     <!-- GO build -->
     <delete>
       <fileset dir="${tmp.path}" includes="*_upx.exe"/>
@@ -565,6 +588,7 @@
         <filter token="APP_DATE" value="${build.date}"/>
         <filter token="APP_URL" value="${papp.url}"/>
         <filter token="APP_PUBLISHER" value="${publisher}"/>
+        <filter token="APP_PORTAPPS_VERSION" value="${papp.coreversion}"/>
       </filterset>
     </copy>
   </target>
