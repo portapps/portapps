@@ -1,6 +1,7 @@
 package portapps
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -9,6 +10,7 @@ import (
 	"github.com/google/logger"
 	_ "github.com/josephspurrier/goversioninfo"
 	"github.com/mitchellh/mapstructure"
+	"github.com/portapps/portapps/pkg/dialog"
 	"gopkg.in/yaml.v2"
 )
 
@@ -81,6 +83,17 @@ func Launch(args []string) {
 	Log.Infof("Args (hardcoded): %s", strings.Join(Papp.Args, " "))
 	Log.Infof("Working dir: %s", Papp.WorkingDir)
 	Log.Infof("Data path: %s", Papp.DataPath)
+
+	if !Exists(Papp.Process) {
+		Log.Errorf("Application not found in %s", Papp.Process)
+		if _, err := dialog.MsgBox(
+			"Application not found",
+			fmt.Sprintf("%s application cannot be found in %s", Papp.Name, Papp.Process),
+			dialog.MsgBoxBtnOk|dialog.MsgBoxIconError); err != nil {
+			Log.Error("Cannot create dialog box", err)
+		}
+		return
+	}
 
 	Log.Infof("Launch %s...", Papp.Name)
 	jArgs := append(append(Papp.config.Common.Args, args...), Papp.Args...)
