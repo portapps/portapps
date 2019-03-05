@@ -35,7 +35,7 @@ var (
 )
 
 // Init must be used by every Portapp
-func Init(appcfg interface{}) {
+func Init() {
 	var err error
 
 	Papp.Path, err = filepath.Abs(filepath.Dir(os.Args[0]))
@@ -55,6 +55,11 @@ func Init(appcfg interface{}) {
 	Log.Info("--------")
 	Log.Infof("Starting %s...", Papp.Name)
 	Log.Infof("Current path: %s", Papp.Path)
+}
+
+func InitWithCfg(appcfg interface{}) {
+	var err error
+	Init()
 
 	// Configuration
 	Log.Info("Loading configuration...")
