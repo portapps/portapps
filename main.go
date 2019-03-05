@@ -1,12 +1,13 @@
 package portapps
 
 import (
-	_ "github.com/josephspurrier/goversioninfo"
-
 	"os"
 	"path/filepath"
 
 	"github.com/google/logger"
+	_ "github.com/josephspurrier/goversioninfo"
+	"github.com/mitchellh/mapstructure"
+	"gopkg.in/yaml.v2"
 )
 
 type papp struct {
@@ -15,9 +16,11 @@ type papp struct {
 	Path       string
 	AppPath    string
 	DataPath   string
+	WorkingDir string
 	Process    string
 	Args       []string
-	WorkingDir string
+
+	config *Config
 }
 
 var (
@@ -25,14 +28,12 @@ var (
 	Papp papp
 
 	// Log is the logger used by portapps
-	Log *logger.Logger
-
-	// Logfile is the log file used by logger
-	Logfile *os.File
+	Log     *logger.Logger
+	logfile *os.File
 )
 
 // Init must be used by every Portapp
-func Init() {
+func Init(appcfg interface{}) {
 	var err error
 
 	Papp.Path, err = filepath.Abs(filepath.Dir(os.Args[0]))
@@ -42,13 +43,25 @@ func Init() {
 
 	Papp.DataPath = AppPathJoin("data")
 
-	Logfile, err = os.OpenFile(PathJoin(Papp.Path, Papp.ID+".log"), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	logfile, err = os.OpenFile(PathJoin(Papp.Path, Papp.ID+".log"), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
-		Log.Fatal("Log file:", err)
+		Log.Fatal("Cannot open log file:", err)
 	}
 
-	Log = logger.Init(Papp.Name, false, false, Logfile)
+	// Startup
+	Log = logger.Init(Papp.Name, false, false, logfile)
 	Log.Info("--------")
 	Log.Infof("Starting %s...", Papp.Name)
 	Log.Infof("Current path: %s", Papp.Path)
+
+	// Configuration
+	Log.Info("Loading configuration...")
+	if err = loadConfig(appcfg); err != nil {
+		Log.Fatal("Cannot load configuration:", err)
+	}
+	if err := mapstructure.Decode(Papp.config.App, appcfg); err != nil {
+		Log.Fatal("Cannot decode app configuration:", err)
+	}
+	b, _ := yaml.Marshal(Papp.config)
+	Log.Infof("Configuration:\n%s", string(b))
 }

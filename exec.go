@@ -27,18 +27,21 @@ type CmdResult struct {
 // Launch to execute the app
 func Launch(args []string) {
 	Log.Infof("Process: %s", Papp.Process)
-	Log.Infof("Args: %s %s", strings.Join(Papp.Args, " "), strings.Join(args, " "))
+	Log.Infof("Args (config file): %s", strings.Join(Papp.config.Common.Args, " "))
+	Log.Infof("Args (cmd line): %s", strings.Join(args, " "))
+	Log.Infof("Args (hardcoded): %s", strings.Join(Papp.Args, " "))
 	Log.Infof("Working dir: %s", Papp.WorkingDir)
 	Log.Infof("Data path: %s", Papp.DataPath)
 
 	Log.Infof("Launch %s...", Papp.Name)
-	execute := exec.Command(Papp.Process, append(Papp.Args, args...)...)
+	jArgs := append(append(Papp.config.Common.Args, args...), Papp.Args...)
+	execute := exec.Command(Papp.Process, jArgs...)
 	execute.Dir = Papp.WorkingDir
 
-	execute.Stdout = Logfile
-	execute.Stderr = Logfile
+	execute.Stdout = logfile
+	execute.Stderr = logfile
 
-	Log.Infof("Exec %s %s %s", Papp.Process, strings.Join(Papp.Args, " "), strings.Join(args, " "))
+	Log.Infof("Exec %s %s", Papp.Process, strings.Join(jArgs, " "))
 	if err := execute.Start(); err != nil {
 		Log.Fatalf("Command failed: %v", err)
 	}
