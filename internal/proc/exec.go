@@ -1,4 +1,6 @@
-package portapps
+// +build windows
+
+package proc
 
 import (
 	"bytes"
@@ -24,33 +26,8 @@ type CmdResult struct {
 	Stderr   string
 }
 
-// Launch to execute the app
-func Launch(args []string) {
-	Log.Infof("Process: %s", Papp.Process)
-	Log.Infof("Args (config file): %s", strings.Join(Papp.config.Common.Args, " "))
-	Log.Infof("Args (cmd line): %s", strings.Join(args, " "))
-	Log.Infof("Args (hardcoded): %s", strings.Join(Papp.Args, " "))
-	Log.Infof("Working dir: %s", Papp.WorkingDir)
-	Log.Infof("Data path: %s", Papp.DataPath)
-
-	Log.Infof("Launch %s...", Papp.Name)
-	jArgs := append(append(Papp.config.Common.Args, args...), Papp.Args...)
-	execute := exec.Command(Papp.Process, jArgs...)
-	execute.Dir = Papp.WorkingDir
-
-	execute.Stdout = logfile
-	execute.Stderr = logfile
-
-	Log.Infof("Exec %s %s", Papp.Process, strings.Join(jArgs, " "))
-	if err := execute.Start(); err != nil {
-		Log.Fatalf("Command failed: %v", err)
-	}
-
-	execute.Wait()
-}
-
-// ExecCmd to execute a system command
-func ExecCmd(options CmdOptions) (CmdResult, error) {
+// Cmd to execute a system command
+func Cmd(options CmdOptions) (CmdResult, error) {
 	result := CmdResult{Options: options}
 
 	command := exec.Command(options.Command, options.Args...)
@@ -64,7 +41,6 @@ func ExecCmd(options CmdOptions) (CmdResult, error) {
 		command.Dir = options.WorkingDir
 	}
 
-	Log.Infof("Exec %s %s", options.Command, strings.Join(options.Args, " "))
 	if err := command.Start(); err != nil {
 		return result, err
 	}
@@ -79,9 +55,9 @@ func ExecCmd(options CmdOptions) (CmdResult, error) {
 	return result, nil
 }
 
-// QuickExecCmd executes a cmd with args with default options
-func QuickExecCmd(command string, args []string) error {
-	cmdResult, err := ExecCmd(CmdOptions{
+// QuickCmd executes a cmd with args with default options
+func QuickCmd(command string, args []string) error {
+	cmdResult, err := Cmd(CmdOptions{
 		Command:    command,
 		Args:       args,
 		HideWindow: true,

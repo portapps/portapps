@@ -2,7 +2,9 @@ package portapps
 
 import (
 	"os"
+	"os/exec"
 	"path/filepath"
+	"strings"
 
 	"github.com/google/logger"
 	_ "github.com/josephspurrier/goversioninfo"
@@ -64,4 +66,29 @@ func Init(appcfg interface{}) {
 	}
 	b, _ := yaml.Marshal(Papp.config)
 	Log.Infof("Configuration:\n%s", string(b))
+}
+
+// Launch to execute the app
+func Launch(args []string) {
+	Log.Infof("Process: %s", Papp.Process)
+	Log.Infof("Args (config file): %s", strings.Join(Papp.config.Common.Args, " "))
+	Log.Infof("Args (cmd line): %s", strings.Join(args, " "))
+	Log.Infof("Args (hardcoded): %s", strings.Join(Papp.Args, " "))
+	Log.Infof("Working dir: %s", Papp.WorkingDir)
+	Log.Infof("Data path: %s", Papp.DataPath)
+
+	Log.Infof("Launch %s...", Papp.Name)
+	jArgs := append(append(Papp.config.Common.Args, args...), Papp.Args...)
+	execute := exec.Command(Papp.Process, jArgs...)
+	execute.Dir = Papp.WorkingDir
+
+	execute.Stdout = logfile
+	execute.Stderr = logfile
+
+	Log.Infof("Exec %s %s", Papp.Process, strings.Join(jArgs, " "))
+	if err := execute.Start(); err != nil {
+		Log.Fatalf("Command failed: %v", err)
+	}
+
+	execute.Wait()
 }
