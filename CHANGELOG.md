@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.19.1 (2019/03/06)
+
+* Review and fix mutex
+* Display message box on fatal error
+* Display message box if main process is not found
+* Add Portapps core version in `portapp.json`
+
 ## 1.19.0 (2019/03/05)
 
 * Implement global configuration file (Issue #12)
@@ -14,7 +21,7 @@
 
 ## 1.17.0 (2019/01/08)
 
-* Add function `CreateMutex`
+* Add `CreateMutex` function
 
 ## 1.16.1 (2018/11/16)
 
