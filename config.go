@@ -11,7 +11,7 @@ import (
 // Configuration holds portapp configuration details
 type Config struct {
 	Common Common      `yaml:"common" mapstructure:"common"`
-	App    interface{} `yaml:"app" mapstructure:"app"`
+	App    interface{} `yaml:"app,omitempty" mapstructure:"app"`
 }
 
 // Common holds common configuration data
