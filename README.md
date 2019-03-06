@@ -6,7 +6,7 @@
   <a href="https://www.codacy.com/app/portapps/portapps"><img src="https://img.shields.io/codacy/grade/01eb6a7ceb8e46e8ab90d2d74ecdad01.svg?style=flat-square" alt="Code Quality"></a>
   <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WQD7AQGPDEPSG"><img src="https://img.shields.io/badge/donate-paypal-7057ff.svg?style=flat-square" alt="Donate Paypal"></a>
   <a href="https://twitter.com/portapps"><img src="https://img.shields.io/twitter/follow/portapps.svg?style=flat-square" alt="Twitter Follow"></a>
-  <a href="https://www.reddit.com/r/Portapps"><img src="https://img.shields.io/badge/reddit-follow-red.svg?style=flat-square" alt="Twitter Follow"></a>
+  <a href="https://www.reddit.com/r/Portapps"><img src="https://img.shields.io/badge/follow-reddit-red.svg?style=flat-square" alt="Twitter Follow"></a>
 </p>
 
 ## About
@@ -23,6 +23,8 @@ In short, it's a wrapper that includes system records within the same directory 
 * [DiscordPTB](https://portapps.github.io/app/discord-ptb-portable) : The Public Test Build (PTB) of Discord.
 * [Docker Toolbox](https://portapps.github.io/app/docker-toolbox-portable) : Docker Toolbox provides a way to use Docker on Windows systems.
 * [Firefox](https://portapps.github.io/app/firefox-portable) : A free and open-source web browser developed by The Mozilla Foundation.
+* [Firefox ESR](https://portapps.github.io/app/firefox-esr-portable) : Extended Support Release of Firefox web browser developed by The Mozilla Foundation.
+* [Firefox Developer Edition](https://portapps.github.io/app/firefox-developer-portable) : Developer Edition of Firefox web browser developed by The Mozilla Foundation.
 * [HandBrake](https://portapps.github.io/app/handbrake-portable) : A tool for converting video from nearly any format to a selection of modern, widely supported codecs.
 * [HLSW](https://portapps.github.io/app/hlsw-portable) : Half-Life Server Watch (HLSW) is a game server browser and administration tool.
 * [HostsMan](https://portapps.github.io/app/hostsman-portable) : A freeware application that lets you manage your Hosts file with ease.
