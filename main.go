@@ -69,7 +69,7 @@ func InitWithCfg(appcfg interface{}) {
 	if err = loadConfig(appcfg); err != nil {
 		LogFatal("Cannot load configuration:", err)
 	}
-	if appcfg != reflect.Zero(reflect.TypeOf(appcfg)).Interface() {
+	if appcfg == reflect.Zero(reflect.TypeOf(appcfg)).Interface() {
 		if err := mapstructure.Decode(Papp.config.App, appcfg); err != nil {
 			LogFatal("Cannot decode app configuration:", err)
 		}
