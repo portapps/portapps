@@ -42,14 +42,14 @@ func Init() {
 
 	Papp.Path, err = filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
-		Log.Fatal("Current path:", err)
+		LogFatal("Current path:", err)
 	}
 
 	Papp.DataPath = AppPathJoin("data")
 
 	logfile, err = os.OpenFile(PathJoin(Papp.Path, Papp.ID+".log"), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
-		Log.Fatal("Cannot open log file:", err)
+		LogFatal("Cannot open log file:", err)
 	}
 
 	// Startup
@@ -66,10 +66,10 @@ func InitWithCfg(appcfg interface{}) {
 	// Configuration
 	Log.Info("Loading configuration...")
 	if err = loadConfig(appcfg); err != nil {
-		Log.Fatal("Cannot load configuration:", err)
+		LogFatal("Cannot load configuration:", err)
 	}
 	if err := mapstructure.Decode(Papp.config.App, appcfg); err != nil {
-		Log.Fatal("Cannot decode app configuration:", err)
+		LogFatal("Cannot decode app configuration:", err)
 	}
 	b, _ := yaml.Marshal(Papp.config)
 	Log.Infof("Configuration:\n%s", string(b))
@@ -87,7 +87,7 @@ func Launch(args []string) {
 	if !Exists(Papp.Process) {
 		Log.Errorf("Application not found in %s", Papp.Process)
 		if _, err := dialog.MsgBox(
-			"Application not found",
+			fmt.Sprintf("%s portable", Papp.Name),
 			fmt.Sprintf("%s application cannot be found in %s", Papp.Name, Papp.Process),
 			dialog.MsgBoxBtnOk|dialog.MsgBoxIconError); err != nil {
 			Log.Error("Cannot create dialog box", err)
@@ -105,8 +105,28 @@ func Launch(args []string) {
 
 	Log.Infof("Exec %s %s", Papp.Process, strings.Join(jArgs, " "))
 	if err := execute.Start(); err != nil {
-		Log.Fatalf("Command failed: %v", err)
+		LogFatal("Command failed: %v", err)
 	}
 
 	execute.Wait()
+}
+
+func LogFatal(v ...interface{}) {
+	Log.Error(v...)
+	msgBoxFatal()
+}
+
+func LogFatalf(format string, v ...interface{}) {
+	Log.Errorf(format, v...)
+	msgBoxFatal()
+}
+
+func msgBoxFatal() {
+	if _, err := dialog.MsgBox(
+		fmt.Sprintf("%s portable", Papp.Name),
+		fmt.Sprintf("An error has occurred, see your %s.log file for more info", Papp.ID),
+		dialog.MsgBoxBtnOk|dialog.MsgBoxIconError); err != nil {
+		Log.Error("Cannot create dialog box", err)
+	}
+	os.Exit(1)
 }

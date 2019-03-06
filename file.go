@@ -107,7 +107,7 @@ func CreateFolderCheck(path string) (string, error) {
 func CreateFolder(path string) string {
 	Log.Infof("Create folder %s...", path)
 	if _, err := CreateFolderCheck(path); err != nil {
-		Log.Fatalf("Cannot create folder: %v", err)
+		Log.Errorf("Cannot create folder: %v", err)
 	}
 	return path
 }

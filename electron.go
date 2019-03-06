@@ -16,6 +16,6 @@ func FindElectronAppFolder(prefix string, source string) string {
 		}
 	}
 
-	Log.Fatalf("Electron main path does not exist with prefix '%s' in %s", prefix, source)
+	LogFatalf("Electron main path does not exist with prefix '%s' in %s", prefix, source)
 	return ""
 }
