@@ -15,9 +15,9 @@ type Mutex struct {
 	log    *logger.Logger
 }
 
-// Create creates a mutex object for ensuring that only one instance is open.
+// New creates a mutex object for ensuring that only one instance is open.
 // https://docs.microsoft.com/en-us/windows/desktop/api/synchapi/nf-synchapi-createmutexw
-func Create(name string, logger *logger.Logger) (*Mutex, error) {
+func New(name string, logger *logger.Logger) (*Mutex, error) {
 	var sbName strings.Builder
 	sbName.WriteString("Portapps")
 	sbName.WriteString(name)
@@ -51,7 +51,7 @@ func Create(name string, logger *logger.Logger) (*Mutex, error) {
 	return nil, err
 }
 
-// Release releases previously created mutex based on id
+// Release releases previously created mutex based on id.
 // https://docs.microsoft.com/en-us/windows/desktop/api/synchapi/nf-synchapi-releasemutex
 func (m *Mutex) Release() error {
 	m.log.Infof("Releasing mutex %d", int(m.handle))
