@@ -38,7 +38,8 @@ var (
 
 // Init must be used by every Portapp
 func Init() {
-	InitWithCfg(nil)
+	var i interface{}
+	InitWithCfg(i)
 }
 
 // Init with app configuration
