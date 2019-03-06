@@ -39,7 +39,7 @@ var (
 // Init must be used by every Portapp
 func Init() {
 	var i interface{}
-	InitWithCfg(i)
+	InitWithCfg(&i)
 }
 
 // Init with app configuration
