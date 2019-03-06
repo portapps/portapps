@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"strings"
 
 	"github.com/google/logger"
@@ -38,8 +39,7 @@ var (
 
 // Init must be used by every Portapp
 func Init() {
-	var i interface{}
-	InitWithCfg(&i)
+	InitWithCfg(nil)
 }
 
 // Init with app configuration
@@ -69,8 +69,10 @@ func InitWithCfg(appcfg interface{}) {
 	if err = loadConfig(appcfg); err != nil {
 		LogFatal("Cannot load configuration:", err)
 	}
-	if err := mapstructure.Decode(Papp.config.App, appcfg); err != nil {
-		LogFatal("Cannot decode app configuration:", err)
+	if appcfg != reflect.Zero(reflect.TypeOf(appcfg)).Interface() {
+		if err := mapstructure.Decode(Papp.config.App, appcfg); err != nil {
+			LogFatal("Cannot decode app configuration:", err)
+		}
 	}
 	b, _ := yaml.Marshal(Papp.config)
 	Log.Infof("Configuration:\n%s", string(b))
