@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.19.2 (2019/03/06)
+
+* Omit app config if empty
+* Check underlying app config value
+
 ## 1.19.1 (2019/03/06)
 
 * Review and fix mutex
