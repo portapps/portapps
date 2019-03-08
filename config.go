@@ -17,7 +17,8 @@ type Config struct {
 
 // Common holds common configuration data
 type Common struct {
-	Args []string `yaml:"args" mapstructure:"cmd_switches"`
+	Args []string          `yaml:"args" mapstructure:"cmd_switches"`
+	Env  map[string]string `yaml:"env" mapstructure:"env"`
 }
 
 // loadConfig load common and app configuration
@@ -26,6 +27,7 @@ func (app *App) loadConfig(appcfg interface{}) (err error) {
 	app.config = &Config{
 		Common: Common{
 			Args: []string{},
+			Env:  map[string]string{},
 		},
 		App: appcfg,
 	}
@@ -35,6 +37,7 @@ func (app *App) loadConfig(appcfg interface{}) (err error) {
 	if err != nil {
 		return err
 	}
+	Log.Info().Msgf("write sample:\n%s", string(raw))
 	err = ioutil.WriteFile(utl.PathJoin(app.RootPath, fmt.Sprintf("%s.sample.yml", app.ID)), raw, 0644)
 	if err != nil {
 		return err
@@ -50,6 +53,7 @@ func (app *App) loadConfig(appcfg interface{}) (err error) {
 	if err != nil {
 		return err
 	}
+	Log.Info().Msgf("read config:\n%s", string(raw))
 
 	return yaml.Unmarshal(raw, &app.config)
 }

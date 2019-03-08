@@ -60,10 +60,7 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 	app.WorkingDir = app.AppPath
 
 	// Logfile
-	logfolder, err := utl.CreateFolder(utl.PathJoin(app.RootPath, "log"))
-	if err != nil {
-		app.FatalBox(err)
-	}
+	logfolder := utl.CreateFolder(utl.PathJoin(app.RootPath, "log"))
 	logpath := utl.PathJoin(logfolder, fmt.Sprintf("%s.log", app.ID))
 	app.logfile, err = os.OpenFile(logpath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
@@ -94,6 +91,14 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 	}
 	b, _ = yaml.Marshal(app.config)
 	Log.Info().Msgf("Configuration:\n%s", string(b))
+
+	// Load env vars from config
+	if len(app.config.Common.Env) > 0 {
+		Log.Info().Msg("Setting environment variables from config...")
+		for key, value := range app.config.Common.Env {
+			utl.OverrideEnv(key, value)
+		}
+	}
 
 	return app, nil
 }

@@ -8,6 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 	"syscall"
+
+	"github.com/rs/zerolog/log"
 )
 
 // SetFileAttributes set attributes to a file
@@ -96,11 +98,11 @@ func RemoveContents(dir string) error {
 }
 
 // CreateFolder to create a folder and get its path
-func CreateFolder(path ...string) (string, error) {
+func CreateFolder(path ...string) string {
 	if err := os.MkdirAll(PathJoin(path...), 777); err != nil {
-		return "", err
+		log.Error().Err(err).Msgf("Cannot create folder %s", PathJoin(path...))
 	}
-	return PathJoin(path...), nil
+	return PathJoin(path...)
 }
 
 // CreateFile creates / overwrites a file with content
