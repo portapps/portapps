@@ -131,7 +131,7 @@ func (app *App) Launch(args []string) {
 		Log.Fatal().Err(err).Msg("Command failed")
 	}
 	if err := execute.Wait(); err != nil {
-		Log.Fatal().Err(err).Msg("Command failed")
+		Log.Error().Err(err).Msg("Command failed")
 	}
 }
 
