@@ -445,6 +445,10 @@
   </target>
 
   <target name="filterset">
+    <coreversion path="${app.basedir}" prop="papp.coreversion"/>
+    <propertyregex property="portapps.major" input="${papp.coreversion}" regexp="(.*)\.(.*)\.(.*)" select="\1"/>
+    <propertyregex property="portapps.minor" input="${papp.coreversion}" regexp="(.*)\.(.*)\.(.*)" select="\2"/>
+    <propertyregex property="portapps.patch" input="${papp.coreversion}" regexp="(.*)\.(.*)\.(.*)" select="\3"/>
     <filterset id="filterset.app">
       <filter token="APP_ID" value="${papp.id}"/>
       <filter token="APP_NAME" value="${papp.name}"/>
@@ -452,13 +456,19 @@
       <filter token="APP_VERSION" value="${app.version}"/>
       <filter token="APP_RELEASE" value="${app.release}"/>
       <filter token="APP_COPYRIGHT" value="${papp.url}"/>
+      <filter token="APP_PORTAPPS_MAJOR" value="${portapps.major}"/>
+      <filter token="APP_PORTAPPS_MINOR" value="${portapps.minor}"/>
+      <filter token="APP_PORTAPPS_PATCH" value="${portapps.patch}"/>
     </filterset>
-    <echo message="APP_ID        : ${papp.id}"/>
-    <echo message="APP_NAME      : ${papp.name}"/>
-    <echo message="APP_DESC      : ${papp.desc}"/>
-    <echo message="APP_VERSION   : ${app.version}"/>
-    <echo message="APP_RELEASE   : ${app.release}"/>
-    <echo message="APP_COPYRIGHT : ${papp.url}"/>
+    <echo message="APP_ID             : ${papp.id}"/>
+    <echo message="APP_NAME           : ${papp.name}"/>
+    <echo message="APP_DESC           : ${papp.desc}"/>
+    <echo message="APP_VERSION        : ${app.version}"/>
+    <echo message="APP_RELEASE        : ${app.release}"/>
+    <echo message="APP_COPYRIGHT      : ${papp.url}"/>
+    <echo message="APP_PORTAPPS_MAJOR : ${portapps.major}"/>
+    <echo message="APP_PORTAPPS_MINOR : ${portapps.minor}"/>
+    <echo message="APP_PORTAPPS_PATCH : ${portapps.patch}"/>
   </target>
 
   <target name="downmod" description="Download modules">
@@ -479,11 +489,7 @@
     </exec>
   </target>
 
-  <target name="coreversion">
-    <coreversion path="${app.basedir}" prop="papp.coreversion"/>
-  </target>
-
-  <target name="build" depends="downmod, generate, coreversion">
+  <target name="build" depends="downmod, generate">
     <!-- GO build -->
     <delete>
       <fileset dir="${tmp.path}" includes="*_upx.exe"/>
