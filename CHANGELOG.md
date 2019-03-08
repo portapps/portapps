@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.20.1 (2019/03/08)
+
+* Throw error if command fails
+* Coding style
+
 ## 1.20.0 (2019/03/08)
 
 * Move logs to log folder
