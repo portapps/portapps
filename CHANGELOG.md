@@ -2,6 +2,8 @@
 
 ## 1.20.1 (2019/03/08)
 
+* Add ability to set environment variables from config
+* Set Portapps version through Windows FileVersion property
 * Throw error if command fails
 * Coding style
 
