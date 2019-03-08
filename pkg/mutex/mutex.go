@@ -1,5 +1,3 @@
-// +build windows
-
 package mutex
 
 import (
@@ -7,17 +5,16 @@ import (
 	"syscall"
 	"unsafe"
 
-	"github.com/google/logger"
+	"github.com/rs/zerolog/log"
 )
 
 type Mutex struct {
 	handle uintptr
-	log    *logger.Logger
 }
 
 // New creates a mutex object for ensuring that only one instance is open.
 // https://docs.microsoft.com/en-us/windows/desktop/api/synchapi/nf-synchapi-createmutexw
-func New(name string, logger *logger.Logger) (*Mutex, error) {
+func New(name string) (*Mutex, error) {
 	var sbName strings.Builder
 	sbName.WriteString("Portapps")
 	sbName.WriteString(name)
@@ -39,12 +36,11 @@ func New(name string, logger *logger.Logger) (*Mutex, error) {
 	}
 
 	r, _, err := syscall.Syscall(proc, 3, 0, 0, uintptr(unsafe.Pointer(rName)))
-	logger.Infof("Mutex created: %d, %d", int(r), int(err.(syscall.Errno)))
+	log.Info().Msgf("Mutex created: %d, err%d", int(r), int(err.(syscall.Errno)))
 
 	if int(err.(syscall.Errno)) == 0 {
 		return &Mutex{
 			handle: r,
-			log:    logger,
 		}, nil
 	}
 
@@ -54,7 +50,7 @@ func New(name string, logger *logger.Logger) (*Mutex, error) {
 // Release releases previously created mutex based on id.
 // https://docs.microsoft.com/en-us/windows/desktop/api/synchapi/nf-synchapi-releasemutex
 func (m *Mutex) Release() error {
-	m.log.Infof("Releasing mutex %d", int(m.handle))
+	log.Info().Msgf("Releasing mutex %d", int(m.handle))
 	handle, err := syscall.LoadLibrary("kernel32.dll")
 	if err != nil {
 		return err

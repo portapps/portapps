@@ -1,4 +1,4 @@
-package portapps
+package utl
 
 import (
 	"io"
@@ -95,21 +95,12 @@ func RemoveContents(dir string) error {
 	return nil
 }
 
-// CreateFolderCheck to create a folder and get its path and return error
-func CreateFolderCheck(path string) (string, error) {
-	if err := os.MkdirAll(path, 777); err != nil {
+// CreateFolder to create a folder and get its path
+func CreateFolder(path ...string) (string, error) {
+	if err := os.MkdirAll(PathJoin(path...), 777); err != nil {
 		return "", err
 	}
-	return path, nil
-}
-
-// CreateFolder to create a folder and get its path
-func CreateFolder(path string) string {
-	Log.Infof("Create folder %s...", path)
-	if _, err := CreateFolderCheck(path); err != nil {
-		Log.Errorf("Cannot create folder: %v", err)
-	}
-	return path
+	return PathJoin(path...), nil
 }
 
 // CreateFile creates / overwrites a file with content
@@ -134,11 +125,6 @@ func PathJoin(elem ...string) string {
 		}
 	}
 	return ""
-}
-
-// AppPathJoin to join paths from Papp.Path
-func AppPathJoin(elem ...string) string {
-	return PathJoin(append([]string{Papp.Path}, elem...)...)
 }
 
 // FormatUnixPath to format a path for unix

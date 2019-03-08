@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.20.0 (2019/03/08)
+
+* Move logs to log folder
+* Switch to [zerolog](https://github.com/rs/zerolog)
+* Fix error while using registry pkg
+* Update 7zip and asar libs
+* Update goversion
+* Refactoring
+
 ## 1.19.2 (2019/03/06)
 
 * Omit app config if empty

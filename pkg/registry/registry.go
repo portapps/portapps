@@ -1,5 +1,3 @@
-// +build windows
-
 package registry
 
 import (
@@ -7,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/portapps/portapps/internal/proc"
+	"github.com/portapps/portapps/pkg/proc"
 )
 
 // ExportImport the registry export/import structure

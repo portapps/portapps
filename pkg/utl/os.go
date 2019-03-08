@@ -1,10 +1,14 @@
-package portapps
+package utl
 
-import "os"
+import (
+	"os"
+
+	"github.com/rs/zerolog/log"
+)
 
 // OverrideEnv to override an env var
 func OverrideEnv(key string, value string) {
 	if err := os.Setenv(key, value); err != nil {
-		Log.Errorf("Cannot set %s env var: %v", key, err)
+		log.Error().Err(err).Msgf("Cannot set %s env var", key)
 	}
 }

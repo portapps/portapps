@@ -1,10 +1,10 @@
-// +build windows
-
 package win
 
 import (
 	"syscall"
 	"unsafe"
+
+	"github.com/rs/zerolog/log"
 )
 
 // SetConsoleTitle sets windows console title
@@ -13,7 +13,11 @@ func SetConsoleTitle(title string) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	defer syscall.FreeLibrary(handle)
+	defer func() {
+		if err := syscall.FreeLibrary(handle); err != nil {
+			log.Error().Err(err).Msg("Cannot free library")
+		}
+	}()
 
 	proc, err := syscall.GetProcAddress(handle, "SetConsoleTitleW")
 	if err != nil {

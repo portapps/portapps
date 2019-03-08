@@ -3,9 +3,11 @@ module github.com/portapps/portapps
 require (
 	github.com/akavel/rsrc v0.0.0-20170831122431-f6a15ece2cfd // indirect
 	github.com/go-ole/go-ole v1.2.4
-	github.com/google/logger v1.0.1
-	github.com/josephspurrier/goversioninfo v0.0.0-20180220052333-42534847954b
+	github.com/ilya1st/rotatewriter v0.0.0-20171126183947-3df0c1a3ed6d
+	github.com/josephspurrier/goversioninfo v0.0.0-20190209210621-63e6d1acd3dd
 	github.com/mitchellh/mapstructure v1.1.2
-	golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a
+	github.com/pkg/errors v0.8.1 // indirect
+	github.com/rs/zerolog v1.12.0
+	golang.org/x/sys v0.0.0-20190308023053-584f3b12f43e
 	gopkg.in/yaml.v2 v2.2.2
 )

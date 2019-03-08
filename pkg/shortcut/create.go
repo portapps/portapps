@@ -1,5 +1,3 @@
-// +build windows
-
 package shortcut
 
 import (
@@ -30,7 +28,9 @@ func Create(shortcut Shortcut) error {
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
 
-	ole.CoInitializeEx(0, ole.COINIT_APARTMENTTHREADED|ole.COINIT_SPEED_OVER_MEMORY)
+	if err := ole.CoInitializeEx(0, ole.COINIT_APARTMENTTHREADED|ole.COINIT_SPEED_OVER_MEMORY); err != nil {
+		return err
+	}
 	defer ole.CoUninitialize()
 
 	oleShellObject, err := oleutil.CreateObject("WScript.Shell")
@@ -51,18 +51,28 @@ func Create(shortcut Shortcut) error {
 	}
 
 	idispatch := cs.ToIDispatch()
-	oleutil.PutProperty(idispatch, "TargetPath", shortcut.TargetPath)
+	if _, err := oleutil.PutProperty(idispatch, "TargetPath", shortcut.TargetPath); err != nil {
+		return err
+	}
 	if shortcut.Arguments.Value != "" || shortcut.Arguments.Clear {
-		oleutil.PutProperty(idispatch, "Arguments", shortcut.Arguments.Value)
+		if _, err := oleutil.PutProperty(idispatch, "Arguments", shortcut.Arguments.Value); err != nil {
+			return err
+		}
 	}
 	if shortcut.Description.Value != "" || shortcut.Description.Clear {
-		oleutil.PutProperty(idispatch, "Description", shortcut.Description.Value)
+		if _, err := oleutil.PutProperty(idispatch, "Description", shortcut.Description.Value); err != nil {
+			return err
+		}
 	}
 	if shortcut.IconLocation.Value != "" || shortcut.IconLocation.Clear {
-		oleutil.PutProperty(idispatch, "IconLocation", shortcut.IconLocation.Value)
+		if _, err := oleutil.PutProperty(idispatch, "IconLocation", shortcut.IconLocation.Value); err != nil {
+			return err
+		}
 	}
 	if shortcut.WorkingDirectory.Value != "" || shortcut.WorkingDirectory.Clear {
-		oleutil.PutProperty(idispatch, "WorkingDirectory", shortcut.WorkingDirectory.Value)
+		if _, err := oleutil.PutProperty(idispatch, "WorkingDirectory", shortcut.WorkingDirectory.Value); err != nil {
+			return err
+		}
 	}
 	_, err = oleutil.CallMethod(idispatch, "Save")
 
