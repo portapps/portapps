@@ -8,6 +8,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+// Mutex is a mutex instance
 type Mutex struct {
 	handle uintptr
 }

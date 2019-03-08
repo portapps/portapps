@@ -5,6 +5,7 @@ import (
 	"unsafe"
 )
 
+// MsgBox items types
 var (
 	MsgBoxBtnOk                uint = 0x000000
 	MsgBoxBtnOkCancel          uint = 0x000001
