@@ -199,3 +199,13 @@ func IsDirEmpty(name string) (bool, error) {
 
 	return false, err
 }
+
+// RoamingPath returns the user roaming path through APPDATA env var
+func RoamingPath() string {
+	return os.Getenv("APPDATA")
+}
+
+// StartMenuPath returns the user start menu path
+func StartMenuPath() string {
+	return PathJoin(RoamingPath(), "Microsoft", "Windows", "Start Menu", "Programs")
+}
