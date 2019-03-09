@@ -247,7 +247,7 @@
 
       <echo message="Replacing userData in electron.asar..."/>
       <assertfile file="@{path}\resources\electron.unpacked\browser\init.js"/>
-      <replace file="@{path}\resources\electron.unpacked\browser\init.js">
+      <replace file="@{path}\resources\electron.unpacked\browser\init.js" failOnNoReplacements="true">
         <replacefilter token="@{search}" value="@{replace}"/>
       </replace>
 
