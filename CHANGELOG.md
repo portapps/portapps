@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.20.2 (2019/03/09)
+
+* Update setup image
+* Add `RoamingPath` and `StartMenuPath` utility functions
+
 ## 1.20.1 (2019/03/08)
 
 * Add ability to set environment variables from config
