@@ -37,7 +37,6 @@ func (app *App) loadConfig(appcfg interface{}) (err error) {
 	if err != nil {
 		return err
 	}
-	Log.Info().Msgf("write sample:\n%s", string(raw))
 	err = ioutil.WriteFile(utl.PathJoin(app.RootPath, fmt.Sprintf("%s.sample.yml", app.ID)), raw, 0644)
 	if err != nil {
 		return err
