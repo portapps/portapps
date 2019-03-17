@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.20.3 (2019/03/17)
+
+* Fail if no replacements found
+
 ## 1.20.2 (2019/03/09)
 
 * Update setup image
