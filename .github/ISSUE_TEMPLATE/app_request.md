@@ -3,7 +3,7 @@ name: App request
 about: Want an app to be portapped ?
 ---
 
-> Please follow the following guide to file a proper request report : https://portapps.io/doc/request-apps/
+> Please follow this guide to file a proper request report : https://portapps.io/doc/request-apps/
 
 * Name : 
 * Description : 
