@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.21.0 (2019/03/26)
+
+* Handle placeholders for environment variables in configuration
+* Add `Locale` function
+
 ## 1.20.3 (2019/03/17)
 
 * Fail if no replacements found

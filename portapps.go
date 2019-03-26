@@ -96,7 +96,7 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 	if len(app.config.Common.Env) > 0 {
 		Log.Info().Msg("Setting environment variables from config...")
 		for key, value := range app.config.Common.Env {
-			utl.OverrideEnv(key, value)
+			utl.OverrideEnv(key, app.extendPlaceholders(value))
 		}
 	}
 
@@ -152,4 +152,17 @@ func (app *App) ErrorBox(msg interface{}) {
 func (app *App) FatalBox(msg interface{}) {
 	app.ErrorBox(msg)
 	os.Exit(1)
+}
+
+func (app *App) extendPlaceholders(value string) string {
+	placeholders := map[string]string{
+		"@ROOT_PATH@":    app.RootPath,
+		"@APP_PATH@":     app.AppPath,
+		"@DATA_PATH@":    app.DataPath,
+		"@DRIVE_LETTER@": app.RootPath[:1],
+	}
+	for placeholder, ext := range placeholders {
+		value = strings.Replace(value, placeholder, ext, -1)
+	}
+	return value
 }
