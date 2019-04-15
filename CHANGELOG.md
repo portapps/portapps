@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.22.0 (2019/04/15)
+
+* Go 1.12
+* Update libs
+
 ## 1.21.0 (2019/03/26)
 
 * Handle placeholders for environment variables in configuration
@@ -91,7 +96,7 @@
 
 ## 1.11 (2018/09/07)
 
-* Upgrade to Go 1.11
+* Go 1.11
 * Use [go mod](https://golang.org/cmd/go/#hdr-Module_maintenance) instead of `dep`
 * Fix asar lib version
 * Disable strict-ssl on asar
