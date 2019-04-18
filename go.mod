@@ -10,6 +10,6 @@ require (
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/rs/zerolog v1.13.0
-	golang.org/x/sys v0.0.0-20190308023053-584f3b12f43e
+	golang.org/x/sys v0.0.0-20190416152802-12500544f89f
 	gopkg.in/yaml.v2 v2.2.2
 )
