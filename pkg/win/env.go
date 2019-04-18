@@ -7,22 +7,16 @@ import (
 	"golang.org/x/sys/windows/registry"
 )
 
-const (
-	HWND_BROADCAST   = 0xFFFF
-	WM_SETTINGCHANGE = 0x001A
-	SMTO_ABORTIFHUNG = 0x0002
-)
-
 // RefreshEnv refresh Windows environment
 // https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-sendmessagetimeoutw
 func RefreshEnv() {
 	env, _ := syscall.UTF16PtrFromString("Environment")
 	syscall.NewLazyDLL("user32.dll").NewProc("SendMessageTimeoutW").Call(
-		uintptr(HWND_BROADCAST),
-		uintptr(WM_SETTINGCHANGE),
+		uintptr(0xFFFF),
+		uintptr(0x001A),
 		0,
 		uintptr(unsafe.Pointer(env)),
-		uintptr(SMTO_ABORTIFHUNG),
+		uintptr(0x0002),
 		uintptr(5000))
 }
 
