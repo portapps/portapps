@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.22.1 (2019/04/18)
+
+* Add `RefreshEnv` and `SetPermEnv` functions
+* Switch to OpenJDK 11.0.2
+* Add wget build tool dependency
+* Update libs
+
 ## 1.22.0 (2019/04/15)
 
 * Go 1.12
