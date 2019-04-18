@@ -24,6 +24,8 @@
   <!-- Core properties -->
   <property name="core.lib.path" value="${core.basedir}\${bin.dir}\lib"/>
   <property name="core.res.path" value="${core.basedir}\${res.dir}"/>
+  <property name="wget.path" location="${core.lib.path}\wget"/>
+  <property name="wget" location="${wget.path}\wget.exe"/>
   <property name="7za" value="${core.lib.path}\7zipextra\7za.exe"/>
   <property name="7z" value="${core.lib.path}\7zip\7z.exe"/>
   <property name="rcedit.x86" value="${core.lib.path}\rcedit\rcedit-x86.exe"/>
@@ -305,6 +307,7 @@
 
   <target name="load.libs" unless="is.lib.loaded" depends="
       load.lib.antcontrib,
+      load.lib.wget,
       load.lib.7za,
       load.lib.7z,
       load.lib.rcedit,
@@ -325,6 +328,20 @@
         </fileset>
       </classpath>
     </taskdef>
+  </target>
+
+  <target name="load.lib.wget" unless="is.lib.loaded">
+    <echo message="Load Wget"/>
+    <get dest="${core.lib.path}\wget.zip" src="${wget.url}" skipexisting="true">
+      <header name="Referer" value="https://eternallybored.org/misc/wget/"/>
+    </get>
+    <if>
+      <not><available file="${core.lib.path}\wget" type="dir"/></not>
+      <then>
+        <unzip src="${core.lib.path}\wget.zip" dest="${core.lib.path}\wget"/>
+      </then>
+    </if>
+    <assertfile file="${wget}"/>
   </target>
 
   <target name="load.lib.7za" unless="is.lib.loaded">
