@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.22.2 (2019/04/28)
+
+* Make the path to the file containing `userData` for Electron configurable
+
 ## 1.22.1 (2019/04/18)
 
 * Add `RefreshEnv` and `SetPermEnv` functions

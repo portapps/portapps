@@ -234,6 +234,7 @@
   </macrodef>
 
   <macrodef name="setelectronuserdata">
+    <attribute name="file"/>
     <attribute name="path"/>
     <attribute name="search"/>
     <attribute name="replace"/>
@@ -248,8 +249,8 @@
       </exec>
 
       <echo message="Replacing userData in electron.asar..."/>
-      <assertfile file="@{path}\resources\electron.unpacked\browser\init.js"/>
-      <replace file="@{path}\resources\electron.unpacked\browser\init.js" failOnNoReplacements="true">
+      <assertfile file="@{path}\resources\electron.unpacked\@{file}"/>
+      <replace file="@{path}\resources\electron.unpacked\@{file}" failOnNoReplacements="true">
         <replacefilter token="@{search}" value="@{replace}"/>
       </replace>
 
