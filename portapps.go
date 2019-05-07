@@ -1,7 +1,9 @@
 package portapps
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -18,6 +20,8 @@ import (
 
 // App represents an active app object
 type App struct {
+	Info AppInfo
+
 	ID   string
 	Name string
 	Args []string
@@ -30,6 +34,19 @@ type App struct {
 
 	logfile *os.File
 	config  *Config
+}
+
+// AppInfo represents portapp.json file structure
+type AppInfo struct {
+	ID              string `json:"id"`
+	GUID            string `json:"guid"`
+	Name            string `json:"name"`
+	Version         string `json:"version"`
+	Release         string `json:"release"`
+	Date            string `json:"date"`
+	Publisher       string `json:"publisher"`
+	URL             string `json:"url"`
+	PortappsVersion string `json:"portapps_version"`
 }
 
 var (
@@ -46,6 +63,7 @@ func New(id string, name string) (app *App, err error) {
 func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error) {
 	// Init
 	app = &App{
+		Info: AppInfo{},
 		ID:   id,
 		Name: name,
 	}
@@ -72,9 +90,21 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 		app.FatalBox(err)
 	}
 
+	// Load info
+	infoFile := utl.PathJoin(app.RootPath, "portapp.json")
+	infoRaw, err := ioutil.ReadFile(infoFile)
+	if err != nil {
+		return nil, err
+	}
+	if err = json.Unmarshal(infoRaw, &app.Info); err != nil {
+		return nil, err
+	}
+
 	// Startup
 	Log.Info().Msg("--------")
-	Log.Info().Msgf("Starting %s...", app.Name)
+	Log.Info().Msgf("Starting %s %s-%s (portapps %s)...", app.Name, app.Info.Version, app.Info.Release, app.Info.PortappsVersion)
+	Log.Info().Msgf("Release date: %s", app.Info.Date)
+	Log.Info().Msgf("Publisher: %s (%s)", app.Info.Publisher, app.Info.URL)
 	Log.Info().Msgf("Root path: %s", app.RootPath)
 
 	// Configuration
