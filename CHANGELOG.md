@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.23.0 (2019/05/07)
+
+* Allow to choose application binaries path (Issue #28)
+* Log app info
+* Handle `portapp.json` through app object
+* Add `DownloadFile` function
+
 ## 1.22.2 (2019/04/28)
 
 * Make the path to the file containing `userData` for Electron configurable
