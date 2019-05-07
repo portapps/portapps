@@ -68,14 +68,11 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 		Name: name,
 	}
 
-	// Paths
+	// Root path
 	app.RootPath, err = filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		app.FatalBox(err)
 	}
-	app.AppPath = utl.PathJoin(app.RootPath, "app")
-	app.DataPath = utl.PathJoin(app.RootPath, "data")
-	app.WorkingDir = app.AppPath
 
 	// Logfile
 	logfolder := utl.CreateFolder(utl.PathJoin(app.RootPath, "log"))
@@ -122,6 +119,11 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 	b, _ = yaml.Marshal(app.config)
 	Log.Info().Msgf("Configuration:\n%s", string(b))
 
+	// Set paths
+	app.AppPath = app.config.Common.AppPath
+	app.DataPath = utl.PathJoin(app.RootPath, "data")
+	app.WorkingDir = app.AppPath
+
 	// Load env vars from config
 	if len(app.config.Common.Env) > 0 {
 		Log.Info().Msg("Setting environment variables from config...")
@@ -140,6 +142,7 @@ func (app *App) Launch(args []string) {
 	Log.Info().Msgf("Args (cmd line): %s", strings.Join(args, " "))
 	Log.Info().Msgf("Args (hardcoded): %s", strings.Join(app.Args, " "))
 	Log.Info().Msgf("Working dir: %s", app.WorkingDir)
+	Log.Info().Msgf("App path: %s", app.AppPath)
 	Log.Info().Msgf("Data path: %s", app.DataPath)
 
 	if !utl.Exists(app.Process) {
