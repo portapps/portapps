@@ -523,7 +523,6 @@
           <arg value="-o"/>
           <arg value="${tmp.path}\${papp.id}-win32.exe"/>
           <arg value="-v"/>
-          <arg value="-x"/>
           <arg value="-ldflags"/>
           <arg value="${go.ldflags}"/>
         </exec>
@@ -536,7 +535,6 @@
           <arg value="-o"/>
           <arg value="${tmp.path}\${papp.id}-win64.exe"/>
           <arg value="-v"/>
-          <arg value="-x"/>
           <arg value="-ldflags"/>
           <arg value="${go.ldflags}"/>
         </exec>
