@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.24.0 (2019/05/15)
+
+* Add "Notice of Non-Affiliation and Disclaimer" setup wizard page (Issue #33)
+* Switch to unicode release of InnoSetup
+* Set empty appPath value by default in configuration
+
 ## 1.23.0 (2019/05/07)
 
 * Allow to choose application binaries path (Issue #28)
