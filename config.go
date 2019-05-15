@@ -29,7 +29,7 @@ func (app *App) loadConfig(appcfg interface{}) (err error) {
 		Common: Common{
 			Args:    []string{},
 			Env:     map[string]string{},
-			AppPath: utl.PathJoin(app.RootPath, "app"),
+			AppPath: "",
 		},
 		App: appcfg,
 	}

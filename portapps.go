@@ -119,10 +119,15 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 	b, _ = yaml.Marshal(app.config)
 	Log.Info().Msgf("Configuration:\n%s", string(b))
 
-	// Set paths
-	app.AppPath = app.config.Common.AppPath
+	// Set default paths
+	app.AppPath = utl.PathJoin(app.RootPath, "app")
 	app.DataPath = utl.PathJoin(app.RootPath, "data")
 	app.WorkingDir = app.AppPath
+
+	// Check paths from config
+	if app.config.Common.AppPath != "" {
+		app.AppPath = app.config.Common.AppPath
+	}
 
 	// Load env vars from config
 	if len(app.config.Common.Env) > 0 {
