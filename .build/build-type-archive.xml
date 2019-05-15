@@ -123,13 +123,14 @@
         <copy file="${app.basedir}\LICENSE" tofile="${setup.path}\license.txt"/>
         <copy file="${core.res.path}\setup.iss" todir="${setup.path}" overwrite="true">
           <filterset>
-            <filter token="APP_ID" value="${papp.id}"/>
-            <filter token="APP_GUID" value="${papp.guid}"/>
-            <filter token="APP_NAME" value="${papp.name}"/>
-            <filter token="APP_VERSION" value="${app.version}-${app.release}"/>
-            <filter token="APP_URL" value="${papp.url}"/>
-            <filter token="APP_FOLDER" value="${papp.folder}"/>
-            <filter token="PUBLISHER" value="${publisher}"/>
+            <filter token="APP_NAME" value="${app.name}"/>
+            <filter token="APP_HOMEPAGE" value="${app.homepage}"/>
+            <filter token="PAPP_ID" value="${papp.id}"/>
+            <filter token="PAPP_GUID" value="${papp.guid}"/>
+            <filter token="PAPP_VERSION" value="${app.version}-${app.release}"/>
+            <filter token="PAPP_URL" value="${papp.url}"/>
+            <filter token="PAPP_FOLDER" value="${papp.folder}"/>
+            <filter token="PAPP_PUBLISHER" value="${publisher}"/>
           </filterset>
         </copy>
         <exec executable="${iscc}" dir="${setup.path}" failonerror="true">
