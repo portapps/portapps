@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.24.1 (2019/05/16)
+
+* Error while changing `app_path` (Issue #35)
+
 ## 1.24.0 (2019/05/15)
 
 * Add "Notice of Non-Affiliation and Disclaimer" setup wizard page (Issue #33)
