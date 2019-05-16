@@ -575,7 +575,6 @@
           <arg value="-o"/>
           <arg value="${tmp.path}\${papp.id}.exe"/>
           <arg value="-v"/>
-          <arg value="-x"/>
           <arg value="-ldflags"/>
           <arg value="${go.ldflags}"/>
         </exec>
