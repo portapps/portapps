@@ -1,9 +1,8 @@
 package win
 
 import (
+	"syscall"
 	"unsafe"
-
-	"golang.org/x/sys/windows"
 )
 
 // Version returns Windows OS version
@@ -18,7 +17,7 @@ func Version() (major, minor, build uint32) {
 		szCSDVersion        [128]byte
 	}
 
-	ntoskrnl := windows.MustLoadDLL("ntoskrnl.exe")
+	ntoskrnl := syscall.MustLoadDLL("ntoskrnl.exe")
 	defer ntoskrnl.Release()
 
 	proc := ntoskrnl.MustFindProc("RtlGetVersion")
