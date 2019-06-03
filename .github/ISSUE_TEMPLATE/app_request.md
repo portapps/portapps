@@ -1,6 +1,7 @@
 ---
 name: App request
 about: Want an app to be portapped ?
+labels: app-request
 ---
 
 > Please follow this guide to file a proper request report : https://portapps.io/doc/request-app/
