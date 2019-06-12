@@ -135,7 +135,7 @@
   <target name="download">
     <echo message="Downloading untouched ${atf.id}..."/>
     <property name="atf.untouched" location="${tmp.path}\${atf.filename}${atf.ext}"/>
-    <get dest="${atf.untouched}" src="${atf.url}" skipexisting="true"/>
+    <get dest="${atf.untouched}" src="${atf.url}" skipexisting="true" verbose="on"/>
   </target>
 
   <target name="extract">
