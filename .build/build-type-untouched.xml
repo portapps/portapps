@@ -32,12 +32,12 @@
       <equals arg1="${debug}" arg2="false"/>
       <then>
         <move todir="${build.path}\${papp.folder}">
-          <fileset dir="${extract.path}"/>
+          <fileset dir="${extract.path}" defaultexcludes="no"/>
         </move>
       </then>
       <else>
         <copy todir="${build.path}\${papp.folder}">
-          <fileset dir="${extract.path}"/>
+          <fileset dir="${extract.path}" defaultexcludes="no"/>
         </copy>
       </else>
     </if>
@@ -59,7 +59,7 @@
       <not><equals arg1="${atf.win3264.url}" arg2=""/></not>
       <then>
         <copy todir="${release.path}" overwrite="true">
-          <fileset dir="${tmp.path}">
+          <fileset dir="${tmp.path}" defaultexcludes="no">
             <include name="${papp.id}*exe"/>
           </fileset>
         </copy>
@@ -96,13 +96,13 @@
       <then>
         <echo message="Building setup"/>
         <copy todir="${setup.path}\src">
-          <fileset dir="${build.path}"/>
+          <fileset dir="${build.path}" defaultexcludes="no"/>
         </copy>
         <copy todir="${setup.path}">
-          <fileset dir="${core.res.path}">
+          <fileset dir="${core.res.path}" defaultexcludes="no">
             <include name="setup*"/>
           </fileset>
-          <fileset dir="${res.path}">
+          <fileset dir="${res.path}" defaultexcludes="no">
             <include name="setup*"/>
             <include name="papp.ico"/>
           </fileset>

@@ -32,12 +32,12 @@
       <then>
         <copy file="${nupkg.path}\${electron.libfolder}\${electron.executionstub}" tofile="${build.path}\${papp.folder}\${atf.id}.exe" overwrite="true"/>
         <copy todir="${build.path}\${papp.folder}\app-${app.version}">
-          <fileset dir="${atf.libpath}" excludes="${electron.executionstub}"/>
+          <fileset dir="${atf.libpath}" defaultexcludes="no" excludes="${electron.executionstub}"/>
         </copy>
       </then>
       <else>
         <copy todir="${build.path}\${papp.folder}\app-${app.version}">
-          <fileset dir="${atf.libpath}"/>
+          <fileset dir="${atf.libpath}" defaultexcludes="no"/>
         </copy>
       </else>
     </if>
@@ -82,7 +82,7 @@
       <not><equals arg1="${atf.win3264.url}" arg2=""/></not>
       <then>
         <copy todir="${release.path}" overwrite="true">
-          <fileset dir="${tmp.path}">
+          <fileset dir="${tmp.path}" defaultexcludes="no">
             <include name="${papp.id}*exe"/>
           </fileset>
         </copy>
@@ -131,13 +131,13 @@
       <then>
         <echo message="Building setup"/>
         <copy todir="${setup.path}\src">
-          <fileset dir="${build.path}"/>
+          <fileset dir="${build.path}" defaultexcludes="no"/>
         </copy>
         <copy todir="${setup.path}">
-          <fileset dir="${core.res.path}">
+          <fileset dir="${core.res.path}" defaultexcludes="no">
             <include name="setup*"/>
           </fileset>
-          <fileset dir="${res.path}">
+          <fileset dir="${res.path}" defaultexcludes="no">
             <include name="setup*"/>
             <include name="papp.ico"/>
           </fileset>
@@ -181,7 +181,7 @@
 
   <target name="nupkg">
     <first id="first.nupkg">
-      <fileset dir="${extract.path}" includes="*.nupkg"/>
+      <fileset dir="${extract.path}" defaultexcludes="no" includes="*.nupkg"/>
     </first>
     <condition property="atf.nupkg" value="${toString:first.nupkg}">
       <available file="${toString:first.nupkg}" type="file"/>

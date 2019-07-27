@@ -85,7 +85,7 @@
         <delete dir="${build.path}"/>
         <delete dir="${setup.path}"/>
         <delete includeemptydirs="true">
-          <fileset dir="${tmp.path}">
+          <fileset dir="${tmp.path}" defaultexcludes="no">
             <exclude name="version.dat"/>
           </fileset>
         </delete>

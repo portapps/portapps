@@ -31,7 +31,7 @@
 
     <!-- Copy portable executable -->
     <copy todir="${build.path}" overwrite="true">
-      <fileset dir="${tmp.path}">
+      <fileset dir="${tmp.path}" defaultexcludes="no">
         <include name="${papp.id}*exe"/>
       </fileset>
     </copy>
@@ -46,7 +46,7 @@
       <not><equals arg1="${atf.win3264.url}" arg2=""/></not>
       <then>
         <copy todir="${release.path}" overwrite="true">
-          <fileset dir="${tmp.path}">
+          <fileset dir="${tmp.path}" defaultexcludes="no">
             <include name="${papp.id}*exe"/>
           </fileset>
         </copy>
@@ -92,13 +92,13 @@
       <then>
         <echo message="Building setup"/>
         <copy todir="${setup.path}\src">
-          <fileset dir="${build.path}"/>
+          <fileset dir="${build.path}" defaultexcludes="no"/>
         </copy>
         <copy todir="${setup.path}">
-          <fileset dir="${core.res.path}">
+          <fileset dir="${core.res.path}" defaultexcludes="no">
             <include name="setup*"/>
           </fileset>
-          <fileset dir="${res.path}">
+          <fileset dir="${res.path}" defaultexcludes="no">
             <include name="setup*"/>
             <include name="papp.ico"/>
           </fileset>

@@ -160,7 +160,7 @@
       <echo message="Hashing files in @{folder}..."/>
       <for param="file">
         <path>
-          <fileset dir="@{folder}" excludes="**/checksums.txt"/>
+          <fileset dir="@{folder}" excludes="**/checksums.txt" defaultexcludes="no"/>
         </path>
         <sequential>
           <var name="hashfile.tmp.path" value="${tmp.path}\hashfile"/>
@@ -324,7 +324,7 @@
     <get dest="${core.lib.path}\ant-contrib\ant-contrib.jar" src="${antcontrib.url}" skipexisting="true"/>
     <taskdef resource="net/sf/antcontrib/antlib.xml">
       <classpath>
-        <fileset dir="${core.lib.path}/ant-contrib">
+        <fileset dir="${core.lib.path}/ant-contrib" defaultexcludes="no">
           <include name="**/*.jar"/>
         </fileset>
       </classpath>
@@ -510,7 +510,7 @@
   <target name="build" depends="downmod, generate">
     <!-- GO build -->
     <delete>
-      <fileset dir="${tmp.path}" includes="*_upx.exe"/>
+      <fileset dir="${tmp.path}" includes="*_upx.exe" defaultexcludes="no"/>
     </delete>
     <if>
       <equals arg1="${atf.arch}" arg2="win3264"/>
