@@ -92,13 +92,18 @@
       </else>
     </if>
     <if>
-      <equals arg1="${debug}" arg2="false"/>
+      <istrue value="${papp.out.original}"/>
       <then>
-        <move file="${atf.original}" tofile="${release.path}\${atf.filename}${atf.ext}" overwrite="true"/>
+        <if>
+          <equals arg1="${debug}" arg2="false"/>
+          <then>
+            <move file="${atf.original}" tofile="${release.path}\${atf.filename}${atf.ext}" overwrite="true"/>
+          </then>
+          <else>
+            <copy file="${atf.original}" tofile="${release.path}\${atf.filename}${atf.ext}" overwrite="true"/>
+          </else>
+        </if>
       </then>
-      <else>
-        <copy file="${atf.original}" tofile="${release.path}\${atf.filename}${atf.ext}" overwrite="true"/>
-      </else>
     </if>
 
     <!-- Preparing before packaging -->
