@@ -477,6 +477,7 @@
         <unzip src="${core.lib.path}\travis-wait-enhanced.zip" dest="${core.lib.path}\travis-wait-enhanced"/>
       </then>
     </if>
+    <assertfile file="${traviswait}"/>
   </target>
 
   <target name="load.lib.asar">
