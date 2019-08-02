@@ -126,6 +126,35 @@
     </sequential>
   </macrodef>
 
+  <macrodef name="iscc">
+    <attribute name="dir"/>
+    <attribute name="output"/>
+    <attribute name="filename"/>
+    <sequential>
+      <echo message="Building setup..."/>
+      <if>
+        <isset property="env.TRAVIS_BUILD_NUMBER"/>
+        <then>
+          <exec executable="travis_wait" dir="@{dir}" failonerror="true">
+            <arg value="${iscc}"/>
+            <arg value="/Qp"/>
+            <arg value="/O@{output}"/>
+            <arg value="/F@{filename}"/>
+            <arg value="setup.iss"/>
+          </exec>
+        </then>
+        <else>
+          <exec executable="${iscc}" dir="@{dir}" failonerror="true">
+            <arg value="/Qp"/>
+            <arg value="/O@{output}"/>
+            <arg value="/F@{filename}"/>
+            <arg value="setup.iss"/>
+          </exec>
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+
   <macrodef name="upx">
     <attribute name="arch"/>
     <attribute name="dir"/>

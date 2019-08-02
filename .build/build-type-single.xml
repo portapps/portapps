@@ -115,13 +115,7 @@
             <filter token="PAPP_PUBLISHER" value="${publisher}"/>
           </filterset>
         </copy>
-        <echo message="Building setup..."/>
-        <exec executable="${iscc}" dir="${setup.path}" failonerror="true">
-          <arg value="/Qp"/>
-          <arg value="/O${release.path}"/>
-          <arg value="/F${release.setup.filename}"/>
-          <arg value="setup.iss"/>
-        </exec>
+        <iscc dir="${setup.path}" output="${release.path}" filename="${release.setup.filename}"/>
       </then>
     </if>
 
