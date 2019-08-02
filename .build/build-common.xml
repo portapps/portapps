@@ -36,6 +36,7 @@
   <property name="upx32" location="${core.lib.path}\upx\upx32.exe"/>
   <property name="upx64" location="${core.lib.path}\upx\upx64.exe"/>
   <property name="hashmyfiles" location="${core.lib.path}\hashmyfiles\HashMyFiles.exe"/>
+  <property name="traviswait" location="${core.lib.path}\travis-wait-enhanced\travis-wait-enhanced.exe"/>
 
   <!-- Base Properties -->
   <property name="res.path" value="${app.basedir}\${res.dir}"/>
@@ -132,11 +133,25 @@
     <attribute name="filename"/>
     <sequential>
       <echo message="Building setup..."/>
-      <exec executable="${iscc}" dir="@{dir}" failonerror="true">
-        <arg value="/O@{output}"/>
-        <arg value="/F@{filename}"/>
-        <arg value="setup.iss"/>
-      </exec>
+      <if>
+        <isset property="env.TRAVIS_BUILD_NUMBER"/>
+        <then>
+          <exec executable="${traviswait}" dir="@{dir}" failonerror="true">
+            <arg value="${iscc}"/>
+            <arg value="/Q"/>
+            <arg value="/O@{output}"/>
+            <arg value="/F@{filename}"/>
+            <arg value="setup.iss"/>
+          </exec>
+        </then>
+        <else>
+          <exec executable="${iscc}" dir="@{dir}" failonerror="true">
+            <arg value="/O@{output}"/>
+            <arg value="/F@{filename}"/>
+            <arg value="setup.iss"/>
+          </exec>
+        </else>
+      </if>
     </sequential>
   </macrodef>
 
@@ -328,7 +343,8 @@
       load.lib.rcedit,
       load.lib.innosetup,
       load.lib.upx,
-      load.lib.hashmyfiles">
+      load.lib.hashmyfiles,
+      load.lib.traviswait">
     <var name="is.lib.loaded" value="true"/>
   </target>
 
@@ -450,6 +466,17 @@
       </then>
     </if>
     <assertfile file="${hashmyfiles}"/>
+  </target>
+
+  <target name="load.lib.traviswait" unless="is.lib.loaded">
+    <echo message="Load travis-wait-enhanced"/>
+    <get dest="${core.lib.path}\travis-wait-enhanced.zip" src="${traviswaitenhanced.url}" skipexisting="true"/>
+    <if>
+      <not><available file="${core.lib.path}\travis-wait-enhanced" type="dir"/></not>
+      <then>
+        <unzip src="${core.lib.path}\travis-wait-enhanced.zip" dest="${core.lib.path}\travis-wait-enhanced"/>
+      </then>
+    </if>
   </target>
 
   <target name="load.lib.asar">
