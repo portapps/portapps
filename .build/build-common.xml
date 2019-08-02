@@ -69,9 +69,9 @@
             <arg value="-t7z"/>
             <arg value="@{dest}"/>
             <arg value="@{src}"/>
-            <arg value="-m0=LZMA2"/>
-            <arg value="-mx9"/>
-            <arg value="-mmt2"/>
+            <arg value="-m0=${7za.7z.method}"/>
+            <arg value="-mx${7za.7z.complevel}"/>
+            <arg value="-mmt${7za.7z.threads}"/>
           </exec>
         </then>
         <elseif>
@@ -80,9 +80,9 @@
             <echo message="Compressing @{src} to @{dest}..."/>
             <exec executable="${7za}" failonerror="true">
               <arg value="a"/>
-              <arg value="-mm=Deflate"/>
-              <arg value="-mfb=258"/>
-              <arg value="-mpass=15"/>
+              <arg value="-mm=${7za.zip.method}"/>
+              <arg value="-mfb=${7za.zip.fastbytes}"/>
+              <arg value="-mpass=${7za.zip.passes}"/>
               <arg value="-r"/>
               <arg value="@{dest}"/>
               <arg value="@{src}"/>
@@ -545,7 +545,7 @@
             <echo message="Compressing executables with UPX..."/>
             <upx arch="win32" dir="${app.basedir}">
               <args>
-                <arg value="--brute"/>
+                <arg value="-${upx.complevel}"/>
                 <arg value="${tmp.path}\${papp.id}-win32.exe"/>
                 <arg value="-o"/>
                 <arg value="${tmp.path}\${papp.id}-win32_upx.exe"/>
@@ -555,7 +555,7 @@
             <move file="${tmp.path}\${papp.id}-win32_upx.exe" tofile="${tmp.path}\${papp.id}-win32.exe"/>
             <upx arch="win64" dir="${app.basedir}">
               <args>
-                <arg value="--brute"/>
+                <arg value="-${upx.complevel}"/>
                 <arg value="${tmp.path}\${papp.id}-win64.exe"/>
                 <arg value="-o"/>
                 <arg value="${tmp.path}\${papp.id}-win64_upx.exe"/>
@@ -585,7 +585,7 @@
             <echo message="Compressing executable with UPX..."/>
             <upx arch="${atf.arch}" dir="${app.basedir}">
               <args>
-                <arg value="--brute"/>
+                <arg value="-${upx.complevel}"/>
                 <arg value="${tmp.path}\${papp.id}.exe"/>
                 <arg value="-o"/>
                 <arg value="${tmp.path}\${papp.id}_upx.exe"/>
