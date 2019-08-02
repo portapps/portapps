@@ -132,26 +132,11 @@
     <attribute name="filename"/>
     <sequential>
       <echo message="Building setup..."/>
-      <if>
-        <isset property="env.TRAVIS_BUILD_NUMBER"/>
-        <then>
-          <exec executable="travis-wait-improved" dir="@{dir}" failonerror="true">
-            <arg value="${iscc}"/>
-            <arg value="/Qp"/>
-            <arg value="/O@{output}"/>
-            <arg value="/F@{filename}"/>
-            <arg value="setup.iss"/>
-          </exec>
-        </then>
-        <else>
-          <exec executable="${iscc}" dir="@{dir}" failonerror="true">
-            <arg value="/Qp"/>
-            <arg value="/O@{output}"/>
-            <arg value="/F@{filename}"/>
-            <arg value="setup.iss"/>
-          </exec>
-        </else>
-      </if>
+      <exec executable="${iscc}" dir="@{dir}" failonerror="true">
+        <arg value="/O@{output}"/>
+        <arg value="/F@{filename}"/>
+        <arg value="setup.iss"/>
+      </exec>
     </sequential>
   </macrodef>
 
