@@ -46,7 +46,9 @@ Source: "src\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createall
 
 [InstallDelete]
 Type: filesandordirs; Name: "{app}\{#pappFolder}"
+Type: filesandordirs; Name: "{app}\log\*.log"
 Type: filesandordirs; Name: "{app}\*.log"
+Type: filesandordirs; Name: "{app}\{#pappId}*.exe"
 
 [Run]
 Filename: {app}\{#pappId}.exe; Description: Run {#pappName}; Flags: nowait postinstall skipifsilent unchecked
