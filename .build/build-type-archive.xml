@@ -107,7 +107,7 @@
     <if>
       <istrue value="${papp.out.exe}"/>
       <then>
-        <echo message="Preparing setup..."/>
+        <echo message="Building setup"/>
         <copy todir="${setup.path}">
           <fileset dir="${core.res.path}" defaultexcludes="no">
             <include name="setup*"/>
@@ -132,9 +132,7 @@
             <filter token="PAPP_PUBLISHER" value="${publisher}"/>
           </filterset>
         </copy>
-        <echo message="Building setup..."/>
         <exec executable="${iscc}" dir="${setup.path}" failonerror="true">
-          <arg value="/Qp"/>
           <arg value="/O${release.path}"/>
           <arg value="/F${release.setup.filename}"/>
           <arg value="setup.iss"/>
