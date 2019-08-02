@@ -135,7 +135,7 @@
       <if>
         <isset property="env.TRAVIS_BUILD_NUMBER"/>
         <then>
-          <exec executable="travis_wait" dir="@{dir}" failonerror="true">
+          <exec executable="travis-wait-improved" dir="@{dir}" failonerror="true">
             <arg value="${iscc}"/>
             <arg value="/Qp"/>
             <arg value="/O@{output}"/>
