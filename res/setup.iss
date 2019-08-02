@@ -26,7 +26,7 @@ ShowLanguageDialog=yes
 LicenseFile=license.txt
 SetupIconFile=papp.ico
 
-Compression=lzma/max
+Compression=@ISS_COMPRESSION@
 SolidCompression=yes
 
 DefaultDirName={sd}\portapps\{#pappId}
@@ -42,7 +42,7 @@ VersionInfoProductName={#pappName}
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: "src\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "@APP_SRC@\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [InstallDelete]
 Type: filesandordirs; Name: "{app}\{#pappFolder}"

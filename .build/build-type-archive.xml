@@ -108,9 +108,6 @@
       <istrue value="${papp.out.exe}"/>
       <then>
         <echo message="Building setup"/>
-        <copy todir="${setup.path}\src">
-          <fileset dir="${build.path}" defaultexcludes="no"/>
-        </copy>
         <copy todir="${setup.path}">
           <fileset dir="${core.res.path}" defaultexcludes="no">
             <include name="setup*"/>
@@ -123,6 +120,8 @@
         <copy file="${app.basedir}\LICENSE" tofile="${setup.path}\license.txt"/>
         <copy file="${core.res.path}\setup.iss" todir="${setup.path}" overwrite="true">
           <filterset>
+            <filter token="ISS_COMPRESSION" value="${innosetup.comp}"/>
+            <filter token="APP_SRC" value="${build.path}"/>
             <filter token="APP_NAME" value="${app.name}"/>
             <filter token="APP_HOMEPAGE" value="${app.homepage}"/>
             <filter token="PAPP_ID" value="${papp.id}"/>
