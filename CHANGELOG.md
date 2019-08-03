@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.25.0 (2019/08/03)
+
+* Allow to (not) include original artifact
+* Add [travis-wait-enhanced](https://github.com/crazy-max/travis-wait-enhanced)
+* Disable InnoSetup compression progress
+* Allow to override InnoSetup compression
+* Use current generated build files for InnoSetup source
+* Allow to override 7z and UPX compression level
+* Clean more files on update (InnoSetup)
+* Disable default ANT excludes
+* Add download verbosity
+* Use syscall
+* Disable go build verbosity
+
 ## 1.24.1 (2019/05/16)
 
 * Error while changing `app_path` (Issue #35)
