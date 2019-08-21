@@ -185,6 +185,21 @@ func ReplaceByPrefix(filename string, prefix string, replace string) error {
 	return nil
 }
 
+// Replace text in file
+func Replace(filename string, old string, new string) error {
+	input, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile(filename, []byte(strings.Replace(string(input), old, new, -1)), 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // IsDirEmpty determines if directory is empty
 func IsDirEmpty(name string) (bool, error) {
 	f, err := os.Open(name)
