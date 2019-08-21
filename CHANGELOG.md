@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.26.0 (2019/08/21)
+
+* Add `Replace` and `Is64Arch` functions
+
 ## 1.25.0 (2019/08/03)
 
 * Allow to (not) include original artifact
