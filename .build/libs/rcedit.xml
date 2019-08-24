@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="lib-rcedit" basedir=".">
+
+  <!-- Check required properties -->
+  <fail unless="core.lib.path" message="Property 'core.lib.path' must be defined before loading libs/rcedit.xml"/>
+
+  <!-- Load properties -->
+  <dirname property="rcedit.basedir" file="${ant.file.lib-rcedit}"/>
+  <property file="${rcedit.basedir}\rcedit.properties"/>
+
+  <!-- Properties -->
+  <property name="rcedit.x86.exe" value="${core.lib.path}\rcedit-${rcedit.version}\rcedit-x86.exe"/>
+  <property name="rcedit.x64.exe" value="${core.lib.path}\rcedit-${rcedit.version}\rcedit-x64.exe"/>
+
+  <macrodef name="rcedit">
+    <attribute name="arch"/>
+    <attribute name="dir"/>
+    <element name="args"/>
+    <sequential>
+      <echo message="Extracting @{src} to @{dest}..."/>
+      <if>
+        <equals arg1="@{arch}" arg2="win32"/>
+        <then>
+          <exec executable="${rcedit.x86.exe}" failonerror="true" dir="@{dir}">
+            <args/>
+          </exec>
+        </then>
+        <else>
+          <exec executable="${rcedit.x64.exe}" failonerror="true" dir="@{dir}">
+            <args/>
+          </exec>
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+
+  <target name="load.lib.rcedit" unless="is.lib.loaded">
+    <echo message="Load Rcedit"/>
+    <mkdir dir="${core.lib.path}\rcedit-${rcedit.version}"/>
+    <get dest="${core.lib.path}\rcedit-${rcedit.version}\rcedit-x86.exe" src="${rcedit.x86.url}" skipexisting="true"/>
+    <get dest="${core.lib.path}\rcedit-${rcedit.version}\rcedit-x64.exe" src="${rcedit.x64.url}" skipexisting="true"/>
+    <assertfile file="${rcedit.x86.exe}"/>
+    <assertfile file="${rcedit.x64.exe}"/>
+  </target>
+
+</project>

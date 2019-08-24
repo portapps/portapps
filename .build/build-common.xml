@@ -18,25 +18,10 @@
   <condition property="app.release" value="${env.TRAVIS_BUILD_NUMBER}"><isset property="env.TRAVIS_BUILD_NUMBER"/></condition>
   <condition property="app.release" value="0"><not><isset property="app.release"/></not></condition>
 
-  <!-- Set defaults -->
-  <condition property="core.basedir" value="${root.basedir}"><not><isset property="core.basedir"/></not></condition>
-
   <!-- Core properties -->
+  <condition property="core.basedir" value="${root.basedir}"><not><isset property="core.basedir"/></not></condition>
   <property name="core.lib.path" value="${core.basedir}\${bin.dir}\lib"/>
   <property name="core.res.path" value="${core.basedir}\${res.dir}"/>
-  <property name="wget.path" location="${core.lib.path}\wget"/>
-  <property name="wget" location="${wget.path}\wget.exe"/>
-  <property name="7za" value="${core.lib.path}\7zipextra\7za.exe"/>
-  <property name="7z" value="${core.lib.path}\7zip\7z.exe"/>
-  <property name="rcedit.x86" value="${core.lib.path}\rcedit\rcedit-x86.exe"/>
-  <property name="rcedit.x64" value="${core.lib.path}\rcedit\rcedit-x64.exe"/>
-  <property name="innoextract" location="${core.lib.path}\innoextract\innoextract.exe"/>
-  <property name="innosetup.path" location="${core.lib.path}\innosetup"/>
-  <property name="iscc" location="${innosetup.path}\app\ISCC.exe"/>
-  <property name="upx32" location="${core.lib.path}\upx\upx32.exe"/>
-  <property name="upx64" location="${core.lib.path}\upx\upx64.exe"/>
-  <property name="hashmyfiles" location="${core.lib.path}\hashmyfiles\HashMyFiles.exe"/>
-  <property name="traviswait" location="${core.lib.path}\travis-wait-enhanced\travis-wait-enhanced.exe"/>
 
   <!-- Base Properties -->
   <property name="res.path" value="${app.basedir}\${res.dir}"/>
@@ -55,166 +40,6 @@
     project.setProperty(attributes.get("property"), new BigInteger(130, new SecureRandom()).toString(32));
     ]]>
   </scriptdef>
-
-  <macrodef name="sevenzip">
-    <attribute name="src"/>
-    <attribute name="dest"/>
-    <attribute name="format" default="7z"/>
-    <sequential>
-      <if>
-        <equals arg1="@{format}" arg2="7z"/>
-        <then>
-          <echo message="Compressing @{src} to @{dest}..."/>
-          <exec executable="${7za}" failonerror="true">
-            <arg value="a"/>
-            <arg value="-t7z"/>
-            <arg value="@{dest}"/>
-            <arg value="@{src}"/>
-            <arg value="-m0=${7za.7z.method}"/>
-            <arg value="-mx${7za.7z.complevel}"/>
-            <arg value="-mmt${7za.7z.threads}"/>
-          </exec>
-        </then>
-        <elseif>
-          <equals arg1="@{format}" arg2="zip"/>
-          <then>
-            <echo message="Compressing @{src} to @{dest}..."/>
-            <exec executable="${7za}" failonerror="true">
-              <arg value="a"/>
-              <arg value="-mm=${7za.zip.method}"/>
-              <arg value="-mfb=${7za.zip.fastbytes}"/>
-              <arg value="-mpass=${7za.zip.passes}"/>
-              <arg value="-r"/>
-              <arg value="@{dest}"/>
-              <arg value="@{src}"/>
-            </exec>
-          </then>
-        </elseif>
-        <else>
-          <fail message="Unknown format: @{format}"/>
-        </else>
-      </if>
-    </sequential>
-  </macrodef>
-
-  <macrodef name="sevenzip-ax">
-    <attribute name="src"/>
-    <attribute name="dest"/>
-    <attribute name="overwrite" default="-aoa"/>
-    <sequential>
-      <echo message="Extracting @{src} to @{dest}..."/>
-      <exec executable="${7za}" failonerror="true">
-        <arg value="x"/>
-        <arg value="@{overwrite}"/>
-        <arg value="@{src}"/>
-        <arg value="-o@{dest}"/>
-      </exec>
-    </sequential>
-  </macrodef>
-
-  <macrodef name="sevenzip-x">
-    <attribute name="src"/>
-    <attribute name="dest"/>
-    <attribute name="overwrite" default="-aoa"/>
-    <sequential>
-      <echo message="Extracting @{src} to @{dest}..."/>
-      <exec executable="${7z}" failonerror="true">
-        <arg value="x"/>
-        <arg value="@{overwrite}"/>
-        <arg value="@{src}"/>
-        <arg value="-o@{dest}"/>
-      </exec>
-    </sequential>
-  </macrodef>
-
-  <macrodef name="iscc">
-    <attribute name="dir"/>
-    <attribute name="output"/>
-    <attribute name="filename"/>
-    <sequential>
-      <echo message="Building setup..."/>
-      <if>
-        <isset property="env.TRAVIS_BUILD_NUMBER"/>
-        <then>
-          <exec executable="${traviswait}" dir="@{dir}" failonerror="true">
-            <arg value="${iscc}"/>
-            <arg value="/Q"/>
-            <arg value="/O@{output}"/>
-            <arg value="/F@{filename}"/>
-            <arg value="setup.iss"/>
-          </exec>
-        </then>
-        <else>
-          <exec executable="${iscc}" dir="@{dir}" failonerror="true">
-            <arg value="/O@{output}"/>
-            <arg value="/F@{filename}"/>
-            <arg value="setup.iss"/>
-          </exec>
-        </else>
-      </if>
-    </sequential>
-  </macrodef>
-
-  <macrodef name="upx">
-    <attribute name="arch"/>
-    <attribute name="dir"/>
-    <element name="args"/>
-    <sequential>
-      <if>
-        <equals arg1="@{arch}" arg2="win32"/>
-        <then>
-          <exec executable="${upx32}" failonerror="true" dir="@{dir}">
-            <args/>
-          </exec>
-        </then>
-        <elseif>
-          <equals arg1="@{arch}" arg2="win64"/>
-          <then>
-            <exec executable="${upx64}" failonerror="true" dir="@{dir}">
-              <args/>
-            </exec>
-          </then>
-        </elseif>
-        <else>
-          <fail message="Unknown arch for UPX compression: @{arch}"/>
-        </else>
-      </if>
-    </sequential>
-  </macrodef>
-
-  <macrodef name="hashfolder">
-    <attribute name="folder"/>
-    <sequential>
-      <delete file="@{folder}/checksums.txt"/>
-      <echo message="Hashing files in @{folder}..."/>
-      <for param="file">
-        <path>
-          <fileset dir="@{folder}" excludes="**/checksums.txt" defaultexcludes="no"/>
-        </path>
-        <sequential>
-          <var name="hashfile.tmp.path" value="${tmp.path}\hashfile"/>
-          <mkdir dir="${hashfile.tmp.path}"/>
-          <var name="hashfile.filename" unset="true"/>
-          <basename property="hashfile.filename" file="@{file}"/>
-          <var name="hashfile.xml" value="${hashfile.tmp.path}\${hashfile.filename}.xml"/>
-
-          <exec executable="${hashmyfiles}" failonerror="true">
-            <arg value="/file"/>
-            <arg value="@{file}"/>
-            <arg value="/sxml"/>
-            <arg value="${hashfile.xml}"/>
-          </exec>
-
-          <var name="hash_list.item.sha-256" unset="true"/>
-          <var name="hash_list.item.filename" unset="true"/>
-          <fixcrlf file="${hashfile.xml}" eol="lf" encoding="UTF-16LE" outputencoding="UTF-8"/>
-          <xmlproperty file="${hashfile.xml}" collapseAttributes="true"/>
-          <echo message="${hash_list.item.sha-256}  ${hash_list.item.filename}"/>
-          <echo file="@{folder}\checksums.txt" append="true">${hash_list.item.sha-256}  ${hash_list.item.filename}${line.separator}</echo>
-        </sequential>
-      </for>
-    </sequential>
-  </macrodef>
 
   <macrodef name="coreversion">
     <attribute name="path"/>
@@ -293,28 +118,6 @@
     </sequential>
   </macrodef>
 
-  <macrodef name="rcedit">
-    <attribute name="arch"/>
-    <attribute name="dir"/>
-    <element name="args"/>
-    <sequential>
-      <echo message="Extracting @{src} to @{dest}..."/>
-      <if>
-        <equals arg1="@{arch}" arg2="win32"/>
-        <then>
-          <exec executable="${rcedit.x86}" failonerror="true" dir="@{dir}">
-            <args/>
-          </exec>
-        </then>
-        <else>
-          <exec executable="${rcedit.x64}" failonerror="true" dir="@{dir}">
-            <args/>
-          </exec>
-        </else>
-      </if>
-    </sequential>
-  </macrodef>
-
   <!-- Targets -->
   <target name="start">
     <echo message="*** Start building ${app}"/>
@@ -335,165 +138,30 @@
     <mkdir dir="${setup.path}"/>
   </target>
 
+  <!-- Libs -->
+  <import file="${build.basedir}\libs\antcontrib.xml"/>
+  <import file="${build.basedir}\libs\traviswaitenhanced.xml"/>
+  <import file="${build.basedir}\libs\wget.xml"/>
+  <import file="${build.basedir}\libs\7zip.xml"/>
+  <import file="${build.basedir}\libs\rcedit.xml"/>
+  <import file="${build.basedir}\libs\innoextract.xml"/>
+  <import file="${build.basedir}\libs\innosetup.xml"/>
+  <import file="${build.basedir}\libs\upx.xml"/>
+  <import file="${build.basedir}\libs\hashmyfiles.xml"/>
+  <import file="${build.basedir}\libs\asar.xml"/>
+
   <target name="load.libs" unless="is.lib.loaded" depends="
       load.lib.antcontrib,
+      load.lib.traviswaitenhanced,
       load.lib.wget,
       load.lib.7za,
       load.lib.7z,
       load.lib.rcedit,
+      load.lib.innoextract,
       load.lib.innosetup,
       load.lib.upx,
-      load.lib.hashmyfiles,
-      load.lib.traviswait">
+      load.lib.hashmyfiles">
     <var name="is.lib.loaded" value="true"/>
-  </target>
-
-  <target name="load.lib.antcontrib" unless="is.lib.loaded">
-    <echo message="Load ANT Contrib"/>
-    <mkdir dir="${core.lib.path}\ant-contrib"/>
-    <get dest="${core.lib.path}\ant-contrib\ant-contrib.jar" src="${antcontrib.url}" skipexisting="true"/>
-    <taskdef resource="net/sf/antcontrib/antlib.xml">
-      <classpath>
-        <fileset dir="${core.lib.path}/ant-contrib" defaultexcludes="no">
-          <include name="**/*.jar"/>
-        </fileset>
-      </classpath>
-    </taskdef>
-  </target>
-
-  <target name="load.lib.wget" unless="is.lib.loaded">
-    <echo message="Load Wget"/>
-    <get dest="${core.lib.path}\wget.zip" src="${wget.url}" skipexisting="true">
-      <header name="Referer" value="https://eternallybored.org/misc/wget/"/>
-    </get>
-    <if>
-      <not><available file="${core.lib.path}\wget" type="dir"/></not>
-      <then>
-        <unzip src="${core.lib.path}\wget.zip" dest="${core.lib.path}\wget"/>
-      </then>
-    </if>
-    <assertfile file="${wget}"/>
-  </target>
-
-  <target name="load.lib.7za" unless="is.lib.loaded">
-    <echo message="Load 7za"/>
-    <get dest="${core.lib.path}\7zipextra.zip" src="${7zipextra.url}" skipexisting="true"/>
-    <if>
-      <not><available file="${core.lib.path}\7zipextra" type="dir"/></not>
-      <then>
-        <unzip src="${core.lib.path}\7zipextra.zip" dest="${core.lib.path}\7zipextra"/>
-      </then>
-    </if>
-  </target>
-
-  <target name="load.lib.7z" unless="is.lib.loaded">
-    <echo message="Load 7za"/>
-    <get dest="${core.lib.path}\7z.exe" src="${7zip.url}" skipexisting="true"/>
-    <if>
-      <not><available file="${core.lib.path}\7zip" type="dir"/></not>
-      <then>
-        <sevenzip-ax src="${core.lib.path}\7z.exe" dest="${core.lib.path}\7zip"/>
-      </then>
-    </if>
-  </target>
-
-  <target name="load.lib.rcedit" unless="is.lib.loaded">
-    <echo message="Load Rcedit"/>
-    <mkdir dir="${core.lib.path}\rcedit"/>
-    <get dest="${core.lib.path}\rcedit\rcedit-x86.exe" src="${rcedit.x86.url}" skipexisting="true"/>
-    <get dest="${core.lib.path}\rcedit\rcedit-x64.exe" src="${rcedit.x64.url}" skipexisting="true"/>
-  </target>
-
-  <target name="load.lib.innoextract" unless="is.lib.loaded">
-    <echo message="Load innoextract"/>
-    <get dest="${core.lib.path}\innoextract.zip" src="${innoextract.url}" skipexisting="true"/>
-    <if>
-      <not><available file="${core.lib.path}\innoextract" type="dir"/></not>
-      <then>
-        <unzip src="${core.lib.path}\innoextract.zip" dest="${core.lib.path}\innoextract"/>
-      </then>
-    </if>
-  </target>
-
-  <target name="load.lib.innosetup" depends="load.lib.innoextract" unless="is.lib.loaded">
-    <echo message="Load InnoSetup"/>
-    <get dest="${core.lib.path}\innosetup.exe" src="${innosetup.url}" skipexisting="true"/>
-    <if>
-      <not><available file="${innosetup.path}\app" type="dir"/></not>
-      <then>
-        <exec executable="${innoextract}">
-          <arg value="-d"/>
-          <arg value="${innosetup.path}"/>
-          <arg value="${core.lib.path}\innosetup.exe"/>
-        </exec>
-      </then>
-    </if>
-    <assertfile file="${iscc}"/>
-  </target>
-
-  <target name="load.lib.upx" unless="is.lib.loaded">
-    <echo message="Load upx"/>
-    <get dest="${core.lib.path}\upx32.zip" src="${upx.win32.url}" skipexisting="true"/>
-    <get dest="${core.lib.path}\upx64.zip" src="${upx.win64.url}" skipexisting="true"/>
-    <if>
-      <not><available file="${core.lib.path}\upx" type="dir"/></not>
-      <then>
-        <unzip src="${core.lib.path}\upx32.zip" dest="${core.lib.path}\upx">
-          <patternset>
-            <include name="**/upx.exe"/>
-          </patternset>
-          <mapper type="flatten"/>
-        </unzip>
-        <move file="${core.lib.path}\upx\upx.exe" tofile="${core.lib.path}\upx\upx32.exe"/>
-        <unzip src="${core.lib.path}\upx64.zip" dest="${core.lib.path}\upx">
-          <patternset>
-            <include name="**/upx.exe"/>
-          </patternset>
-          <mapper type="flatten"/>
-        </unzip>
-        <move file="${core.lib.path}\upx\upx.exe" tofile="${core.lib.path}\upx\upx64.exe"/>
-      </then>
-    </if>
-  </target>
-
-  <target name="load.lib.hashmyfiles" unless="is.lib.loaded">
-    <echo message="Load hashmyfiles"/>
-    <get dest="${core.lib.path}\hashmyfiles.zip" src="${hashmyfiles.url}" skipexisting="true"/>
-    <if>
-      <not><available file="${core.lib.path}\hashmyfiles" type="dir"/></not>
-      <then>
-        <unzip src="${core.lib.path}\hashmyfiles.zip" dest="${core.lib.path}\hashmyfiles"/>
-      </then>
-    </if>
-    <assertfile file="${hashmyfiles}"/>
-  </target>
-
-  <target name="load.lib.traviswait" unless="is.lib.loaded">
-    <echo message="Load travis-wait-enhanced"/>
-    <get dest="${core.lib.path}\travis-wait-enhanced.zip" src="${traviswaitenhanced.url}" skipexisting="true"/>
-    <if>
-      <not><available file="${core.lib.path}\travis-wait-enhanced" type="dir"/></not>
-      <then>
-        <unzip src="${core.lib.path}\travis-wait-enhanced.zip" dest="${core.lib.path}\travis-wait-enhanced"/>
-      </then>
-    </if>
-    <assertfile file="${traviswait}"/>
-  </target>
-
-  <target name="load.lib.asar">
-    <echo message="Load Asar"/>
-    <exec executable="npm.cmd" failonerror="true">
-      <arg value="config"/>
-      <arg value="set"/>
-      <arg value="strict-ssl"/>
-      <arg value="false"/>
-      <arg value="-g"/>
-    </exec>
-    <exec executable="npm.cmd" failonerror="true">
-      <arg value="install"/>
-      <arg value="-g"/>
-      <arg value="asar@${asar.version}"/>
-    </exec>
   </target>
 
   <target name="clear">

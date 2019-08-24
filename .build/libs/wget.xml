@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="lib-wget" basedir=".">
+
+  <!-- Check required properties -->
+  <fail unless="core.lib.path" message="Property 'core.lib.path' must be defined before loading libs/lessmsi.xml"/>
+
+  <!-- Load properties -->
+  <dirname property="wget.basedir" file="${ant.file.lib-wget}"/>
+  <property file="${wget.basedir}\wget.properties"/>
+
+  <!-- Properties -->
+  <property name="wget.path" location="${core.lib.path}\wget-${wget.version}"/>
+  <property name="wget.exe" location="${wget.path}\wget.exe"/>
+
+  <target name="load.lib.wget" unless="is.lib.loaded">
+    <echo message="Load Wget"/>
+    <get dest="${core.lib.path}\wget-${wget.version}.zip" src="${wget.url}" skipexisting="true">
+      <header name="Referer" value="https://eternallybored.org/misc/wget/"/>
+    </get>
+    <if>
+      <not><available file="${core.lib.path}\wget-${wget.version}" type="dir"/></not>
+      <then>
+        <unzip src="${core.lib.path}\wget-${wget.version}.zip" dest="${core.lib.path}\wget-${wget.version}"/>
+      </then>
+    </if>
+    <assertfile file="${wget.exe}"/>
+  </target>
+
+</project>

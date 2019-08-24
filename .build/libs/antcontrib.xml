@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="lib-antcontrib" basedir=".">
+
+  <!-- Check required properties -->
+  <fail unless="core.lib.path" message="Property 'core.lib.path' must be defined before loading libs/lessmsi.xml"/>
+
+  <!-- Load properties -->
+  <dirname property="antcontrib.basedir" file="${ant.file.lib-antcontrib}"/>
+  <property file="${antcontrib.basedir}\antcontrib.properties"/>
+
+  <target name="load.lib.antcontrib" unless="is.lib.loaded">
+    <echo message="Load ANT Contrib"/>
+    <mkdir dir="${core.lib.path}\ant-contrib-${antcontrib.version}"/>
+    <get dest="${core.lib.path}\ant-contrib-${antcontrib.version}\ant-contrib.jar" src="${antcontrib.url}" skipexisting="true"/>
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+      <classpath>
+        <fileset dir="${core.lib.path}/ant-contrib-${antcontrib.version}" defaultexcludes="no">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+    </taskdef>
+  </target>
+
+</project>

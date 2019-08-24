@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="lib-upx" basedir=".">
+
+  <!-- Check required properties -->
+  <fail unless="core.lib.path" message="Property 'core.lib.path' must be defined before loading libs/upx.xml"/>
+
+  <!-- Load properties -->
+  <dirname property="upx.basedir" file="${ant.file.lib-upx}"/>
+  <property file="${upx.basedir}\upx.properties"/>
+
+  <!-- Properties -->
+  <property name="upx.x86.exe" value="${core.lib.path}\upx-${upx.version}\upx32.exe"/>
+  <property name="upx.x64.exe" value="${core.lib.path}\upx-${upx.version}\upx64.exe"/>
+
+  <macrodef name="upx">
+    <attribute name="arch"/>
+    <attribute name="dir"/>
+    <element name="args"/>
+    <sequential>
+      <if>
+        <equals arg1="@{arch}" arg2="win32"/>
+        <then>
+          <exec executable="${upx.x86.exe}" failonerror="true" dir="@{dir}">
+            <args/>
+          </exec>
+        </then>
+        <elseif>
+          <equals arg1="@{arch}" arg2="win64"/>
+          <then>
+            <exec executable="${upx.x64.exe}" failonerror="true" dir="@{dir}">
+              <args/>
+            </exec>
+          </then>
+        </elseif>
+        <else>
+          <fail message="Unknown arch for UPX compression: @{arch}"/>
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+
+  <target name="load.lib.upx" unless="is.lib.loaded">
+    <echo message="Load upx"/>
+    <get dest="${core.lib.path}\upx32-${upx.version}.zip" src="${upx.win32.url}" skipexisting="true"/>
+    <get dest="${core.lib.path}\upx64-${upx.version}.zip" src="${upx.win64.url}" skipexisting="true"/>
+    <if>
+      <not><available file="${core.lib.path}\upx-${upx.version}" type="dir"/></not>
+      <then>
+        <unzip src="${core.lib.path}\upx32-${upx.version}.zip" dest="${core.lib.path}\upx-${upx.version}">
+          <patternset>
+            <include name="**/upx.exe"/>
+          </patternset>
+          <mapper type="flatten"/>
+        </unzip>
+        <move file="${core.lib.path}\upx-${upx.version}\upx.exe" tofile="${core.lib.path}\upx-${upx.version}\upx32.exe"/>
+        <unzip src="${core.lib.path}\upx64-${upx.version}.zip" dest="${core.lib.path}\upx-${upx.version}">
+          <patternset>
+            <include name="**/upx.exe"/>
+          </patternset>
+          <mapper type="flatten"/>
+        </unzip>
+        <move file="${core.lib.path}\upx-${upx.version}\upx.exe" tofile="${core.lib.path}\upx-${upx.version}\upx64.exe"/>
+      </then>
+    </if>
+    <assertfile file="${upx.x86.exe}"/>
+    <assertfile file="${upx.x64.exe}"/>
+  </target>
+
+</project>

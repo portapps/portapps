@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="lib-hashmyfiles" basedir=".">
+
+  <!-- Check required properties -->
+  <fail unless="core.lib.path" message="Property 'core.lib.path' must be defined before loading libs/hashmyfiles.xml"/>
+
+  <!-- Load properties -->
+  <dirname property="hashmyfiles.basedir" file="${ant.file.lib-hashmyfiles}"/>
+  <property file="${hashmyfiles.basedir}\hashmyfiles.properties"/>
+
+  <!-- Properties -->
+  <property name="hashmyfiles.exe" location="${core.lib.path}\hashmyfiles-${hashmyfiles.version}\HashMyFiles.exe"/>
+
+  <macrodef name="hashfolder">
+    <attribute name="folder"/>
+    <sequential>
+      <delete file="@{folder}/checksums.txt"/>
+      <echo message="Hashing files in @{folder}..."/>
+      <for param="file">
+        <path>
+          <fileset dir="@{folder}" excludes="**/checksums.txt" defaultexcludes="no"/>
+        </path>
+        <sequential>
+          <var name="hashfile.tmp.path" value="${tmp.path}\hashfile"/>
+          <mkdir dir="${hashfile.tmp.path}"/>
+          <var name="hashfile.filename" unset="true"/>
+          <basename property="hashfile.filename" file="@{file}"/>
+          <var name="hashfile.xml" value="${hashfile.tmp.path}\${hashfile.filename}.xml"/>
+
+          <exec executable="${hashmyfiles.exe}" failonerror="true">
+            <arg value="/file"/>
+            <arg value="@{file}"/>
+            <arg value="/sxml"/>
+            <arg value="${hashfile.xml}"/>
+          </exec>
+
+          <var name="hash_list.item.sha-256" unset="true"/>
+          <var name="hash_list.item.filename" unset="true"/>
+          <fixcrlf file="${hashfile.xml}" eol="lf" encoding="UTF-16LE" outputencoding="UTF-8"/>
+          <xmlproperty file="${hashfile.xml}" collapseAttributes="true"/>
+          <echo message="${hash_list.item.sha-256}  ${hash_list.item.filename}"/>
+          <echo file="@{folder}\checksums.txt" append="true">${hash_list.item.sha-256}  ${hash_list.item.filename}${line.separator}</echo>
+        </sequential>
+      </for>
+    </sequential>
+  </macrodef>
+
+  <target name="load.lib.hashmyfiles" unless="is.lib.loaded">
+    <echo message="Load hashmyfiles"/>
+    <get dest="${core.lib.path}\hashmyfiles-${hashmyfiles.version}.zip" src="${hashmyfiles.url}" skipexisting="true"/>
+    <if>
+      <not><available file="${core.lib.path}\hashmyfiles-${hashmyfiles.version}" type="dir"/></not>
+      <then>
+        <unzip src="${core.lib.path}\hashmyfiles-${hashmyfiles.version}.zip" dest="${core.lib.path}\hashmyfiles-${hashmyfiles.version}"/>
+      </then>
+    </if>
+    <assertfile file="${hashmyfiles.exe}"/>
+  </target>
+
+</project>

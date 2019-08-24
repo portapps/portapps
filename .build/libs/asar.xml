@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="lib-asar" basedir=".">
+
+  <!-- Check required properties -->
+  <fail unless="core.lib.path" message="Property 'core.lib.path' must be defined before loading libs/asar.xml"/>
+
+  <!-- Load properties -->
+  <dirname property="asar.basedir" file="${ant.file.lib-asar}"/>
+  <property file="${asar.basedir}\asar.properties"/>
+
+  <target name="load.lib.asar">
+    <echo message="Load Asar"/>
+    <exec executable="npm.cmd" failonerror="true">
+      <arg value="config"/>
+      <arg value="set"/>
+      <arg value="strict-ssl"/>
+      <arg value="false"/>
+      <arg value="-g"/>
+    </exec>
+    <exec executable="npm.cmd" failonerror="true">
+      <arg value="install"/>
+      <arg value="-g"/>
+      <arg value="asar@${asar.version}"/>
+    </exec>
+  </target>
+
+</project>

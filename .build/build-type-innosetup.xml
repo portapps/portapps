@@ -149,12 +149,7 @@
   </target>
 
   <target name="extract">
-    <echo message="Extracting ${atf.original}..."/>
-    <exec executable="${innoextract}">
-      <arg value="-d"/>
-      <arg value="${extract.path}"/>
-      <arg value="${atf.original}"/>
-    </exec>
+    <innoextract file="${atf.original}" dest="${extract.path}"/>
     <assertfile file="${extract.path}\${atf.assertextract}"/>
   </target>
 

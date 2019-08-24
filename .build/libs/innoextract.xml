@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="lib-innoextract" basedir=".">
+
+  <!-- Check required properties -->
+  <fail unless="core.lib.path" message="Property 'core.lib.path' must be defined before loading libs/innoextract.xml"/>
+
+  <!-- Load properties -->
+  <dirname property="innoextract.basedir" file="${ant.file.lib-innoextract}"/>
+  <property file="${innoextract.basedir}\innoextract.properties"/>
+
+  <!-- Properties -->
+  <property name="innoextract.exe" location="${core.lib.path}\innoextract-${innoextract.version}\innoextract.exe"/>
+
+  <macrodef name="innoextract">
+    <attribute name="file"/>
+    <attribute name="dest"/>
+    <sequential>
+      <echo message="Extracting @{file}..."/>
+      <exec executable="${innoextract.exe}" failonerror="true">
+        <arg value="-d"/>
+        <arg value="@{dest}"/>
+        <arg value="@{file}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <target name="load.lib.innoextract" unless="is.lib.loaded">
+    <echo message="Load innoextract"/>
+    <get dest="${core.lib.path}\innoextract-${innoextract.version}.zip" src="${innoextract.url}" skipexisting="true"/>
+    <if>
+      <not><available file="${core.lib.path}\innoextract-${innoextract.version}" type="dir"/></not>
+      <then>
+        <unzip src="${core.lib.path}\innoextract-${innoextract.version}.zip" dest="${core.lib.path}\innoextract-${innoextract.version}"/>
+      </then>
+    </if>
+    <assertfile file="${innoextract.exe}"/>
+  </target>
+
+</project>

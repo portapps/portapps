@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="lib-innosetup" basedir=".">
+
+  <!-- Check required properties -->
+  <fail unless="core.lib.path" message="Property 'core.lib.path' must be defined before loading libs/innosetup.xml"/>
+  <fail unless="traviswaitenhanced.exe" message="Property 'traviswaitenhanced.exe' must be defined before loading libs/innosetup.xml"/>
+  <fail unless="innoextract.exe" message="Property 'innoextract.exe' must be defined before loading libs/innosetup.xml"/>
+
+  <!-- Load properties -->
+  <dirname property="innosetup.basedir" file="${ant.file.lib-innosetup}"/>
+  <property file="${innosetup.basedir}\innosetup.properties"/>
+
+  <!-- Properties -->
+  <property name="innosetup.path" location="${core.lib.path}\innosetup-${innosetup.version}"/>
+  <property name="iscc.exe" location="${innosetup.path}\app\ISCC.exe"/>
+
+  <macrodef name="iscc">
+    <attribute name="dir"/>
+    <attribute name="output"/>
+    <attribute name="filename"/>
+    <sequential>
+      <echo message="Building setup..."/>
+      <if>
+        <isset property="env.TRAVIS_BUILD_NUMBER"/>
+        <then>
+          <exec executable="${traviswaitenhanced.exe}" dir="@{dir}" failonerror="true">
+            <arg value="${iscc.exe}"/>
+            <arg value="/Q"/>
+            <arg value="/O@{output}"/>
+            <arg value="/F@{filename}"/>
+            <arg value="setup.iss"/>
+          </exec>
+        </then>
+        <else>
+          <exec executable="${iscc.exe}" dir="@{dir}" failonerror="true">
+            <arg value="/O@{output}"/>
+            <arg value="/F@{filename}"/>
+            <arg value="setup.iss"/>
+          </exec>
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+
+  <target name="load.lib.innosetup" unless="is.lib.loaded">
+    <echo message="Load InnoSetup"/>
+    <get dest="${core.lib.path}\innosetup-${innosetup.version}.exe" src="${innosetup.url}" skipexisting="true"/>
+    <if>
+      <not><available file="${innosetup.path}\app" type="dir"/></not>
+      <then>
+        <innoextract file="${core.lib.path}\innosetup-${innosetup.version}.exe" dest="${innosetup.path}"/>
+      </then>
+    </if>
+    <assertfile file="${iscc.exe}"/>
+  </target>
+
+</project>

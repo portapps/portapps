@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="lib-7zip" basedir=".">
+
+  <!-- Check required properties -->
+  <fail unless="core.lib.path" message="Property 'core.lib.path' must be defined before loading libs/7zip.xml"/>
+
+  <!-- Load properties -->
+  <dirname property="7zip.basedir" file="${ant.file.lib-7zip}"/>
+  <property file="${7zip.basedir}\7zip.properties"/>
+
+  <!-- Properties -->
+  <property name="7za.exe" value="${core.lib.path}\7zipextra-${7zipextra.version}\7za.exe"/>
+  <property name="7z.exe" value="${core.lib.path}\7z-${7zip.version}\7z.exe"/>
+
+  <macrodef name="sevenzip">
+    <attribute name="src"/>
+    <attribute name="dest"/>
+    <attribute name="format" default="7z"/>
+    <sequential>
+      <if>
+        <equals arg1="@{format}" arg2="7z"/>
+        <then>
+          <echo message="Compressing @{src} to @{dest}..."/>
+          <exec executable="${7za.exe}" failonerror="true">
+            <arg value="a"/>
+            <arg value="-t7z"/>
+            <arg value="@{dest}"/>
+            <arg value="@{src}"/>
+            <arg value="-m0=${7za.7z.method}"/>
+            <arg value="-mx${7za.7z.complevel}"/>
+            <arg value="-mmt${7za.7z.threads}"/>
+          </exec>
+        </then>
+        <elseif>
+          <equals arg1="@{format}" arg2="zip"/>
+          <then>
+            <echo message="Compressing @{src} to @{dest}..."/>
+            <exec executable="${7za.exe}" failonerror="true">
+              <arg value="a"/>
+              <arg value="-mm=${7za.zip.method}"/>
+              <arg value="-mfb=${7za.zip.fastbytes}"/>
+              <arg value="-mpass=${7za.zip.passes}"/>
+              <arg value="-r"/>
+              <arg value="@{dest}"/>
+              <arg value="@{src}"/>
+            </exec>
+          </then>
+        </elseif>
+        <else>
+          <fail message="Unknown format: @{format}"/>
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="sevenzip-ax">
+    <attribute name="src"/>
+    <attribute name="dest"/>
+    <attribute name="overwrite" default="-aoa"/>
+    <sequential>
+      <echo message="Extracting @{src} to @{dest}..."/>
+      <exec executable="${7za.exe}" failonerror="true">
+        <arg value="x"/>
+        <arg value="@{overwrite}"/>
+        <arg value="@{src}"/>
+        <arg value="-o@{dest}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="sevenzip-x">
+    <attribute name="src"/>
+    <attribute name="dest"/>
+    <attribute name="overwrite" default="-aoa"/>
+    <sequential>
+      <echo message="Extracting @{src} to @{dest}..."/>
+      <exec executable="${7z.exe}" failonerror="true">
+        <arg value="x"/>
+        <arg value="@{overwrite}"/>
+        <arg value="@{src}"/>
+        <arg value="-o@{dest}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <target name="load.lib.7za" unless="is.lib.loaded">
+    <echo message="Load 7za"/>
+    <get dest="${core.lib.path}\7zipextra-${7zipextra.version}.zip" src="${7zipextra.url}" skipexisting="true"/>
+    <if>
+      <not><available file="${core.lib.path}\7zipextra-${7zipextra.version}" type="dir"/></not>
+      <then>
+        <unzip src="${core.lib.path}\7zipextra-${7zipextra.version}.zip" dest="${core.lib.path}\7zipextra-${7zipextra.version}"/>
+      </then>
+    </if>
+    <assertfile file="${7za.exe}"/>
+  </target>
+
+  <target name="load.lib.7z" unless="is.lib.loaded">
+    <echo message="Load 7z"/>
+    <get dest="${core.lib.path}\7z-${7zip.version}.exe" src="${7zip.url}" skipexisting="true"/>
+    <if>
+      <not><available file="${core.lib.path}\7z-${7zip.version}" type="dir"/></not>
+      <then>
+        <sevenzip-ax src="${core.lib.path}\7z-${7zip.version}.exe" dest="${core.lib.path}\7z-${7zip.version}"/>
+      </then>
+    </if>
+    <assertfile file="${7z.exe}"/>
+  </target>
+
+</project>
