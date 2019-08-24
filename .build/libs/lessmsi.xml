@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="lib-lessmsi" basedir=".">
+
+  <!-- Check required properties -->
+  <fail unless="core.lib.path" message="Property 'core.lib.path' must be defined before loading libs/lessmsi.xml"/>
+
+  <!-- Load properties -->
+  <dirname property="lessmsi.basedir" file="${ant.file.lib-lessmsi}"/>
+  <property file="${lessmsi.basedir}\lessmsi.properties"/>
+
+  <!-- Properties -->
+  <property name="lessmsi.exe" location="${core.lib.path}\lessmsi-${lessmsi.version}\lessmsi.exe"/>
+
+  <macrodef name="extractmsi">
+    <attribute name="file"/>
+    <attribute name="dest"/>
+    <sequential>
+      <var name="file.basename" unset="true"/>
+      <var name="file.win" unset="true"/>
+      <var name="dest.win" unset="true"/>
+      <assertfile file="@{file}"/>
+      <basename property="file.basename" file="@{file}"/>
+      <propertyregex property="file.win" input="@{file}" regexp="/" replace="\\\\"/>
+      <propertyregex property="dest.win" input="@{dest}" regexp="/" replace="\\\\"/>
+
+      <echo message="Extracting ${file.basename} to @{dest}..."/>
+      <exec executable="${lessmsi.exe}" failonerror="true">
+        <arg value="x"/>
+        <arg value="${file.win}"/>
+        <arg value="${dest.win}\\"/>
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <target name="load.lib.lessmsi" unless="is.lib.loaded">
+    <echo message="Load lessmsi"/>
+    <get dest="${core.lib.path}\lessmsi-${lessmsi.version}.zip" src="${lessmsi.url}" skipexisting="true"/>
+    <if>
+      <not><available file="${core.lib.path}\lessmsi-${lessmsi.version}" type="dir"/></not>
+      <then>
+        <unzip src="${core.lib.path}\lessmsi-${lessmsi.version}.zip" dest="${core.lib.path}\lessmsi-${lessmsi.version}"/>
+      </then>
+    </if>
+    <assertfile file="${lessmsi.exe}"/>
+  </target>
+
+</project>

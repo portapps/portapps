@@ -149,6 +149,7 @@
   <import file="${build.basedir}\libs\upx.xml"/>
   <import file="${build.basedir}\libs\hashmyfiles.xml"/>
   <import file="${build.basedir}\libs\asar.xml"/>
+  <import file="${build.basedir}\libs\lessmsi.xml"/>
 
   <target name="load.libs" unless="is.lib.loaded" depends="
       load.lib.antcontrib,
