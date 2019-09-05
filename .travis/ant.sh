@@ -4,7 +4,7 @@ set -e
 export TOOLS_PATH=${TOOLS_PATH:-/c/portapps_opt}
 
 export ANT_HOME=${ANT_HOME:-$TOOLS_PATH/ant}
-export ANT_VERSION=${ANT_VERSION:-1.10.5}
+export ANT_VERSION=${ANT_VERSION:-1.10.7}
 
 cd ${TOOLS_PATH}
 
