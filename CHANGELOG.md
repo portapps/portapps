@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.26.1 (2019/09/05)
+
+* Update default UPX args
+* Ant 1.10.7
+* Add lessmsi lib
+* Split libs in separate files
+
 ## 1.26.0 (2019/08/21)
 
 * Add `Replace` and `Is64Arch` functions
