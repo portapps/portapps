@@ -6,6 +6,7 @@
 
   <!-- Check required properties -->
   <fail unless="app.basedir" message="Property 'app.basedir' must be defined before loading build-common.xml"/>
+  <fail unless="app.release" message="Property 'app.release' must be defined before loading build-common.xml"/>
   <fail unless="core.basedir" message="Property 'core.basedir' must be defined before loading build-common.xml"/>
 
   <!-- Load properties -->
@@ -13,10 +14,6 @@
   <property name="root.basedir" location="${build.basedir}/.."/>
   <property file="${build.basedir}\build-common.properties"/>
   <property environment="env"/>
-
-  <!-- Build number -->
-  <condition property="app.release" value="${env.TRAVIS_BUILD_NUMBER}"><isset property="env.TRAVIS_BUILD_NUMBER"/></condition>
-  <condition property="app.release" value="0"><not><isset property="app.release"/></not></condition>
 
   <!-- Core properties -->
   <condition property="core.basedir" value="${root.basedir}"><not><isset property="core.basedir"/></not></condition>
