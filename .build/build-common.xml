@@ -199,6 +199,7 @@
 
   <target name="downmod" description="Download modules">
     <exec executable="go" failonerror="true" dir="${app.basedir}">
+      <env key="GO111MODULE" value="${go.module}"/>
       <env key="GOPROXY" value="${go.proxy}"/>
       <arg value="mod"/>
       <arg value="download"/>
@@ -210,6 +211,7 @@
       <filterset refid="filterset.app"/>
     </copy>
     <exec executable="go" failonerror="true" dir="${app.basedir}">
+      <env key="GO111MODULE" value="${go.module}"/>
       <env key="GOPROXY" value="${go.proxy}"/>
       <env key="GOARCH" value="${go.arch}"/>
       <arg value="generate"/>
@@ -227,6 +229,7 @@
       <then>
         <delete file="${tmp.path}\${papp.id}-win32.exe"/>
         <exec executable="go" failonerror="true" dir="${app.basedir}">
+          <env key="GO111MODULE" value="${go.module}"/>
           <env key="GOPROXY" value="${go.proxy}"/>
           <env key="GOARCH" value="386"/>
           <env key="CGO_ENABLED" value="${go.cgo}"/>
@@ -240,6 +243,7 @@
         <assertfile file="${tmp.path}\${papp.id}-win32.exe"/>
         <delete file="${tmp.path}\${papp.id}-win64.exe"/>
         <exec executable="go" failonerror="true" dir="${app.basedir}">
+          <env key="GO111MODULE" value="${go.module}"/>
           <env key="GOPROXY" value="${go.proxy}"/>
           <env key="GOARCH" value="amd64"/>
           <env key="CGO_ENABLED" value="${go.cgo}"/>
@@ -281,6 +285,7 @@
       <else>
         <delete file="${tmp.path}\${papp.id}.exe"/>
         <exec executable="go" failonerror="true" dir="${app.basedir}">
+          <env key="GO111MODULE" value="${go.module}"/>
           <env key="GOPROXY" value="${go.proxy}"/>
           <env key="GOARCH" value="${go.arch}"/>
           <env key="CGO_ENABLED" value="${go.cgo}"/>
