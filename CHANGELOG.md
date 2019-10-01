@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.27.0 (2019/10/01)
+
+* Go 1.12.10
+* Tools build constraint
+* Force `GO111MODULE` and use `GOPROXY`
+* `app.release` now required
+* Fix 7zip download link
+* Innoextract 1.8
+
 ## 1.26.1 (2019/09/05)
 
 * Update default UPX args
