@@ -9,7 +9,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	_ "github.com/josephspurrier/goversioninfo"
 	"github.com/mitchellh/mapstructure"
 	"github.com/portapps/portapps/pkg/dialog"
 	"github.com/portapps/portapps/pkg/logging"
