@@ -222,6 +222,18 @@
         />
       </then>
     </if>
+    <if>
+      <istrue value="${electron.extract.appasar}"/>
+      <then>
+        <echo message="Extracting app.asar..."/>
+        <exec executable="asar.cmd" failonerror="true" dir="${nupkg.path}\${electron.libfolder}\resources">
+          <arg value="extract"/>
+          <arg value="app.asar"/>
+          <arg value="app"/>
+        </exec>
+        <delete file="${nupkg.path}\${electron.libfolder}\resources\app.asar"/>
+      </then>
+    </if>
   </target>
 
 </project>
