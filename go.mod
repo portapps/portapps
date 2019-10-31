@@ -11,5 +11,5 @@ require (
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/rs/zerolog v1.13.0
 	golang.org/x/sys v0.0.0-20190416152802-12500544f89f
-	gopkg.in/yaml.v2 v2.2.2
+	gopkg.in/yaml.v2 v2.2.4
 )
