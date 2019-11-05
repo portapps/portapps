@@ -19,6 +19,10 @@
   name: ":construction: discontinued"
   color: "f79307"
   description: ""
+- # dependencies
+  name: ":game_die: dependencies"
+  color: "0366d6"
+  description: ""
 - # documentation
   name: ":memo: documentation"
   color: "c5def5"
