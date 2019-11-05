@@ -104,7 +104,6 @@
             <include name="papp.ico"/>
           </fileset>
         </copy>
-        <copy file="${app.basedir}\LICENSE" tofile="${setup.path}\license.txt"/>
         <copy file="${core.res.path}\setup.iss" todir="${setup.path}" overwrite="true">
           <filterset>
             <filter token="ISS_COMPRESSION" value="${innosetup.comp}"/>

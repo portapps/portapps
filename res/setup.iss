@@ -23,7 +23,6 @@ WizardImageFile=setup.bmp
 WizardSmallImageFile=setup-mini.bmp
 DisableWelcomePage=no
 ShowLanguageDialog=yes
-LicenseFile=license.txt
 SetupIconFile=papp.ico
 
 Compression=@ISS_COMPRESSION@
