@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.29.0 (2019/11/05)
+
+* Asar 2.0.1
+* InnoSetup 6.0.3
+* Rcedit 1.1.1
+* travis-wait-enhanced 1.0.0
+* Fix InnoSetup license dialog
+* Update libs
+
+## 1.28.0 (2019/10/01)
+
+* Allow to extract app asar
+
 ## 1.27.0 (2019/10/01)
 
 * Go 1.12.10
