@@ -13,6 +13,7 @@ import (
 	"github.com/portapps/portapps/pkg/dialog"
 	"github.com/portapps/portapps/pkg/logging"
 	"github.com/portapps/portapps/pkg/utl"
+	"github.com/portapps/portapps/pkg/win"
 	"github.com/rs/zerolog"
 	"gopkg.in/yaml.v2"
 )
@@ -51,6 +52,8 @@ type AppInfo struct {
 var (
 	// Log represents an active zerolog object
 	Log *zerolog.Logger
+	// WinVersion represents the current Windows OS version
+	WinVersion win.Version
 )
 
 // New creates new app instance
@@ -65,6 +68,12 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 		Info: AppInfo{},
 		ID:   id,
 		Name: name,
+	}
+
+	// WinVersion
+	WinVersion, err = win.GetVersion()
+	if err != nil {
+		app.FatalBox(err)
 	}
 
 	// Root path
@@ -98,6 +107,7 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 
 	// Startup
 	Log.Info().Msg("--------")
+	Log.Info().Msgf("Operating System: Windows %d.%d.%d", WinVersion.Major, WinVersion.Minor, WinVersion.Build)
 	Log.Info().Msgf("Starting %s %s-%s (portapps %s)...", app.Name, app.Info.Version, app.Info.Release, app.Info.PortappsVersion)
 	Log.Info().Msgf("Release date: %s", app.Info.Date)
 	Log.Info().Msgf("Publisher: %s (%s)", app.Info.Publisher, app.Info.URL)
