@@ -149,7 +149,7 @@ func Exists(name string) bool {
 	return true
 }
 
-// WriteToFile reports writes content to a file
+// WriteToFile writes content to a file
 func WriteToFile(name string, content string) error {
 	fo, err := os.Create(name)
 	defer fo.Close()
@@ -160,6 +160,28 @@ func WriteToFile(name string, content string) error {
 		return err
 	}
 	return nil
+}
+
+// AppendToFile appends content to a file
+func AppendToFile(name string, content string) error {
+	f, err := os.OpenFile(name, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	if _, err := f.WriteString(content); err != nil {
+		return err
+	}
+	return nil
+}
+
+// FileContains reports if a file contains text
+func FileContains(name string, text string) (bool, error) {
+	b, err := ioutil.ReadFile(name)
+	if err != nil {
+		return false, err
+	}
+	return strings.Contains(string(b), text), nil
 }
 
 // ReplaceByPrefix replaces line in file starting with a specific prefix
