@@ -75,9 +75,6 @@
     </if>
     <delete file="${tmp.path}\${app.buildid}"/>
 
-    <!-- Finalizing -->
-    <antcall target="finalize"/>
-
     <!-- Cleaning -->
     <if>
       <equals arg1="${debug}" arg2="false"/>
