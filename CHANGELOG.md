@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.30.0 (2019/11/06)
+
+* Move `finalize` call
+* Allow to use a custom ISS template through `papp.iss` prop
+* Factorise packaging
+* Display Windows OS version in logs
+* Fix `win.GetVersion` function
+* Add `AppendToFile` and `FileContains` functions
+
 ## 1.29.0 (2019/11/05)
 
 * Asar 2.0.1
