@@ -41,7 +41,7 @@ VersionInfoProductName={#pappName}
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: "@APP_SRC@\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "@BIN_PATH@\build\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [InstallDelete]
 Type: filesandordirs; Name: "{app}\{#pappFolder}"

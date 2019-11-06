@@ -87,58 +87,8 @@
       </then>
     </if>
 
-    <echo message="Packaging release..."/>
-    <if>
-      <not><equals arg1="${atf.win3264.url}" arg2=""/></not>
-      <then>
-        <property name="release.7z.filename" value="${papp.id}-${app.version}-${app.release}.7z"/>
-        <property name="release.setup.filename" value="${papp.id}-${app.version}-${app.release}-setup"/>
-      </then>
-      <else>
-        <property name="release.7z.filename" value="${papp.id}-${atf.arch}-${app.version}-${app.release}.7z"/>
-        <property name="release.setup.filename" value="${papp.id}-${atf.arch}-${app.version}-${app.release}-setup"/>
-      </else>
-    </if>
-
-    <!-- .7z release -->
-    <if>
-      <istrue value="${papp.out.7z}"/>
-      <then>
-        <sevenzip src="${build.path}/*" dest="${release.path}\${release.7z.filename}" format="7z"/>
-      </then>
-    </if>
-
-    <!-- setup.exe release -->
-    <if>
-      <istrue value="${papp.out.exe}"/>
-      <then>
-        <echo message="Preparing setup..."/>
-        <copy todir="${setup.path}">
-          <fileset dir="${core.res.path}" defaultexcludes="no">
-            <include name="setup*"/>
-          </fileset>
-          <fileset dir="${res.path}" defaultexcludes="no">
-            <include name="setup*"/>
-            <include name="papp.ico"/>
-          </fileset>
-        </copy>
-        <copy file="${core.res.path}\setup.iss" todir="${setup.path}" overwrite="true">
-          <filterset>
-            <filter token="ISS_COMPRESSION" value="${innosetup.comp}"/>
-            <filter token="APP_SRC" value="${build.path}"/>
-            <filter token="APP_NAME" value="${app.name}"/>
-            <filter token="APP_HOMEPAGE" value="${app.homepage}"/>
-            <filter token="PAPP_ID" value="${papp.id}"/>
-            <filter token="PAPP_GUID" value="${papp.guid}"/>
-            <filter token="PAPP_VERSION" value="${app.version}-${app.release}"/>
-            <filter token="PAPP_URL" value="${papp.url}"/>
-            <filter token="PAPP_FOLDER" value="${papp.folder}"/>
-            <filter token="PAPP_PUBLISHER" value="${publisher}"/>
-          </filterset>
-        </copy>
-        <iscc dir="${setup.path}" output="${release.path}" filename="${release.setup.filename}"/>
-      </then>
-    </if>
+    <antcall target="packaging"/>
+    <antcall target="finalize"/>
 
     <!-- checksum -->
     <hashfolder folder="${release.path}"/>
