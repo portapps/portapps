@@ -115,7 +115,7 @@
 
     <!-- setup.exe release -->
     <if>
-      <istrue value="${papp.out.7z}"/>
+      <istrue value="${papp.out.exe}"/>
       <then>
         <echo message="Building setup..."/>
         <copy todir="${setup.path}">
