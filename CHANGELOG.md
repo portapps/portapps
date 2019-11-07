@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.30.1 (2019/11/07)
+
+* Fix setup release
+
 ## 1.30.0 (2019/11/06)
 
 * Move `finalize` call
