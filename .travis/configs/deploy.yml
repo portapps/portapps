@@ -4,7 +4,7 @@ deploy:
   provider: releases
   file_glob: true
   file: bin/release/*
-  skip_cleanup: true
+  cleanup: false
   draft: true
   on:
     tags: false
