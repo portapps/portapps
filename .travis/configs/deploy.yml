@@ -2,6 +2,7 @@
 
 deploy:
   provider: releases
+  tag_name: $TRAVIS_TAG
   file_glob: true
   file: bin/release/*
   cleanup: false
