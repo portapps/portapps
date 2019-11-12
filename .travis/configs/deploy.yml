@@ -2,8 +2,6 @@
 
 deploy:
   provider: releases
-  api_key:
-    secure: ${DEPLOY_KEY}
   file_glob: true
   file: bin/release/*
   cleanup: false
