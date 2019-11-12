@@ -2,6 +2,7 @@
 
 deploy:
   provider: releases
+  token: $GITHUB_TOKEN
   file_glob: true
   file: bin/release/*
   cleanup: false
