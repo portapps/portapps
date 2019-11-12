@@ -2,10 +2,10 @@
 
 deploy:
   provider: releases
-  token: $GITHUB_TOKEN
   file_glob: true
   file: bin/release/*
   cleanup: false
   draft: true
   on:
     tags: false
+  edge: true
