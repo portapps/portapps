@@ -1,0 +1,8 @@
+---
+
+notifications:
+  email:
+    recipients:
+      - travisci@portapps.io
+    on_success: always
+    on_failure: always
