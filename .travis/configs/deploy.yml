@@ -2,6 +2,7 @@
 
 deploy:
   provider: releases
+  name: $TRAVIS_TAG
   tag_name: $TRAVIS_TAG
   file_glob: true
   file: bin/release/*
