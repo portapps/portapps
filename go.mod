@@ -10,5 +10,5 @@ require (
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/rs/zerolog v1.16.0
 	golang.org/x/sys v0.0.0-20190416152802-12500544f89f
-	gopkg.in/yaml.v2 v2.2.5
+	gopkg.in/yaml.v2 v2.2.7
 )
