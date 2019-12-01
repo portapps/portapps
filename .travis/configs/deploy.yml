@@ -10,4 +10,5 @@ deploy:
   draft: true
   on:
     tags: false
+    all_branches: true
   edge: true
