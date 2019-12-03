@@ -246,3 +246,12 @@ func RoamingPath() string {
 func StartMenuPath() string {
 	return PathJoin(RoamingPath(), "Microsoft", "Windows", "Start Menu", "Programs")
 }
+
+// Cleanup removes leftover folders
+func Cleanup(folders []string) {
+	for _, folder := range folders {
+		if err := os.RemoveAll(folder); err != nil {
+			log.Error().Err(err).Msgf("Cannot cleanup %s", folder)
+		}
+	}
+}
