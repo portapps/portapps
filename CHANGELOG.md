@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.31.0 (2019/12/13)
+
+* Asar 2.0.3
+* travis-wait-enhanced 1.1.0
+* Add `Cleanup` function
+
 ## 1.30.1 (2019/11/07)
 
 * Fix setup release
