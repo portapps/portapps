@@ -2,6 +2,7 @@
 
 deploy:
   provider: releases
+  token: $GITHUB_TOKEN
   name: $TRAVIS_TAG
   tag_name: $TRAVIS_TAG
   file_glob: true
@@ -11,4 +12,3 @@ deploy:
   on:
     tags: false
     all_branches: true
-  edge: true
