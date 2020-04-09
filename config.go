@@ -17,7 +17,7 @@ type Config struct {
 
 // Common holds common configuration data
 type Common struct {
-	Args    []string          `yaml:"args" mapstructure:"cmd_switches"`
+	Args    []string          `yaml:"args" mapstructure:"args"`
 	Env     map[string]string `yaml:"env" mapstructure:"env"`
 	AppPath string            `yaml:"app_path" mapstructure:"app_path"`
 }
