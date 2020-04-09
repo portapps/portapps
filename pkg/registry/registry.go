@@ -8,13 +8,6 @@ import (
 	"github.com/portapps/portapps/pkg/proc"
 )
 
-// ExportImport the registry export/import structure
-type ExportImport struct {
-	Key  string
-	Arch string
-	File string
-}
-
 // Key the registry key structure
 type Key struct {
 	Key  string
@@ -48,15 +41,42 @@ func Add(key Key, force bool) error {
 	return nil
 }
 
-// ExportKey export a registry key
-func ExportKey(reg ExportImport) error {
+// Delete removes a registry key
+func Delete(key Key, force bool) error {
+	args := []string{"delete", key.Key, fmt.Sprintf("/reg:%s", key.Arch)}
+	if force {
+		args = append(args, "/f")
+	}
+
 	cmdResult, err := proc.Cmd(proc.CmdOptions{
 		Command:    "reg",
-		Args:       []string{"export", reg.Key, reg.File, "/y", fmt.Sprintf("/reg:%s", reg.Arch)},
+		Args:       args,
 		HideWindow: true,
 	})
 	if err != nil {
-		return fmt.Errorf("cannot export registry key '%s': %v", reg.Key, err)
+		return fmt.Errorf("cannot remove registry key '%s': %v", key.Key, err)
+	}
+
+	if cmdResult.ExitCode != 0 {
+		if len(cmdResult.Stderr) > 0 {
+			return fmt.Errorf("%s, exit code %d", cmdResult.Stderr, cmdResult.ExitCode)
+		} else {
+			return fmt.Errorf("exit code %d", cmdResult.ExitCode)
+		}
+	}
+
+	return nil
+}
+
+// Export exports a registry key
+func Export(key Key, file string) error {
+	cmdResult, err := proc.Cmd(proc.CmdOptions{
+		Command:    "reg",
+		Args:       []string{"export", key.Key, file, "/y", fmt.Sprintf("/reg:%s", key.Arch)},
+		HideWindow: true,
+	})
+	if err != nil {
+		return fmt.Errorf("cannot export registry key '%s': %v", key.Key, err)
 	}
 
 	if cmdResult.ExitCode != 0 {
@@ -69,30 +89,26 @@ func ExportKey(reg ExportImport) error {
 	return nil
 }
 
-// ImportKey import a registry key
-func ImportKey(reg ExportImport) error {
+// Import imports a registry key
+func Import(key Key, file string) error {
 	// Save current reg key
-	if err := ExportKey(ExportImport{
-		Key:  reg.Key,
-		Arch: reg.Arch,
-		File: fmt.Sprintf("%s.%s", reg.File, time.Now().Format("20060102150405")),
-	}); err != nil {
+	if err := Export(key, fmt.Sprintf("%s.%s", file, time.Now().Format("20060102150405"))); err != nil {
 		return err
 	}
 
 	// Check if reg file exists
-	if _, err := os.Stat(reg.File); err != nil {
-		return fmt.Errorf("reg file %s not found", reg.File)
+	if _, err := os.Stat(file); err != nil {
+		return fmt.Errorf("reg file %s not found", file)
 	}
 
 	// Import
 	cmdResult, err := proc.Cmd(proc.CmdOptions{
 		Command:    "reg",
-		Args:       []string{"import", reg.File, fmt.Sprintf("/reg:%s", reg.Arch)},
+		Args:       []string{"import", file, fmt.Sprintf("/reg:%s", key.Arch)},
 		HideWindow: true,
 	})
 	if err != nil {
-		return fmt.Errorf("cannot import registry key '%s': %v", reg.Key, err)
+		return fmt.Errorf("cannot import registry key '%s': %v", key.Key, err)
 	}
 
 	if cmdResult.ExitCode != 0 {
