@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/portapps/portapps/pkg/proc"
+	"github.com/portapps/portapps/v2/pkg/proc"
 )
 
 // Key the registry key structure

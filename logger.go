@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/ilya1st/rotatewriter"
-	"github.com/portapps/portapps/pkg/utl"
+	"github.com/portapps/portapps/v2/pkg/utl"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/rs/zerolog/pkgerrors"

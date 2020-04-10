@@ -1,4 +1,4 @@
-module github.com/portapps/portapps
+module github.com/portapps/portapps/v2
 
 go 1.13
 
