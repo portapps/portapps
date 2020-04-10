@@ -1,9 +1,9 @@
 ---
 
 before_install:
-  - git clone https://github.com/portapps/portapps ${TRAVIS_BUILD_DIR}/../portapps
-  - source ${TRAVIS_BUILD_DIR}/../portapps/.travis/prepare.sh
-  - bash ${TRAVIS_BUILD_DIR}/../portapps/.travis/java.sh
-  - bash ${TRAVIS_BUILD_DIR}/../portapps/.travis/ant.sh
-  - bash ${TRAVIS_BUILD_DIR}/../portapps/.travis/nodejs.sh
-  - bash ${TRAVIS_BUILD_DIR}/../portapps/.travis/go.sh
+  - export PORTAPPS_DIR=${PORTAPPS_DIR:-${TRAVIS_BUILD_DIR}/../portapps}
+  - source ${PORTAPPS_DIR}/.travis/prepare.sh
+  - bash ${PORTAPPS_DIR}/.travis/java.sh
+  - bash ${PORTAPPS_DIR}/.travis/ant.sh
+  - bash ${PORTAPPS_DIR}/.travis/nodejs.sh
+  - bash ${PORTAPPS_DIR}/.travis/go.sh

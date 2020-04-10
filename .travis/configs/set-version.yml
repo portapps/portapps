@@ -1,5 +1,5 @@
 ---
 
 after_success:
-  - export APP_VERSION=$(cat $TRAVIS_BUILD_DIR/bin/tmp/version.dat)
+  - export APP_VERSION=$(cat bin/tmp/version.dat)
   - echo ${APP_VERSION}
