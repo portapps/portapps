@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.32.0 (2020/04/09)
+## 2.0.0 (2020/04/09)
 
 * Add `disable_log` config option (#92)
 * Review logger implementation
