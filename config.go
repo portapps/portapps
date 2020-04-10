@@ -17,9 +17,10 @@ type Config struct {
 
 // Common holds common configuration data
 type Common struct {
-	Args    []string          `yaml:"args" mapstructure:"args"`
-	Env     map[string]string `yaml:"env" mapstructure:"env"`
-	AppPath string            `yaml:"app_path" mapstructure:"app_path"`
+	DisableLog bool              `yaml:"disable_log" mapstructure:"disable_log"`
+	Args       []string          `yaml:"args" mapstructure:"args"`
+	Env        map[string]string `yaml:"env" mapstructure:"env"`
+	AppPath    string            `yaml:"app_path" mapstructure:"app_path"`
 }
 
 // loadConfig load common and app configuration
@@ -27,9 +28,10 @@ func (app *App) loadConfig(appcfg interface{}) (err error) {
 	cfgPath := utl.PathJoin(app.RootPath, fmt.Sprintf("%s.yml", app.ID))
 	app.config = &Config{
 		Common: Common{
-			Args:    []string{},
-			Env:     map[string]string{},
-			AppPath: "",
+			DisableLog: false,
+			Args:       []string{},
+			Env:        map[string]string{},
+			AppPath:    "",
 		},
 		App: appcfg,
 	}
@@ -54,7 +56,6 @@ func (app *App) loadConfig(appcfg interface{}) (err error) {
 	if err != nil {
 		return err
 	}
-	Log.Info().Msgf("read config:\n%s", string(raw))
 
 	return yaml.Unmarshal(raw, &app.config)
 }

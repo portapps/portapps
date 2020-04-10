@@ -10,17 +10,18 @@ import (
 	"strings"
 
 	"github.com/mitchellh/mapstructure"
+	"github.com/pkg/errors"
 	"github.com/portapps/portapps/pkg/dialog"
-	"github.com/portapps/portapps/pkg/logging"
 	"github.com/portapps/portapps/pkg/utl"
 	"github.com/portapps/portapps/pkg/win"
-	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"gopkg.in/yaml.v2"
 )
 
 // App represents an active app object
 type App struct {
-	Info AppInfo
+	Info       AppInfo
+	WinVersion win.Version
 
 	ID   string
 	Name string
@@ -49,13 +50,6 @@ type AppInfo struct {
 	PortappsVersion string `json:"portapps_version"`
 }
 
-var (
-	// Log represents an active zerolog object
-	Log *zerolog.Logger
-	// WinVersion represents the current Windows OS version
-	WinVersion win.Version
-)
-
 // New creates new app instance
 func New(id string, name string) (app *App, err error) {
 	return NewWithCfg(id, name, nil)
@@ -71,62 +65,53 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 	}
 
 	// WinVersion
-	WinVersion, err = win.GetVersion()
+	app.WinVersion, err = win.GetVersion()
 	if err != nil {
-		app.FatalBox(err)
+		app.FatalBox(errors.Wrap(err, "Cannot get Windows version"))
 	}
 
 	// Root path
 	app.RootPath, err = filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
-		app.FatalBox(err)
-	}
-
-	// Logfile
-	logfolder := utl.CreateFolder(utl.PathJoin(app.RootPath, "log"))
-	logpath := utl.PathJoin(logfolder, fmt.Sprintf("%s.log", app.ID))
-	app.logfile, err = os.OpenFile(logpath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
-	if err != nil {
-		app.FatalBox(err)
-	}
-
-	// Configure logger
-	if Log, err = logging.Configure("debug", logpath, LogHook{app}); err != nil {
-		app.FatalBox(err)
+		app.FatalBox(errors.Wrap(err, "Cannot get root absolute path"))
 	}
 
 	// Load info
 	infoFile := utl.PathJoin(app.RootPath, "portapp.json")
 	infoRaw, err := ioutil.ReadFile(infoFile)
 	if err != nil {
-		return nil, err
+		app.FatalBox(errors.Wrap(err, "Cannot load portapps.json"))
 	}
 	if err = json.Unmarshal(infoRaw, &app.Info); err != nil {
-		return nil, err
+		app.FatalBox(errors.Wrap(err, "Cannot unmarshal portapps.json"))
+	}
+
+	// Load config
+	if err = app.loadConfig(appcfg); err != nil {
+		app.FatalBox(errors.Wrap(err, "Cannot load configuration"))
+	}
+	if appcfg != nil {
+		if err = mapstructure.Decode(app.config.App, appcfg); err != nil {
+			app.FatalBox(errors.Wrap(err, fmt.Sprintf("Cannot decode %s configuration", app.Name)))
+		}
+	}
+
+	// Init logger
+	if err = app.InitLogger(); err != nil {
+		app.FatalBox(errors.Wrap(err, "Cannot configure logger"))
 	}
 
 	// Startup
-	Log.Info().Msg("--------")
-	Log.Info().Msgf("Operating System: Windows %d.%d.%d", WinVersion.Major, WinVersion.Minor, WinVersion.Build)
-	Log.Info().Msgf("Starting %s %s-%s (portapps %s)...", app.Name, app.Info.Version, app.Info.Release, app.Info.PortappsVersion)
-	Log.Info().Msgf("Release date: %s", app.Info.Date)
-	Log.Info().Msgf("Publisher: %s (%s)", app.Info.Publisher, app.Info.URL)
-	Log.Info().Msgf("Root path: %s", app.RootPath)
+	log.Info().Msg("--------")
+	log.Info().Msgf("Operating System: Windows %d.%d.%d", app.WinVersion.Major, app.WinVersion.Minor, app.WinVersion.Build)
+	log.Info().Msgf("Starting %s %s-%s (portapps %s)...", app.Name, app.Info.Version, app.Info.Release, app.Info.PortappsVersion)
+	log.Info().Msgf("Release date: %s", app.Info.Date)
+	log.Info().Msgf("Publisher: %s (%s)", app.Info.Publisher, app.Info.URL)
+	log.Info().Msgf("Root path: %s", app.RootPath)
 
-	// Configuration
-	var b []byte
-	Log.Info().Msg("Loading main configuration...")
-	if err = app.loadConfig(appcfg); err != nil {
-		return nil, err
-	}
-	if appcfg != nil {
-		Log.Info().Msg("Decoding app configuration...")
-		if err = mapstructure.Decode(app.config.App, appcfg); err != nil {
-			return nil, err
-		}
-	}
-	b, _ = yaml.Marshal(app.config)
-	Log.Info().Msgf("Configuration:\n%s", string(b))
+	// Display config
+	b, _ := yaml.Marshal(app.config)
+	log.Info().Msgf("Configuration:\n%s", string(b))
 
 	// Set paths
 	app.AppPath = utl.PathJoin(app.RootPath, "app")
@@ -138,7 +123,7 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 
 	// Load env vars from config
 	if len(app.config.Common.Env) > 0 {
-		Log.Info().Msg("Setting environment variables from config...")
+		log.Info().Msg("Setting environment variables from config...")
 		for key, value := range app.config.Common.Env {
 			utl.OverrideEnv(key, app.extendPlaceholders(value))
 		}
@@ -149,39 +134,34 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 
 // Launch to execute the app with additional args
 func (app *App) Launch(args []string) {
-	Log.Info().Msgf("Process: %s", app.Process)
-	Log.Info().Msgf("Args (config file): %s", strings.Join(app.config.Common.Args, " "))
-	Log.Info().Msgf("Args (cmd line): %s", strings.Join(args, " "))
-	Log.Info().Msgf("Args (hardcoded): %s", strings.Join(app.Args, " "))
-	Log.Info().Msgf("Working dir: %s", app.WorkingDir)
-	Log.Info().Msgf("App path: %s", app.AppPath)
-	Log.Info().Msgf("Data path: %s", app.DataPath)
+	log.Info().Msgf("Process: %s", app.Process)
+	log.Info().Msgf("Args (config file): %s", strings.Join(app.config.Common.Args, " "))
+	log.Info().Msgf("Args (cmd line): %s", strings.Join(args, " "))
+	log.Info().Msgf("Args (hardcoded): %s", strings.Join(app.Args, " "))
+	log.Info().Msgf("Working dir: %s", app.WorkingDir)
+	log.Info().Msgf("App path: %s", app.AppPath)
+	log.Info().Msgf("Data path: %s", app.DataPath)
 
 	if !utl.Exists(app.Process) {
-		Log.Error().Msgf("Application not found in %s", app.Process)
-		if _, err := dialog.MsgBox(
-			fmt.Sprintf("%s portable", app.Name),
-			fmt.Sprintf("%s application cannot be found in %s", app.Name, app.Process),
-			dialog.MsgBoxBtnOk|dialog.MsgBoxIconError); err != nil {
-			Log.Error().Err(err).Msgf("Cannot create dialog box")
-		}
-		return
+		log.Fatal().Msgf("Application not found in %s", app.Process)
 	}
 
-	Log.Info().Msgf("Launching %s...", app.Name)
+	log.Info().Msgf("Launching %s...", app.Name)
 	jArgs := append(append(app.config.Common.Args, args...), app.Args...)
 	execute := exec.Command(app.Process, jArgs...)
 	execute.Dir = app.WorkingDir
 
-	execute.Stdout = app.logfile
-	execute.Stderr = app.logfile
+	if !app.config.Common.DisableLog {
+		execute.Stdout = app.logfile
+		execute.Stderr = app.logfile
+	}
 
-	Log.Info().Msgf("Exec %s %s", app.Process, strings.Join(jArgs, " "))
+	log.Info().Msgf("Exec %s %s", app.Process, strings.Join(jArgs, " "))
 	if err := execute.Start(); err != nil {
-		Log.Fatal().Err(err).Msg("Command failed")
+		log.Fatal().Err(err).Msg("Command failed")
 	}
 	if err := execute.Wait(); err != nil {
-		Log.Error().Err(err).Msg("Command failed")
+		log.Error().Err(err).Msg("Command failed")
 	}
 }
 
@@ -189,7 +169,7 @@ func (app *App) Launch(args []string) {
 func (app *App) ErrorBox(msg interface{}) {
 	_, _ = dialog.MsgBox(
 		fmt.Sprintf("%s portable", app.Name),
-		fmt.Sprintf("An error has occurred.\n\n%v", msg),
+		fmt.Sprintf("%v", msg),
 		dialog.MsgBoxBtnOk|dialog.MsgBoxIconError)
 }
 
