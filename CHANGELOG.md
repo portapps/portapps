@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1 (2020/04/09)
+
+* GOPROXY direct
+
 ## 2.0.0 (2020/04/09)
 
 * Add `disable_log` config option (#92)
