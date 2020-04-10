@@ -1,6 +1,6 @@
 module github.com/portapps/portapps
 
-go 1.12
+go 1.13
 
 require (
 	github.com/akavel/rsrc v0.8.0 // indirect
