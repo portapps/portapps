@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.32.0 (2020/04/09)
+
+* Add `disable_log` config option (#92)
+* Review logger implementation
+* Go 1.13.10
+* Refactor init
+* Add `registry.Delete` function
+* Fix Apache ANT and ANT contrib download links
+* Update libs
+
 ## 1.31.0 (2019/12/13)
 
 * Asar 2.0.3
