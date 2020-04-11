@@ -1,4 +1,4 @@
 ---
 
 script:
-  - ant release
+  - ant release -Dcore.dir="$[PORTAPPS_DIR:-../portapps}"

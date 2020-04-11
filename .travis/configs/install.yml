@@ -1,9 +1,11 @@
 ---
 
 before_install:
-  - export PORTAPPS_DIR=${PORTAPPS_DIR:-${TRAVIS_BUILD_DIR}/../portapps}
-  - export PORTAPPS_VERSION=${PORTAPPS_VERSION:-master}
-  - git clone --branch ${PORTAPPS_VERSION} https://github.com/portapps/portapps ${PORTAPPS_DIR}
+  - |
+    export PORTAPPS_DIR=${PORTAPPS_DIR:-${TRAVIS_BUILD_DIR}/../portapps}
+    export PORTAPPS_VERSION=${PORTAPPS_VERSION:-master}
+    echo "Cloning github.com/portapps/portapps (${PORTAPPS_VERSION}) to ${PORTAPPS_DIR}..."
+    git clone --verbose --branch "${CORE_VERSION}" https://github.com/portapps/portapps "${CORE_DIR}"
   - source ${PORTAPPS_DIR}/.travis/prepare.sh
   - bash ${PORTAPPS_DIR}/.travis/java.sh
   - bash ${PORTAPPS_DIR}/.travis/ant.sh

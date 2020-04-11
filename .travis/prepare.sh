@@ -12,3 +12,11 @@ export NODEJS_HOME=${NODEJS_HOME:-$TOOLS_PATH/nodejs}
 export PATH=${JAVA_HOME}/bin:${ANT_HOME}/bin:${GOPATH}/bin:${GOPATH}/bin/windows_386:${GOROOT}/bin:${NODEJS_HOME}:${PATH}
 
 mkdir -p ${TOOLS_PATH}
+
+echo "TOOLS_PATH=$TOOLS_PATH"
+echo "JAVA_HOME=$JAVA_HOME"
+echo "ANT_HOME=$ANT_HOME"
+echo "GOPATH=$GOPATH"
+echo "GOROOT=$GOROOT"
+echo "NODEJS_HOME=$NODEJS_HOME"
+echo "PATH=$PATH"
