@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.3 (2020/04/12)
+
+* Build output more verbose
+* Set core.dir on Travis
+
 ## 2.0.2 (2020/04/11)
 
 * Bring back GOPROXY
