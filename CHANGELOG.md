@@ -1,9 +1,13 @@
 # Changelog
 
+## 2.0.4 (2020/04/12)
+
+* Fix Travis build
+
 ## 2.0.3 (2020/04/12)
 
 * Build output more verbose
-* Set core.dir on Travis
+* Set `core.dir` on Travis
 
 ## 2.0.2 (2020/04/11)
 
