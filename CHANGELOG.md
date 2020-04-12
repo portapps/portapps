@@ -1,6 +1,10 @@
 # Changelog
 
-## 2.1.0 (2020/04/12)
+## 2.1.1 (2020/04/13)
+
+* Fix logger
+
+## 2.1.0 (2020/04/13)
 
 * Move lib to `pkg` folder
 * Review logger implementation
