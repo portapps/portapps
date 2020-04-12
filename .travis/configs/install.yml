@@ -2,7 +2,7 @@
 
 before_install:
   - |
-    export PORTAPPS_DIR=${PORTAPPS_DIR:-$TRAVIS_BUILD_DIR/../portapps}
+    export PORTAPPS_DIR=${PORTAPPS_DIR:-../portapps}
     export PORTAPPS_VERSION=${PORTAPPS_VERSION:-master}
     echo "Cloning github.com/portapps/portapps (${PORTAPPS_VERSION}) to ${PORTAPPS_DIR}..."
     git clone --verbose --branch "${PORTAPPS_VERSION}" https://github.com/portapps/portapps "${PORTAPPS_DIR}"

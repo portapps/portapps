@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.5 (2020/04/12)
+
+* Fix ANT release build
+
 ## 2.0.4 (2020/04/12)
 
 * Fix Travis build
