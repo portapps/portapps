@@ -11,7 +11,6 @@ import (
 
 	"github.com/mitchellh/mapstructure"
 	"github.com/pkg/errors"
-	"github.com/portapps/portapps/v2/pkg/dialog"
 	"github.com/portapps/portapps/v2/pkg/utl"
 	"github.com/portapps/portapps/v2/pkg/win"
 	"github.com/rs/zerolog/log"
@@ -163,20 +162,6 @@ func (app *App) Launch(args []string) {
 	if err := execute.Wait(); err != nil {
 		log.Error().Err(err).Msg("Command failed")
 	}
-}
-
-// ErrorBox display an error message box
-func (app *App) ErrorBox(msg interface{}) {
-	_, _ = dialog.MsgBox(
-		fmt.Sprintf("%s portable", app.Name),
-		fmt.Sprintf("%v", msg),
-		dialog.MsgBoxBtnOk|dialog.MsgBoxIconError)
-}
-
-// FatalBox display an error message box and exit
-func (app *App) FatalBox(msg interface{}) {
-	app.ErrorBox(msg)
-	os.Exit(1)
 }
 
 func (app *App) extendPlaceholders(value string) string {
