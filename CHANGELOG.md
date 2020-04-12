@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.0 (2020/04/12)
+
+* Move lib to `pkg` folder
+* Review logger implementation
+
 ## 2.0.5 (2020/04/12)
 
 * Fix ANT release build
