@@ -1,4 +1,4 @@
-// Source: https://github.com/rs/zerolog/tree/master/log
+// Package log source from https://github.com/rs/zerolog/tree/master/log
 package log
 
 import (
