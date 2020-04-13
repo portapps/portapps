@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.2 (2020/04/13)
+
+* Fix "No Go source files" behavior
+* Coding style
+
 ## 2.1.1 (2020/04/13)
 
 * Fix logger
