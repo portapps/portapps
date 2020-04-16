@@ -155,6 +155,7 @@
       load.lib.7za,
       load.lib.7z,
       load.lib.rcedit,
+      load.lib.lessmsi,
       load.lib.innoextract,
       load.lib.innosetup,
       load.lib.upx,
