@@ -141,6 +141,7 @@
   <import file="${build.basedir}\libs\wget.xml"/>
   <import file="${build.basedir}\libs\7zip.xml"/>
   <import file="${build.basedir}\libs\rcedit.xml"/>
+  <import file="${build.basedir}\libs\lessmsi.xml"/>
   <import file="${build.basedir}\libs\innoextract.xml"/>
   <import file="${build.basedir}\libs\innosetup.xml"/>
   <import file="${build.basedir}\libs\upx.xml"/>
