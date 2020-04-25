@@ -3,8 +3,11 @@ package registry
 import (
 	"fmt"
 	"os"
+	"path/filepath"
+	"sort"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/portapps/portapps/v2/pkg/proc"
 )
 
@@ -14,9 +17,13 @@ type Key struct {
 	Arch string
 }
 
+const (
+	maxBackup = 19
+)
+
 // Add add a registry key
-func Add(key Key, force bool) error {
-	args := []string{"add", key.Key, fmt.Sprintf("/reg:%s", key.Arch)}
+func (k *Key) Add(force bool) error {
+	args := []string{"add", k.Key, fmt.Sprintf("/reg:%s", k.Arch)}
 	if force {
 		args = append(args, "/f")
 	}
@@ -27,7 +34,7 @@ func Add(key Key, force bool) error {
 		HideWindow: true,
 	})
 	if err != nil {
-		return fmt.Errorf("cannot add registry key '%s': %v", key.Key, err)
+		return fmt.Errorf("cannot add registry key '%s': %v", k.Key, err)
 	}
 
 	if cmdResult.ExitCode != 0 {
@@ -42,8 +49,8 @@ func Add(key Key, force bool) error {
 }
 
 // Delete removes a registry key
-func Delete(key Key, force bool) error {
-	args := []string{"delete", key.Key, fmt.Sprintf("/reg:%s", key.Arch)}
+func (k *Key) Delete(force bool) error {
+	args := []string{"delete", k.Key, fmt.Sprintf("/reg:%s", k.Arch)}
 	if force {
 		args = append(args, "/f")
 	}
@@ -54,7 +61,7 @@ func Delete(key Key, force bool) error {
 		HideWindow: true,
 	})
 	if err != nil {
-		return fmt.Errorf("cannot remove registry key '%s': %v", key.Key, err)
+		return fmt.Errorf("cannot remove registry key '%s': %v", k.Key, err)
 	}
 
 	if cmdResult.ExitCode != 0 {
@@ -68,15 +75,32 @@ func Delete(key Key, force bool) error {
 	return nil
 }
 
-// Export exports a registry key
-func Export(key Key, file string) error {
+// Exists checks if a registry key exists
+func (k *Key) Exists() bool {
+	args := []string{"query", k.Key, fmt.Sprintf("/reg:%s", k.Arch)}
+
 	cmdResult, err := proc.Cmd(proc.CmdOptions{
 		Command:    "reg",
-		Args:       []string{"export", key.Key, file, "/y", fmt.Sprintf("/reg:%s", key.Arch)},
+		Args:       args,
+		HideWindow: true,
+	})
+
+	return err == nil && cmdResult.ExitCode == 0
+}
+
+// Export exports a registry key
+func (k *Key) Export(file string) error {
+	if !k.Exists() {
+		return nil
+	}
+
+	cmdResult, err := proc.Cmd(proc.CmdOptions{
+		Command:    "reg",
+		Args:       []string{"export", k.Key, file, "/y", fmt.Sprintf("/reg:%s", k.Arch)},
 		HideWindow: true,
 	})
 	if err != nil {
-		return fmt.Errorf("cannot export registry key '%s': %v", key.Key, err)
+		return fmt.Errorf("cannot export registry key '%s': %v", k.Key, err)
 	}
 
 	if cmdResult.ExitCode != 0 {
@@ -86,13 +110,44 @@ func Export(key Key, file string) error {
 		return fmt.Errorf("exit code %d", cmdResult.ExitCode)
 	}
 
+	var regFiles []string
+	err = filepath.Walk(filepath.Dir(file), func(path string, info os.FileInfo, err error) error {
+		if info == nil {
+			return err
+		}
+		if info.IsDir() {
+			return nil
+		}
+		if path == file {
+			return nil
+		}
+		regFiles = append(regFiles, path)
+		return nil
+	})
+	if err != nil {
+		return errors.Wrap(err, "Cannot retrieve files from reg directory")
+	}
+
+	sort.Strings(regFiles)
+	if len(regFiles) <= maxBackup {
+		return nil
+	}
+
+	for len(regFiles) > maxBackup {
+		regFilePath := regFiles[0]
+		if err := os.Remove(regFilePath); err != nil {
+			return err
+		}
+		regFiles = append(regFiles[:0], regFiles[1:]...)
+	}
+
 	return nil
 }
 
 // Import imports a registry key
-func Import(key Key, file string) error {
+func (k *Key) Import(file string) error {
 	// Save current reg key
-	if err := Export(key, fmt.Sprintf("%s.%s", file, time.Now().Format("20060102150405"))); err != nil {
+	if err := k.Export(fmt.Sprintf("%s.%s", file, time.Now().Format("20060102150405"))); err != nil {
 		return err
 	}
 
@@ -104,11 +159,11 @@ func Import(key Key, file string) error {
 	// Import
 	cmdResult, err := proc.Cmd(proc.CmdOptions{
 		Command:    "reg",
-		Args:       []string{"import", file, fmt.Sprintf("/reg:%s", key.Arch)},
+		Args:       []string{"import", file, fmt.Sprintf("/reg:%s", k.Arch)},
 		HideWindow: true,
 	})
 	if err != nil {
-		return fmt.Errorf("cannot import registry key '%s': %v", key.Key, err)
+		return fmt.Errorf("cannot import registry key '%s': %v", k.Key, err)
 	}
 
 	if cmdResult.ExitCode != 0 {
