@@ -13,8 +13,9 @@ import (
 
 // Key the registry key structure
 type Key struct {
-	Key  string
-	Arch string
+	Key     string
+	Arch    string
+	Default string
 }
 
 const (
@@ -24,6 +25,9 @@ const (
 // Add add a registry key
 func (k *Key) Add(force bool) error {
 	args := []string{"add", k.Key, fmt.Sprintf("/reg:%s", k.Arch)}
+	if k.Default != "" {
+		args = append(args, "/d", k.Default)
+	}
 	if force {
 		args = append(args, "/f")
 	}

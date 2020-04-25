@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.2 (2020/04/25)
+
+* Allow to set default registry key value
+
 ## 2.2.1 (2020/04/25)
 
 * Do not remove the last exported reg
