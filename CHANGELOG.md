@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.2.0 (2020/04/25)
+
+* Check reg key exists before export (portapps/hlsw-portable#8)
+* Add backup retention for exported reg keys
+* Load lessmsi
+* Update libs
+
 ## 2.1.2 (2020/04/13)
 
 * Fix "No Go source files" behavior
