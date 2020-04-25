@@ -118,7 +118,7 @@ func (k *Key) Export(file string) error {
 		if info.IsDir() {
 			return nil
 		}
-		if path == file {
+		if filepath.Ext(path) == ".reg" {
 			return nil
 		}
 		regFiles = append(regFiles, path)

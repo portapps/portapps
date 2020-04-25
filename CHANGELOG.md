@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.1 (2020/04/25)
+
+* Do not remove the last exported reg
+
 ## 2.2.0 (2020/04/25)
 
 * Check reg key exists before export (portapps/hlsw-portable#8)
