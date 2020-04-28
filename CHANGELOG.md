@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.4 (2020/04/28)
+
+* Strip debugging info
+
 ## 2.2.3 (2020/04/28)
 
 * Build notifications only from portapps
