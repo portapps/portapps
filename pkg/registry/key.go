@@ -44,9 +44,8 @@ func (k *Key) Add(force bool) error {
 	if cmdResult.ExitCode != 0 {
 		if len(cmdResult.Stderr) > 0 {
 			return fmt.Errorf("%s, exit code %d", cmdResult.Stderr, cmdResult.ExitCode)
-		} else {
-			return fmt.Errorf("exit code %d", cmdResult.ExitCode)
 		}
+		return fmt.Errorf("exit code %d", cmdResult.ExitCode)
 	}
 
 	return nil
@@ -71,9 +70,8 @@ func (k *Key) Delete(force bool) error {
 	if cmdResult.ExitCode != 0 {
 		if len(cmdResult.Stderr) > 0 {
 			return fmt.Errorf("%s, exit code %d", cmdResult.Stderr, cmdResult.ExitCode)
-		} else {
-			return fmt.Errorf("exit code %d", cmdResult.ExitCode)
 		}
+		return fmt.Errorf("exit code %d", cmdResult.ExitCode)
 	}
 
 	return nil
