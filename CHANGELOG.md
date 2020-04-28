@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.3 (2020/04/28)
+
+* Build notifications only from portapps
+* Code cleanup
+* Update libs
+
 ## 2.2.2 (2020/04/25)
 
 * Allow to set default registry key value
