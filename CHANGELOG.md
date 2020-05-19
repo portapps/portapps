@@ -3,6 +3,7 @@
 ## 2.3.0 (2020/05/19)
 
 * Allow to include custom Run config for Setup
+* Update deps
 
 ## 2.2.4 (2020/04/28)
 
@@ -12,7 +13,7 @@
 
 * Build notifications only from portapps
 * Code cleanup
-* Update libs
+* Update deps
 
 ## 2.2.2 (2020/04/25)
 
@@ -27,7 +28,7 @@
 * Check reg key exists before export (portapps/hlsw-portable#8)
 * Add backup retention for exported reg keys
 * Load lessmsi
-* Update libs
+* Update deps
 
 ## 2.1.2 (2020/04/13)
 
@@ -73,12 +74,12 @@
 * Refactor init
 * Add `registry.Delete` function
 * Fix Apache ANT and ANT contrib download links
-* Update libs
+* Update deps
 
 ## 1.32.0 (2020/03/26)
 
 * Fix Apache ANT and ANT contrib download links
-* Update libs
+* Update deps
 
 ## 1.31.0 (2019/12/13)
 
@@ -106,7 +107,7 @@
 * Rcedit 1.1.1
 * travis-wait-enhanced 1.0.0
 * Fix InnoSetup license dialog
-* Update libs
+* Update deps
 
 ## 1.28.0 (2019/10/01)
 
@@ -172,12 +173,12 @@
 * Add `RefreshEnv` and `SetPermEnv` functions
 * Switch to OpenJDK 11.0.2
 * Add wget build tool dependency
-* Update libs
+* Update deps
 
 ## 1.22.0 (2019/04/15)
 
 * Go 1.12
-* Update libs
+* Update deps
 
 ## 1.21.0 (2019/03/26)
 
@@ -226,7 +227,7 @@
 * Implement global configuration file (Issue #12)
 * Add Windows MsgBox helpers
 * Reorganize package
-* Update libs
+* Update deps
 
 ## 1.18.0 (2019/02/17)
 
@@ -274,7 +275,7 @@
 * Use [go mod](https://golang.org/cmd/go/#hdr-Module_maintenance) instead of `dep`
 * Fix asar lib version
 * Disable strict-ssl on asar
-* Update libs
+* Update deps
 
 ## 1.10 (2018/04/28)
 
@@ -283,7 +284,7 @@
 
 ## 1.9 (2018/03/13)
 
-* Update libs
+* Update deps
 * Add QuickExecCmd function
 * Add SetConsoleTitle function to set window console title
 * Exclude version.dat from deletion
