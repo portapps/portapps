@@ -124,11 +124,17 @@
           </fileset>
           <fileset dir="${res.path}" defaultexcludes="no">
             <include name="setup*"/>
+            <include name="*.iss"/>
             <include name="papp.ico"/>
           </fileset>
         </copy>
         <condition property="setup.iss.path" value="${core.res.path}\setup.iss"><isfalse value="${papp.iss}"/></condition>
         <condition property="setup.iss.path" value="${res.path}\setup.iss"><istrue value="${papp.iss}"/></condition>
+        <foreach target="issinc" param="issfile">
+          <fileset dir="${res.path}" casesensitive="yes">
+            <include name="*.iss"/>
+          </fileset>
+        </foreach>
         <copy file="${setup.iss.path}" todir="${setup.path}" overwrite="true">
           <filterset>
             <filter token="ISS_COMPRESSION" value="${innosetup.comp}"/>
@@ -146,6 +152,23 @@
         <iscc dir="${setup.path}" output="${release.path}" filename="${release.setup.filename}"/>
       </then>
     </if>
+  </target>
+
+  <target name="issinc">
+    <copy file="${issfile}" todir="${setup.path}" overwrite="true">
+      <filterset>
+        <filter token="ISS_COMPRESSION" value="${innosetup.comp}"/>
+        <filter token="BIN_PATH" value="${bin.path}"/>
+        <filter token="APP_NAME" value="${app.name}"/>
+        <filter token="APP_HOMEPAGE" value="${app.homepage}"/>
+        <filter token="PAPP_ID" value="${papp.id}"/>
+        <filter token="PAPP_GUID" value="${papp.guid}"/>
+        <filter token="PAPP_VERSION" value="${app.version}-${app.release}"/>
+        <filter token="PAPP_URL" value="${papp.url}"/>
+        <filter token="PAPP_FOLDER" value="${papp.folder}"/>
+        <filter token="PAPP_PUBLISHER" value="${publisher}"/>
+      </filterset>
+    </copy>
   </target>
 
   <target name="prepare"/>

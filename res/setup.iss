@@ -49,8 +49,7 @@ Type: filesandordirs; Name: "{app}\log\*.log"
 Type: filesandordirs; Name: "{app}\*.log"
 Type: filesandordirs; Name: "{app}\{#pappId}*.exe"
 
-[Run]
-Filename: {app}\{#pappId}.exe; Description: Run {#pappName}; Flags: nowait postinstall skipifsilent unchecked
+#include "@BIN_PATH@\setup\run.iss"
 
 [Messages]
 WelcomeLabel1=[name] {#pappVersion}
@@ -144,14 +143,11 @@ begin
       IsUpgrade := True;
     end;
     if IsUpgrade then begin
-      if FileExists(ExpandConstant('{app}\portapp.json')) or FileExists(ExpandConstant('{app}\{#pappId}.exe')) then begin
-        Result := True;
-      end
-      else if FileExists(ExpandConstant('{app}\{#pappId}.exe')) then begin
+      if FileExists(ExpandConstant('{app}\portapp.json')) then begin
         Result := True;
       end
       else begin
-        MsgBox(ExpandConstant('The selected dir is not empty or you are performing an upgrade of {#pappName} but required files cannot be found. Please select a correct folder.'), mbError, MB_OK);
+        MsgBox(ExpandConstant('The selected dir is not empty or you are performing an upgrade of {#pappName} but required file portapp.json cannot be found. Please select a correct folder.'), mbError, MB_OK);
         Result := False;
         exit;
       end;
