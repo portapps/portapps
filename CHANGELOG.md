@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.0 (2020/05/19)
+
+* Allow to include custom Run config for Setup
+
 ## 2.2.4 (2020/04/28)
 
 * Strip debugging info
