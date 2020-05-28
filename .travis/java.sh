@@ -11,12 +11,12 @@ OPENJDK_ZIP_FILENAME=${OPENJDK_ZIP_URL##*/}
 
 cd ${TOOLS_PATH}
 
-if [ ! -f "${TOOLS_PATH}/${OPENJDK_ZIP_FILENAME}" ]; then
+if [ ! -f "${OPENJDK_ZIP_FILENAME}" ]; then
   echo "Downloading ${OPENJDK_ZIP_URL}..."
-  curl -fsS -o "${TOOLS_PATH}/${OPENJDK_ZIP_FILENAME}" "${OPENJDK_ZIP_URL}"
+  curl -fsS -o ${OPENJDK_ZIP_FILENAME} "${OPENJDK_ZIP_URL}"
   rm -rf ${JAVA_HOME}
 fi
-if [ ! -d "${JAVA_HOME}" ]; then
+if [ ! -d "${JAVA_HOME}" ] && [ -f "${OPENJDK_ZIP_FILENAME}" ]; then
   echo "Extracting ${OPENJDK_ZIP_FILENAME}..."
   7z x ${OPENJDK_ZIP_FILENAME} -y -o${TOOLS_PATH}/
   mv ${TOOLS_PATH}/jdk-${JAVA_VERSION} ${JAVA_HOME}
