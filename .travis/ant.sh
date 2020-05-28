@@ -4,13 +4,13 @@ set -e
 export TOOLS_PATH=${TOOLS_PATH:-/c/portapps_opt}
 
 export ANT_HOME=${ANT_HOME:-$TOOLS_PATH/ant}
-export ANT_VERSION=${ANT_VERSION:-1.10.7}
+export ANT_VERSION=${ANT_VERSION:-1.10.8}
 
 cd ${TOOLS_PATH}
 
 if [ ! -f "${TOOLS_PATH}/apache-ant-${ANT_VERSION}-bin.zip" ]; then
-  echo "Downloading https://downloads.apache.org/ant/binaries/apache-ant-${ANT_VERSION}-bin.zip..."
-  curl -fsS -o apache-ant-${ANT_VERSION}-bin.zip https://downloads.apache.org/ant/binaries/apache-ant-${ANT_VERSION}-bin.zip
+  echo "Downloading https://archive.apache.org/dist/ant/binaries/apache-ant-${ANT_VERSION}-bin.zip..."
+  curl -fsS -o apache-ant-${ANT_VERSION}-bin.zip https://archive.apache.org/dist/ant/binaries/apache-ant-${ANT_VERSION}-bin.zip
   rm -rf ${ANT_HOME}
 fi
 if [ ! -d "${ANT_HOME}" ]; then
