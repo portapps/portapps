@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.4.1 (2020/05/28)
+
+* OpenJDK 11.0.7
+* Force goproxy
+
 ## 2.4.0 (2020/05/28)
 
 * Save previous metadata in `portapp-prev.json`
