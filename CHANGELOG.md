@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.2 (2020/05/28)
+
+* Fix OpenJDK link
+
 ## 2.4.1 (2020/05/28)
 
 * OpenJDK 11.0.7
