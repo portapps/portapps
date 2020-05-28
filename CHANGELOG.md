@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.4 (2020/05/29)
+
+* Ant 1.10.8
+* travis-wait-enhanced 1.2.0
+* UPX 3.96
+
 ## 2.4.3 (2020/05/29)
 
 * Follow redirect with cURL
