@@ -13,7 +13,7 @@ cd ${TOOLS_PATH}
 
 if [ ! -f "${OPENJDK_ZIP_FILENAME}" ]; then
   echo "Downloading ${OPENJDK_ZIP_URL}..."
-  curl -fsS -o ${OPENJDK_ZIP_FILENAME} "${OPENJDK_ZIP_URL}"
+  curl -sSLk -o ${OPENJDK_ZIP_FILENAME} "${OPENJDK_ZIP_URL}"
   rm -rf ${JAVA_HOME}
 fi
 if [ ! -d "${JAVA_HOME}" ] && [ -f "${OPENJDK_ZIP_FILENAME}" ]; then
