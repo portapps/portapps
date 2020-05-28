@@ -20,6 +20,7 @@ import (
 // App represents an active app object
 type App struct {
 	Info       AppInfo
+	Prev       AppPrev
 	WinVersion win.Version
 
 	ID   string
@@ -47,6 +48,15 @@ type AppInfo struct {
 	Publisher       string `json:"publisher"`
 	URL             string `json:"url"`
 	PortappsVersion string `json:"portapps_version"`
+}
+
+// AppPrev represents previous settings file structure
+type AppPrev struct {
+	Info       AppInfo     `json:"info"`
+	WinVersion win.Version `json:"win_version"`
+	RootPath   string      `json:"root_path"`
+	AppPath    string      `json:"app_path"`
+	DataPath   string      `json:"data_path"`
 }
 
 // New creates new app instance
@@ -120,6 +130,18 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 	app.DataPath = utl.PathJoin(app.RootPath, "data")
 	app.WorkingDir = app.AppPath
 
+	// Load previous
+	prevFile := utl.PathJoin(app.RootPath, "portapp-prev.json")
+	if utl.Exists(prevFile) {
+		prevRaw, err := ioutil.ReadFile(prevFile)
+		if err != nil {
+			app.FatalBox(errors.Wrap(err, "Cannot load portapp-prev"))
+		}
+		if err = json.Unmarshal(prevRaw, &app.Prev); err != nil {
+			app.FatalBox(errors.Wrap(err, "Cannot unmarshal portapp-prev"))
+		}
+	}
+
 	// Load env vars from config
 	if len(app.config.Common.Env) > 0 {
 		log.Info().Msg("Setting environment variables from config...")
@@ -140,12 +162,13 @@ func (app *App) Launch(args []string) {
 	log.Info().Msgf("Working dir: %s", app.WorkingDir)
 	log.Info().Msgf("App path: %s", app.AppPath)
 	log.Info().Msgf("Data path: %s", app.DataPath)
+	log.Info().Msgf("Previous path: %s", app.Prev.RootPath)
 
 	if !utl.Exists(app.Process) {
 		log.Fatal().Msgf("Application not found in %s", app.Process)
 	}
 
-	log.Info().Msgf("Launching %s...", app.Name)
+	log.Info().Msgf("Launching %s", app.Name)
 	jArgs := append(append(app.config.Common.Args, args...), app.Args...)
 	execute := exec.Command(app.Process, jArgs...)
 	execute.Dir = app.WorkingDir
@@ -175,4 +198,26 @@ func (app *App) extendPlaceholders(value string) string {
 		value = strings.Replace(value, placeholder, ext, -1)
 	}
 	return value
+}
+
+// Close
+func (app *App) Close() {
+	log.Info().Msgf("Closing %s", app.Name)
+
+	// Update previous
+	prevFile := utl.PathJoin(app.RootPath, "portapp-prev.json")
+	jsonPrev, err := json.MarshalIndent(AppPrev{
+		Info:       app.Info,
+		WinVersion: app.WinVersion,
+		RootPath:   app.RootPath,
+		AppPath:    app.AppPath,
+		DataPath:   app.DataPath,
+	}, "", "  ")
+	if err != nil {
+		log.Error().Err(err).Msg("Cannot marshal portapp-prev")
+	}
+	err = ioutil.WriteFile(prevFile, jsonPrev, 0644)
+	if err != nil {
+		log.Error().Err(err).Msg("Cannot write portapp-prev")
+	}
 }
