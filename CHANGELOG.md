@@ -1,6 +1,10 @@
 # Changelog
 
-## 2.4.2 (2020/05/28)
+## 2.4.3 (2020/05/29)
+
+* Follow redirect with cURL
+
+## 2.4.2 (2020/05/29)
 
 * Fix OpenJDK link
 
