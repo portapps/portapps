@@ -79,11 +79,12 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 		app.FatalBox(errors.Wrap(err, "Cannot get Windows version"))
 	}
 
-	// Root path
-	app.RootPath, err = filepath.Abs(filepath.Dir(os.Args[0]))
+	// Find the executable in the PATH environment variable
+	path, err := exec.LookPath(os.Args[0])
 	if err != nil {
-		app.FatalBox(errors.Wrap(err, "Cannot get root absolute path"))
+		app.FatalBox(errors.Wrap(err, "Cannot find executable in path"))
 	}
+	app.RootPath = filepath.Dir(path)
 
 	// Load info
 	infoFile := utl.PathJoin(app.RootPath, "portapp.json")
