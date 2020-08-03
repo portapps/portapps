@@ -80,7 +80,11 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 	}
 
 	// Root path
-	app.RootPath, err = filepath.Abs(filepath.Dir(os.Args[0]))
+	ex, err := os.Executable()
+	if err != nil {
+		app.FatalBox(errors.Wrap(err, "Cannot get path name of the executable"))
+	}
+	app.RootPath, err = filepath.Abs(filepath.Dir(ex))
 	if err != nil {
 		app.FatalBox(errors.Wrap(err, "Cannot get root absolute path"))
 	}
