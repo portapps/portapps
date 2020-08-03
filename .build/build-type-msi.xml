@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="papps-type-msi" basedir=".">
+
+  <!-- Check required properties -->
+  <fail unless="app.version" message="Property 'app.version' must be defined before loading ${ant.file.papps-type-msi}"/>
+  <fail unless="atf.id" message="Property 'atf.id' must be defined before loading ${ant.file.papps-type-msi}"/>
+  <fail unless="msi.app" message="Property 'msi.app' must be defined before loading ${ant.file.papps-type-msi}"/>
+
+  <dirname property="build.basedir" file="${ant.file.papps-type-msi}"/>
+  <property name="root.basedir" location="${build.basedir}/.."/>
+
+  <!-- Import common build.xml and load properties -->
+  <import file="${build.basedir}\build-common.xml"/>
+  <property file="${build.basedir}\build-type-msi.properties"/>
+
+  <!-- Properties -->
+  <property name="extract.path" value="${tmp.path}\extract"/>
+
+  <!-- Targets -->
+  <target name="init" depends="papps-common.init">
+    <delete dir="${extract.path}"/>
+    <mkdir dir="${extract.path}"/>
+  </target>
+
+  <target name="release.arch" depends="start, init, clear, download, extract, filterset, build">
+    <!-- Preparing before packaging -->
+    <antcall target="prepare"/>
+
+    <echo message="Copying files..."/>
+
+    <!-- Copy files -->
+    <if>
+      <equals arg1="${debug}" arg2="false"/>
+      <then>
+        <move todir="${build.path}\${papp.folder}">
+          <fileset dir="${extract.path}\${msi.app}" defaultexcludes="no"/>
+        </move>
+      </then>
+      <else>
+        <copy todir="${build.path}\${papp.folder}">
+          <fileset dir="${extract.path}\${msi.app}" defaultexcludes="no"/>
+        </copy>
+      </else>
+    </if>
+
+    <!-- Add portapp README / CHANGELOG -->
+    <copy file="${app.basedir}\README.md" todir="${build.path}" overwrite="true"/>
+    <copy file="${app.basedir}\CHANGELOG.md" todir="${build.path}" overwrite="true"/>
+
+    <!-- Copy portable executable -->
+    <copy file="${tmp.path}\${papp.id}.exe" todir="${build.path}" overwrite="true"/>
+
+    <!-- version.dat for CI -->
+    <echo message="Writing version.dat..."/>
+    <echo file="${tmp.path}\version.dat" append="false">${app.version}-${app.release}</echo>
+
+    <!-- Init release files -->
+    <echo message="Creating release files"/>
+    <if>
+      <not><equals arg1="${atf.win3264.url}" arg2=""/></not>
+      <then>
+        <copy todir="${release.path}" overwrite="true">
+          <fileset dir="${tmp.path}" defaultexcludes="no">
+            <include name="${papp.id}*exe"/>
+          </fileset>
+        </copy>
+      </then>
+      <else>
+        <copy file="${tmp.path}\${papp.id}.exe" tofile="${release.path}\${papp.id}-${atf.arch}.exe" overwrite="true"/>
+      </else>
+    </if>
+    <if>
+      <istrue value="${papp.out.original}"/>
+      <then>
+        <if>
+          <equals arg1="${debug}" arg2="false"/>
+          <then>
+            <move file="${atf.original}" tofile="${release.path}\${atf.filename}${atf.ext}" overwrite="true"/>
+          </then>
+          <else>
+            <copy file="${atf.original}" tofile="${release.path}\${atf.filename}${atf.ext}" overwrite="true"/>
+          </else>
+        </if>
+      </then>
+    </if>
+
+    <antcall target="packaging"/>
+    <antcall target="finalize"/>
+
+    <!-- checksum -->
+    <hashfolder folder="${release.path}"/>
+  </target>
+
+  <target name="download">
+    <echo message="Downloading ${atf.id}..."/>
+    <property name="atf.original" location="${tmp.path}\${atf.filename}${atf.ext}"/>
+    <get dest="${atf.original}" src="${atf.url}" skipexisting="false" verbose="on"/>
+  </target>
+
+  <target name="extract">
+    <extractmsi file="${atf.original}" dest="${extract.path}"/>
+    <assertfile file="${extract.path}\${atf.assertextract}"/>
+  </target>
+
+</project>
