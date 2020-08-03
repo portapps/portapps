@@ -15,19 +15,12 @@
     <attribute name="file"/>
     <attribute name="dest"/>
     <sequential>
-      <var name="file.basename" unset="true"/>
-      <var name="file.win" unset="true"/>
-      <var name="dest.win" unset="true"/>
       <assertfile file="@{file}"/>
-      <basename property="file.basename" file="@{file}"/>
-      <propertyregex property="file.win" input="@{file}" regexp="/" replace="\\\\"/>
-      <propertyregex property="dest.win" input="@{dest}" regexp="/" replace="\\\\"/>
-
-      <echo message="Extracting ${file.basename} to @{dest}..."/>
+      <echo message="Extracting @{file} to @{dest}..."/>
       <exec executable="${lessmsi.exe}" failonerror="true">
         <arg value="x"/>
-        <arg value="${file.win}"/>
-        <arg value="${dest.win}\\"/>
+        <arg value="@{file}"/>
+        <arg value="@{dest}\\"/>
       </exec>
     </sequential>
   </macrodef>
