@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.5.0 (2020/08/03)
+
+* Fix RootPath resolution (#122)
+* Add `msi` build type
+* Fix `extractmsi` macrodef
+* Allow to open a reg key
+* Update deps
+
 ## 2.4.4 (2020/05/29)
 
 * Ant 1.10.8
