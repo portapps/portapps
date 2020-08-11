@@ -17,7 +17,6 @@
     <attribute name="dir"/>
     <element name="args"/>
     <sequential>
-      <echo message="Extracting @{src} to @{dest}..."/>
       <if>
         <equals arg1="@{arch}" arg2="win32"/>
         <then>
