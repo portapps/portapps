@@ -37,6 +37,7 @@
           <param name="atf.assertextract" value="${atf.win3264.assertextract}"/>
         </antcall>
         <echo file="${tmp.path}\${app.buildid}" append="false">${app.buildid}</echo>
+        <var name="innosetup.arch" value="x86 x64"/>
       </then>
     </if>
     <if>
@@ -54,6 +55,7 @@
           <param name="go.arch" value="386"/>
         </antcall>
         <echo file="${tmp.path}\${app.buildid}" append="false">${app.buildid}</echo>
+        <var name="innosetup.arch" value="x86 x64"/>
       </then>
     </if>
     <if>
@@ -71,6 +73,7 @@
           <param name="go.arch" value="amd64"/>
         </antcall>
         <echo file="${tmp.path}\${app.buildid}" append="false">${app.buildid}</echo>
+        <var name="innosetup.arch" value="x64"/>
       </then>
     </if>
     <delete file="${tmp.path}\${app.buildid}"/>
@@ -138,6 +141,7 @@
         <copy file="${setup.iss.path}" todir="${setup.path}" overwrite="true">
           <filterset>
             <filter token="ISS_COMPRESSION" value="${innosetup.comp}"/>
+            <filter token="ISS_ARCH" value="${innosetup.arch}"/>
             <filter token="BIN_PATH" value="${bin.path}"/>
             <filter token="APP_NAME" value="${app.name}"/>
             <filter token="APP_HOMEPAGE" value="${app.homepage}"/>
@@ -158,6 +162,7 @@
     <copy file="${issfile}" todir="${setup.path}" overwrite="true">
       <filterset>
         <filter token="ISS_COMPRESSION" value="${innosetup.comp}"/>
+        <filter token="ISS_ARCH" value="${innosetup.arch}"/>
         <filter token="BIN_PATH" value="${bin.path}"/>
         <filter token="APP_NAME" value="${app.name}"/>
         <filter token="APP_HOMEPAGE" value="${app.homepage}"/>

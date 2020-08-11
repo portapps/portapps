@@ -32,6 +32,7 @@ DefaultDirName={sd}\portapps\{#pappId}
 CreateAppDir=yes
 Uninstallable=no
 PrivilegesRequired=lowest
+ArchitecturesAllowed=@ISS_ARCH@
 
 VersionInfoCompany={#pappPublisher}
 VersionInfoCopyright={#pappPublisher} {#currentYear}
