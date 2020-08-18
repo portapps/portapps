@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.6.0 (2020/08/18)
+
+* Set InnoSetup `ArchitecturesAllowed`
+* Fix rcedit macrodef
+* goversioninfo 1.2.0
+* Innoextract 1.9
+
 ## 2.5.0 (2020/08/03)
 
 * Fix RootPath resolution (#122)
