@@ -5,7 +5,7 @@ export TOOLS_PATH=${TOOLS_PATH:-/c/portapps_opt}
 
 export GOPATH=${GOPATH:-$TOOLS_PATH/gopath}
 export GOROOT=${GOROOT:-$TOOLS_PATH/go}
-export GOVERSION=${GOVERSION:-1.13.10}
+export GOVERSION=${GOVERSION:-1.15.5}
 
 cd ${TOOLS_PATH}
 
