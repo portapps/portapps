@@ -258,7 +258,10 @@
         </exec>
         <assertfile file="${tmp.path}\${papp.id}-win64.exe"/>
         <if>
-          <equals arg1="${debug}" arg2="false"/>
+          <and>
+            <equals arg1="${debug}" arg2="false"/>
+            <equals arg1="${papp.upx}" arg2="true"/>
+          </and>
           <then>
             <echo message="Compressing executables with UPX..."/>
             <upx arch="win32" dir="${app.basedir}">
@@ -300,7 +303,10 @@
         </exec>
         <assertfile file="${tmp.path}\${papp.id}.exe"/>
         <if>
-          <equals arg1="${debug}" arg2="false"/>
+          <and>
+            <equals arg1="${debug}" arg2="false"/>
+            <equals arg1="${papp.upx}" arg2="true"/>
+          </and>
           <then>
             <echo message="Compressing executable with UPX..."/>
             <upx arch="${atf.arch}" dir="${app.basedir}">
