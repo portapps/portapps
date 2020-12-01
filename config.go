@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/portapps/portapps/v2/pkg/utl"
+	"github.com/portapps/portapps/v3/pkg/utl"
 	"gopkg.in/yaml.v2"
 )
 

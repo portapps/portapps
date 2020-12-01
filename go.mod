@@ -1,4 +1,4 @@
-module github.com/portapps/portapps/v2
+module github.com/portapps/portapps/v3
 
 go 1.15
 

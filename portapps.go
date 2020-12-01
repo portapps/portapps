@@ -11,8 +11,8 @@ import (
 
 	"github.com/mitchellh/mapstructure"
 	"github.com/pkg/errors"
-	"github.com/portapps/portapps/v2/pkg/utl"
-	"github.com/portapps/portapps/v2/pkg/win"
+	"github.com/portapps/portapps/v3/pkg/utl"
+	"github.com/portapps/portapps/v3/pkg/win"
 	"github.com/rs/zerolog/log"
 	"gopkg.in/yaml.v2"
 )

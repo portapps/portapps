@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/portapps/portapps/v2/pkg/win"
+	"github.com/portapps/portapps/v3/pkg/win"
 )
 
 // ErrorBox display an error message box
