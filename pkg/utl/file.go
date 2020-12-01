@@ -7,19 +7,19 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
-	"syscall"
 
 	"github.com/rs/zerolog/log"
+	"golang.org/x/sys/windows"
 )
 
 // SetFileAttributes set attributes to a file
 func SetFileAttributes(path string, attrs uint32) error {
-	pointer, err := syscall.UTF16PtrFromString(path)
+	pointer, err := windows.UTF16PtrFromString(path)
 	if err != nil {
 		return err
 	}
 
-	return syscall.SetFileAttributes(pointer, attrs)
+	return windows.SetFileAttributes(pointer, attrs)
 }
 
 // CopyFile copy a file

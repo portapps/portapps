@@ -10,7 +10,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/portapps/portapps/v2/pkg/proc"
-	reg "golang.org/x/sys/windows/registry"
+	"golang.org/x/sys/windows/registry"
 )
 
 // Key the registry key structure
@@ -181,24 +181,24 @@ func (k *Key) Import(file string) error {
 }
 
 // Open opens a registry key
-func (k *Key) Open() (reg.Key, error) {
+func (k *Key) Open() (registry.Key, error) {
 	regSpl := strings.SplitN(k.Key, `\`, 2)
 
-	var regKey reg.Key
+	var regKey registry.Key
 	switch regSpl[0] {
 	case "HKCR":
-		regKey = reg.CLASSES_ROOT
+		regKey = registry.CLASSES_ROOT
 	case "HKCU":
-		regKey = reg.CURRENT_USER
+		regKey = registry.CURRENT_USER
 	case "HKLM":
-		regKey = reg.LOCAL_MACHINE
+		regKey = registry.LOCAL_MACHINE
 	case "HKU":
-		regKey = reg.USERS
+		regKey = registry.USERS
 	case "HKCC":
-		regKey = reg.CURRENT_CONFIG
+		regKey = registry.CURRENT_CONFIG
 	default:
-		return reg.NONE, fmt.Errorf("unknown hive %s", regSpl[0])
+		return registry.NONE, fmt.Errorf("unknown hive %s", regSpl[0])
 	}
 
-	return reg.OpenKey(regKey, regSpl[1], reg.ALL_ACCESS)
+	return registry.OpenKey(regKey, regSpl[1], registry.ALL_ACCESS)
 }

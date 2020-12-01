@@ -150,7 +150,7 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 	if len(app.config.Common.Env) > 0 {
 		log.Info().Msg("Setting environment variables from config...")
 		for key, value := range app.config.Common.Env {
-			utl.OverrideEnv(key, app.extendPlaceholders(value))
+			os.Setenv(key, app.extendPlaceholders(value))
 		}
 	}
 

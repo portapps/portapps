@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"syscall"
 	"time"
 
 	"github.com/ilya1st/rotatewriter"
@@ -12,6 +11,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/rs/zerolog/pkgerrors"
+	"golang.org/x/sys/windows"
 )
 
 // InitLogger configures logger
@@ -43,7 +43,7 @@ func (app *App) InitLogger() error {
 	}
 
 	sighupChan := make(chan os.Signal, 1)
-	signal.Notify(sighupChan, syscall.SIGHUP)
+	signal.Notify(sighupChan, windows.SIGHUP)
 	go func() {
 		for {
 			_, ok := <-sighupChan

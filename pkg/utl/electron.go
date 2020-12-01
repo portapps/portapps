@@ -4,19 +4,18 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.com/rs/zerolog/log"
+	"github.com/pkg/errors"
 )
 
 // FindElectronAppFolder retrieved the app electron folder
-func FindElectronAppFolder(prefix string, source string) string {
-	log.Info().Msgf("Lookup electron app folder in: %s", source)
+func FindElectronAppFolder(prefix string, source string) (string, error) {
 	rootFiles, _ := ioutil.ReadDir(source)
+
 	for _, f := range rootFiles {
 		if strings.HasPrefix(f.Name(), prefix) && f.IsDir() {
-			log.Info().Msgf("Electron app folder found: %s", f.Name())
-			return f.Name()
+			return f.Name(), nil
 		}
 	}
-	log.Fatal().Msgf("Electron main path does not exist with prefix '%s' in %s", prefix, source)
-	return ""
+
+	return "", errors.Errorf("Electron main path does not exist with prefix '%s' in %s", prefix, source)
 }

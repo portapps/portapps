@@ -1,8 +1,9 @@
-package dialog
+package win
 
 import (
-	"syscall"
 	"unsafe"
+
+	"golang.org/x/sys/windows"
 )
 
 // MsgBox items types
@@ -39,28 +40,25 @@ var (
 
 // MsgBox create message box
 func MsgBox(title string, msg string, flag uint) (int, error) {
-	rTitle, err := syscall.UTF16PtrFromString(title)
+	rTitle, err := windows.UTF16PtrFromString(title)
 	if err != nil {
 		return 0, err
 	}
 
-	rMsg, err := syscall.UTF16PtrFromString(msg)
+	rMsg, err := windows.UTF16PtrFromString(msg)
 	if err != nil {
 		return 0, err
 	}
 
-	rtn, _, _ := syscall.NewLazyDLL("user32.dll").NewProc("MessageBoxW").Call(
+	ret, _, err := user32.NewProc("MessageBoxW").Call(
 		0,
 		uintptr(unsafe.Pointer(rMsg)),
 		uintptr(unsafe.Pointer(rTitle)),
 		uintptr(flag),
 	)
-
-	if rtn == 0 {
-		rtn, _, _ := syscall.NewLazyDLL("kernel32.dll").NewProc("GetLastError").Call()
-		err := MsgBoxError(uint32(rtn))
+	if ret == 0 {
 		return 0, err
 	}
 
-	return int(rtn), nil
+	return int(ret), nil
 }
