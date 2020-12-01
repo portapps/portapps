@@ -1,34 +1,37 @@
 package win
 
 import (
-	"syscall"
 	"unsafe"
 
-	"github.com/rs/zerolog/log"
+	"golang.org/x/sys/windows"
 )
 
+// GetConsoleTitle sets windows console title
+func GetConsoleTitle() (string, error) {
+	buffer := make([]uint16, 256)
+
+	ret, _, err := kernel32.NewProc("GetConsoleTitleW").Call(
+		uintptr(unsafe.Pointer(&buffer[0])),
+		uintptr(len(buffer)),
+	)
+	if ret == 0 {
+		return "", err
+	}
+
+	return windows.UTF16ToString(buffer), nil
+}
+
 // SetConsoleTitle sets windows console title
-func SetConsoleTitle(title string) (int, error) {
-	handle, err := syscall.LoadLibrary("kernel32.dll")
+func SetConsoleTitle(title string) error {
+	buffer, err := windows.UTF16PtrFromString(title)
 	if err != nil {
-		return 0, err
-	}
-	defer func() {
-		if err := syscall.FreeLibrary(handle); err != nil {
-			log.Error().Err(err).Msg("Cannot free library")
-		}
-	}()
-
-	proc, err := syscall.GetProcAddress(handle, "SetConsoleTitleW")
-	if err != nil {
-		return 0, err
+		return err
 	}
 
-	rTitle, err := syscall.UTF16PtrFromString(title)
-	if err != nil {
-		return 0, err
+	ret, _, err := kernel32.NewProc("SetConsoleTitleW").Call(uintptr(unsafe.Pointer(buffer)))
+	if ret == 0 {
+		return err
 	}
 
-	r, _, err := syscall.Syscall(proc, 1, uintptr(unsafe.Pointer(rTitle)), 0, 0)
-	return int(r), err
+	return nil
 }

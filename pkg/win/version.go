@@ -1,7 +1,7 @@
 package win
 
 import (
-	"syscall"
+	"golang.org/x/sys/windows"
 )
 
 // Version identifies a Windows version by major, minor, and build number.
@@ -18,7 +18,7 @@ type Version struct {
 // https://msdn.microsoft.com/en-us/library/windows/desktop/ms724833(v=vs.85).aspx
 func GetVersion() (Version, error) {
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms724439(v=vs.85).aspx
-	ver, err := syscall.GetVersion()
+	ver, err := windows.GetVersion()
 	if err != nil {
 		return Version{}, err
 	}
