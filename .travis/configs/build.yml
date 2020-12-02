@@ -1,4 +1,0 @@
----
-
-script:
-  - ant release -Dcore.dir=$PORTAPPS_DIR
