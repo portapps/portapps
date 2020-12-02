@@ -1,5 +1,19 @@
 # Changelog
 
+## 3.0.0 (2020/12/02)
+
+* Switch to GitHub Actions (#161)
+* Fix build common
+* Remove travis-wait-enhanced
+* Add go version and go env targets
+* Remove syscall (#162)
+* Add some tests
+* Allow to disable UPX compression
+* Go 1.15.5
+* Bump github.com/rs/zerolog from 1.19.0 to 1.20.0 (#150)
+* Bump github.com/mitchellh/mapstructure from 1.3.3 to 1.4.0 (#160)
+* Bump gopkg.in/yaml.v2 from 2.3.0 to 2.4.0 (#158)
+
 ## 2.6.0 (2020/08/18)
 
 * Set InnoSetup `ArchitecturesAllowed`
