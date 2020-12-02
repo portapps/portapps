@@ -137,7 +137,6 @@
 
   <!-- Libs -->
   <import file="${build.basedir}\libs\antcontrib.xml"/>
-  <import file="${build.basedir}\libs\traviswaitenhanced.xml"/>
   <import file="${build.basedir}\libs\wget.xml"/>
   <import file="${build.basedir}\libs\7zip.xml"/>
   <import file="${build.basedir}\libs\rcedit.xml"/>
@@ -151,7 +150,6 @@
 
   <target name="load.libs" unless="is.lib.loaded" depends="
       load.lib.antcontrib,
-      load.lib.traviswaitenhanced,
       load.lib.wget,
       load.lib.7za,
       load.lib.7z,
@@ -199,7 +197,23 @@
     <echo message="APP_PORTAPPS_PATCH : ${portapps.patch}"/>
   </target>
 
-  <target name="downmod" description="Download modules">
+  <target name="goversion" description="Go version">
+    <exec executable="go" failonerror="true" dir="${app.basedir}">
+      <env key="GO111MODULE" value="${go.module}"/>
+      <env key="GOPROXY" value="${go.proxy}"/>
+      <arg value="version"/>
+    </exec>
+  </target>
+
+  <target name="goenv" description="Go environment information">
+    <exec executable="go" failonerror="true" dir="${app.basedir}">
+      <env key="GO111MODULE" value="${go.module}"/>
+      <env key="GOPROXY" value="${go.proxy}"/>
+      <arg value="env"/>
+    </exec>
+  </target>
+
+  <target name="gomod" description="Download Go modules">
     <exec executable="go" failonerror="true" dir="${app.basedir}">
       <env key="GO111MODULE" value="${go.module}"/>
       <env key="GOPROXY" value="${go.proxy}"/>
@@ -208,7 +222,7 @@
     </exec>
   </target>
 
-  <target name="generate">
+  <target name="gogenerate" description="Go generate">
     <copy file="${core.res.path}/versioninfo.json" todir="${app.basedir}" overwrite="true">
       <filterset refid="filterset.app"/>
     </copy>
@@ -221,7 +235,7 @@
     </exec>
   </target>
 
-  <target name="build" depends="downmod, generate">
+  <target name="build" depends="goversion, goenv, gomod, gogenerate">
     <!-- GO build -->
     <delete>
       <fileset dir="${tmp.path}" includes="*_upx.exe" defaultexcludes="no"/>

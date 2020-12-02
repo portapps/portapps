@@ -3,7 +3,6 @@
 
   <!-- Check required properties -->
   <fail unless="core.lib.path" message="Property 'core.lib.path' must be defined before loading libs/innosetup.xml"/>
-  <fail unless="traviswaitenhanced.exe" message="Property 'traviswaitenhanced.exe' must be defined before loading libs/innosetup.xml"/>
   <fail unless="innoextract.exe" message="Property 'innoextract.exe' must be defined before loading libs/innosetup.xml"/>
 
   <!-- Load properties -->
@@ -20,25 +19,11 @@
     <attribute name="filename"/>
     <sequential>
       <echo message="Building setup..."/>
-      <if>
-        <isset property="env.TRAVIS_BUILD_NUMBER"/>
-        <then>
-          <exec executable="${traviswaitenhanced.exe}" dir="@{dir}" failonerror="true">
-            <arg value="${iscc.exe}"/>
-            <arg value="/Q"/>
-            <arg value="/O@{output}"/>
-            <arg value="/F@{filename}"/>
-            <arg value="setup.iss"/>
-          </exec>
-        </then>
-        <else>
-          <exec executable="${iscc.exe}" dir="@{dir}" failonerror="true">
-            <arg value="/O@{output}"/>
-            <arg value="/F@{filename}"/>
-            <arg value="setup.iss"/>
-          </exec>
-        </else>
-      </if>
+      <exec executable="${iscc.exe}" dir="@{dir}" failonerror="true">
+        <arg value="/O@{output}"/>
+        <arg value="/F@{filename}"/>
+        <arg value="setup.iss"/>
+      </exec>
     </sequential>
   </macrodef>
 
