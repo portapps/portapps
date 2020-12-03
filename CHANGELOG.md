@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.1 (2020/12/03)
+
+* Fix Electron asar target
+
 ## 3.0.0 (2020/12/02)
 
 * Switch to GitHub Actions (#161)

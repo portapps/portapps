@@ -155,7 +155,7 @@
     </if>
   </target>
 
-  <target name="asar">
+  <target name="asar" depends="load.lib.asar">
     <if>
       <and>
         <not><equals arg1="${electron.userdata.search}" arg2=""/></not>
