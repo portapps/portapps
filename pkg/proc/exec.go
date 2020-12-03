@@ -2,7 +2,6 @@ package proc
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"os/exec"
 	"strings"
@@ -27,32 +26,32 @@ type CmdResult struct {
 }
 
 // Cmd to execute a system command
-func Cmd(options CmdOptions) (*CmdResult, error) {
-	cmOut := &bytes.Buffer{}
-	cmErr := &bytes.Buffer{}
+func Cmd(options CmdOptions) (CmdResult, error) {
+	result := CmdResult{Options: options}
 
-	cm := exec.Command(options.Command, options.Args...)
-	cm.Stdout = cmOut
-	cm.Stderr = cmErr
-	cm.SysProcAttr = &windows.SysProcAttr{
-		HideWindow: options.HideWindow,
-	}
+	command := exec.Command(options.Command, options.Args...)
+	commandStdout := &bytes.Buffer{}
+	command.Stdout = commandStdout
+	commandStderr := &bytes.Buffer{}
+	command.Stderr = commandStderr
+	command.SysProcAttr = &windows.SysProcAttr{HideWindow: options.HideWindow}
 
 	if options.WorkingDir != "" {
-		cm.Dir = options.WorkingDir
+		command.Dir = options.WorkingDir
 	}
 
-	if err := cm.Start(); err != nil {
-		return nil, err
+	if err := command.Start(); err != nil {
+		return result, err
 	}
-	cm.Wait()
 
-	return &CmdResult{
-		Options:  options,
-		ExitCode: cm.ProcessState.Sys().(windows.WaitStatus).ExitCode,
-		Stdout:   strings.TrimSpace(cmOut.String()),
-		Stderr:   strings.TrimSpace(cmErr.String()),
-	}, nil
+	command.Wait()
+	waitStatus := command.ProcessState.Sys().(windows.WaitStatus)
+
+	result.ExitCode = waitStatus.ExitCode
+	result.Stdout = strings.TrimSpace(commandStdout.String())
+	result.Stderr = strings.TrimSpace(commandStderr.String())
+
+	return result, nil
 }
 
 // QuickCmd executes a cmd with args with default options
@@ -62,16 +61,16 @@ func QuickCmd(command string, args []string) error {
 		Args:       args,
 		HideWindow: true,
 	})
-	if err != nil {
-		return err
-	}
 
-	if cmdResult.ExitCode != 0 {
-		stderr := fmt.Sprintf(" (exit code %d)", cmdResult.ExitCode)
-		if len(cmdResult.Stderr) > 0 {
-			stderr += fmt.Sprintf("\n%s\n", cmdResult.Stderr)
+	if err != nil {
+		var errorOutput string
+		if cmdResult.ExitCode != 0 {
+			errorOutput = fmt.Sprintf(" (exit code %d)", cmdResult.ExitCode)
+			if len(cmdResult.Stderr) > 0 {
+				errorOutput += fmt.Sprintf("\n%s\n", cmdResult.Stderr)
+			}
 		}
-		return errors.New(stderr)
+		return fmt.Errorf("%s%s", err.Error(), errorOutput)
 	}
 
 	return nil
