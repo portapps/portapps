@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.0 (2020/12/13)
+
+* Add `Config` func to return global app configuration
+* Add `ElectronAppPath` func to return the app electron path
+* Add `ErrorBoxLog` and `FatalBoxLog` funcs
+
 ## 3.0.3 (2020/12/03)
 
 * Fix command exec

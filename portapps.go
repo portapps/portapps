@@ -11,9 +11,9 @@ import (
 
 	"github.com/mitchellh/mapstructure"
 	"github.com/pkg/errors"
+	"github.com/portapps/portapps/v3/pkg/log"
 	"github.com/portapps/portapps/v3/pkg/utl"
 	"github.com/portapps/portapps/v3/pkg/win"
-	"github.com/rs/zerolog/log"
 	"gopkg.in/yaml.v2"
 )
 
@@ -155,6 +155,11 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 	}
 
 	return app, nil
+}
+
+// Config returns app configuration
+func (app *App) Config() *Config {
+	return app.config
 }
 
 // Launch to execute the app with additional args

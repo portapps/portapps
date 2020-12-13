@@ -7,7 +7,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// FindElectronAppFolder retrieved the app electron folder
+// FindElectronAppFolder returns the app electron folder
 func FindElectronAppFolder(prefix string, source string) (string, error) {
 	rootFiles, _ := ioutil.ReadDir(source)
 
