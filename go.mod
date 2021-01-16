@@ -9,7 +9,7 @@ require (
 	github.com/mitchellh/mapstructure v1.4.1
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.20.0
-	github.com/stretchr/testify v1.6.1
+	github.com/stretchr/testify v1.7.0
 	golang.org/x/sys v0.0.0-20201116194326-cc9327a14d48
 	gopkg.in/yaml.v2 v2.4.0
 )
