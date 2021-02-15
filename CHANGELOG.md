@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.2.0 (2021/02/15)
+
+* Use default GOPROXY value
+* Update 7zip extra download link
+* Bump github.com/stretchr/testify from 1.6.1 to 1.7.0 (#170)
+* Bump github.com/mitchellh/mapstructure from 1.4.0 to 1.4.1 (#169)
+* Bump github.com/go-ole/go-ole from 1.2.4 to 1.2.5 (#168)
+
 ## 3.1.0 (2020/12/13)
 
 * Add `Config` func to return global app configuration
