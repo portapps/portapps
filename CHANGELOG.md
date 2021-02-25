@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.2.2 (2021/02/25)
+
+* Update 7zip extra download link
+
 ## 3.2.1 (2021/02/15)
 
 * Revert 7zip extra download link
