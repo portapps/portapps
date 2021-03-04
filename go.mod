@@ -1,6 +1,6 @@
 module github.com/portapps/portapps/v3
 
-go 1.15
+go 1.16
 
 require (
 	github.com/go-ole/go-ole v1.2.5

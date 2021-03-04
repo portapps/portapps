@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.3.0 (2021/03/04)
+
+* Go 1.16
+
 ## 3.2.2 (2021/02/25)
 
 * Update 7zip extra download link
