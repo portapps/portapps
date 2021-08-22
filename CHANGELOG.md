@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.3.1 (2021/08/23)
+
+* Update `golang.org/x/sys`
+* Use `exec.Command.Run`
+* Bump github.com/josephspurrier/goversioninfo from 1.2.0 to 1.3.0 (#215)
+* Bump codecov/codecov-action from 1 to 2
+* Bump github.com/rs/zerolog from 1.20.0 to 1.22.0 (#199 #202)
+
 ## 3.3.0 (2021/03/04)
 
 * Go 1.16
