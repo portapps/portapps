@@ -188,11 +188,8 @@ func (app *App) Launch(args []string) {
 	}
 
 	log.Info().Msgf("Exec %s %s", app.Process, strings.Join(jArgs, " "))
-	if err := execute.Start(); err != nil {
+	if err := execute.Run(); err != nil {
 		log.Fatal().Err(err).Msg("Command failed")
-	}
-	if err := execute.Wait(); err != nil {
-		log.Error().Err(err).Msg("Command failed")
 	}
 }
 
