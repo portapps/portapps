@@ -69,6 +69,7 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 	// Init
 	app = &App{
 		Info: AppInfo{},
+		Prev: AppPrev{},
 		ID:   id,
 		Name: name,
 	}
@@ -142,7 +143,8 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 			app.FatalBox(errors.Wrap(err, "Cannot load portapp-prev"))
 		}
 		if err = json.Unmarshal(prevRaw, &app.Prev); err != nil {
-			app.FatalBox(errors.Wrap(err, "Cannot unmarshal portapp-prev"))
+			log.Error().Err(err).Msgf("Cannot unmarshal portapp-prev")
+			_ = os.Remove(prevFile)
 		}
 	}
 
@@ -206,7 +208,7 @@ func (app *App) extendPlaceholders(value string) string {
 	return value
 }
 
-// Close
+// Close closes the app
 func (app *App) Close() {
 	log.Info().Msgf("Closing %s", app.Name)
 
