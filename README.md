@@ -12,9 +12,11 @@
 
 ## About
 
-🚀 **Portapps** is a collection of portable apps for Windows. You can download :inbox_tray: your favorite application as a portable :rocket: setup or a 7z archive.
+**Portapps** is a collection of portable apps for Windows. You can download your favorite application as a portable
+setup, or a 7z archive.
 
-Each portable app is executed through a wrapper :package: `[appname]-portable.exe` written in [Golang](https://golang.org/) to make the app portable. This will allow you, for example, to use your favorite application on a USB stick.
+Each portable app is executed through a wrapper `[appname]-portable.exe` written in [Golang](https://golang.org/)
+to make the app portable. This will allow you, for example, to use your favorite application on a USB stick.
 
 ## Links
 
