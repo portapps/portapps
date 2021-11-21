@@ -3,7 +3,6 @@ package portapps
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -92,7 +91,7 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 
 	// Load info
 	infoFile := utl.PathJoin(app.RootPath, "portapp.json")
-	infoRaw, err := ioutil.ReadFile(infoFile)
+	infoRaw, err := os.ReadFile(infoFile)
 	if err != nil {
 		app.FatalBox(errors.Wrap(err, "Cannot load portapps.json"))
 	}
@@ -138,7 +137,7 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 	// Load previous
 	prevFile := utl.PathJoin(app.RootPath, "portapp-prev.json")
 	if utl.Exists(prevFile) {
-		prevRaw, err := ioutil.ReadFile(prevFile)
+		prevRaw, err := os.ReadFile(prevFile)
 		if err != nil {
 			app.FatalBox(errors.Wrap(err, "Cannot load portapp-prev"))
 		}
@@ -224,7 +223,7 @@ func (app *App) Close() {
 	if err != nil {
 		log.Error().Err(err).Msg("Cannot marshal portapp-prev")
 	}
-	err = ioutil.WriteFile(prevFile, jsonPrev, 0644)
+	err = os.WriteFile(prevFile, jsonPrev, 0o644)
 	if err != nil {
 		log.Error().Err(err).Msg("Cannot write portapp-prev")
 	}

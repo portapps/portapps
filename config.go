@@ -2,7 +2,6 @@ package portapps
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/portapps/portapps/v3/pkg/utl"
@@ -41,7 +40,7 @@ func (app *App) loadConfig(appcfg interface{}) (err error) {
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile(utl.PathJoin(app.RootPath, fmt.Sprintf("%s.sample.yml", app.ID)), raw, 0644)
+	err = os.WriteFile(utl.PathJoin(app.RootPath, fmt.Sprintf("%s.sample.yml", app.ID)), raw, 0o644)
 	if err != nil {
 		return err
 	}
@@ -52,7 +51,7 @@ func (app *App) loadConfig(appcfg interface{}) (err error) {
 	}
 
 	// Read config
-	raw, err = ioutil.ReadFile(cfgPath)
+	raw, err = os.ReadFile(cfgPath)
 	if err != nil {
 		return err
 	}
