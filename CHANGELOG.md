@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.4.0 (2021/11/21)
+
+* Go 1.17 (#230)
+* Don't fail on corrupt portapp-prev (#217)
+* Bump github.com/go-ole/go-ole from 1.2.5 to 1.2.6 (#225)
+* Bump github.com/mitchellh/mapstructure from 1.4.1 to 1.4.2 (#223)
+* Bump github.com/rs/zerolog from 1.23.0 to 1.26.0 (#219 #228)
+
 ## 3.3.1 (2021/08/23)
 
 * Update `golang.org/x/sys`
