@@ -2,7 +2,6 @@ package utl
 
 import (
 	"io"
-	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -164,7 +163,7 @@ func WriteToFile(name string, content string) error {
 
 // AppendToFile appends content to a file
 func AppendToFile(name string, content string) error {
-	f, err := os.OpenFile(name, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := os.OpenFile(name, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
 	if err != nil {
 		return err
 	}
@@ -177,7 +176,7 @@ func AppendToFile(name string, content string) error {
 
 // FileContains reports if a file contains text
 func FileContains(name string, text string) (bool, error) {
-	b, err := ioutil.ReadFile(name)
+	b, err := os.ReadFile(name)
 	if err != nil {
 		return false, err
 	}
@@ -186,7 +185,7 @@ func FileContains(name string, text string) (bool, error) {
 
 // ReplaceByPrefix replaces line in file starting with a specific prefix
 func ReplaceByPrefix(filename string, prefix string, replace string) error {
-	input, err := ioutil.ReadFile(filename)
+	input, err := os.ReadFile(filename)
 	if err != nil {
 		return err
 	}
@@ -199,7 +198,7 @@ func ReplaceByPrefix(filename string, prefix string, replace string) error {
 	}
 
 	output := strings.Join(lines, "\n")
-	err = ioutil.WriteFile(filename, []byte(output), 0644)
+	err = os.WriteFile(filename, []byte(output), 0o644)
 	if err != nil {
 		return err
 	}
@@ -209,12 +208,12 @@ func ReplaceByPrefix(filename string, prefix string, replace string) error {
 
 // Replace text in file
 func Replace(filename string, old string, new string) error {
-	input, err := ioutil.ReadFile(filename)
+	input, err := os.ReadFile(filename)
 	if err != nil {
 		return err
 	}
 
-	err = ioutil.WriteFile(filename, []byte(strings.Replace(string(input), old, new, -1)), 0644)
+	err = os.WriteFile(filename, []byte(strings.Replace(string(input), old, new, -1)), 0o644)
 	if err != nil {
 		return err
 	}
