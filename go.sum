@@ -8,8 +8,8 @@ github.com/go-ole/go-ole v1.2.6/go.mod h1:pprOEPIfldk/42T2oK7lQ4v4JSDwmV0As9GaiU
 github.com/godbus/dbus/v5 v5.0.4/go.mod h1:xhWf0FNVPg57R7Z0UbKHbJfkEywrmjJnf7w5xrFpKfA=
 github.com/ilya1st/rotatewriter v0.0.0-20171126183947-3df0c1a3ed6d h1:OGuVAVny/97zsQ5BWg0mOjzTBBD9zR+Lug1co144+rU=
 github.com/ilya1st/rotatewriter v0.0.0-20171126183947-3df0c1a3ed6d/go.mod h1:S1q6q+21PRGd0WRX+fHjQ+TOe3CgpSv7zgCWnZcbxCs=
-github.com/josephspurrier/goversioninfo v1.3.0 h1:pmgDhWnG8I59p5kCR09J73s/gy9JqRPAtiaUK8jixtE=
-github.com/josephspurrier/goversioninfo v1.3.0/go.mod h1:JWzv5rKQr+MmW+LvM412ToT/IkYDZjaclF2pKDss8IY=
+github.com/josephspurrier/goversioninfo v1.4.0 h1:Puhl12NSHUSALHSuzYwPYQkqa2E1+7SrtAPJorKK0C8=
+github.com/josephspurrier/goversioninfo v1.4.0/go.mod h1:JWzv5rKQr+MmW+LvM412ToT/IkYDZjaclF2pKDss8IY=
 github.com/mitchellh/mapstructure v1.4.2 h1:6h7AQ0yhTcIsmFmnAwQls75jp2Gzs4iB8W7pjMO+rqo=
 github.com/mitchellh/mapstructure v1.4.2/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
