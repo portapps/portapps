@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.5.0 (2022/04/04)
+
+* Fix HashMyFiles and Wget download links (#251)
+* Bump github.com/stretchr/testify from 1.7.0 to 1.7.1 (#245)
+* Bump github.com/mitchellh/mapstructure from 1.4.2 to 1.4.3 (#232)
+* Bump github.com/rs/zerolog from 1.26.0 to 1.26.1 (#234)
+* Bump github.com/josephspurrier/goversioninfo from 1.3.0 to 1.4.0 (#237)
+
 ## 3.4.0 (2021/11/21)
 
 * Go 1.17 (#230)
