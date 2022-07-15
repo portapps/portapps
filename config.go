@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/portapps/portapps/v3/pkg/utl"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 // Config holds portapp configuration details
