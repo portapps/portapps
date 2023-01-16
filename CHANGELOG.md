@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.7.0 (2023/01/16)
+
+* Go 1.19 (#292)
+* Bump github.com/rs/zerolog from 1.27.0 to 1.28.0 (#273)
+* Bump github.com/stretchr/testify from 1.8.0 to 1.8.1 (#278)
+* Bump golang.org/x/sys to 0.4.0 (#292)
+
 ## 3.6.0 (2022/07/15)
 
 * Go 1.18 (#264)
