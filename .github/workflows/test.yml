@@ -1,5 +1,9 @@
 name: test
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
@@ -7,8 +11,6 @@ on:
     tags:
       - 'v*'
   pull_request:
-    branches:
-      - 'master'
 
 jobs:
   test:
