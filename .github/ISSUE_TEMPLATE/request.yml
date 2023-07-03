@@ -1,0 +1,67 @@
+# https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema
+name: App Request
+description: Want an app to be portapped?
+labels:
+  - ":package: app request"
+
+body:
+  - type: checkboxes
+    attributes:
+      label: Request guidelines
+      description: Please read the request guidelines before proceeding.
+      options:
+        - label: I've read the [request guidelines](https://portapps.io/doc/request-app/)
+          required: true
+
+  - type: checkboxes
+    attributes:
+      label: I've checked that that ...
+      description: |
+        Make sure that your request fulfills all of the following requirements.
+      options:
+        - label: ... license allows distribution/repackaging of the software
+        - label: ... this is not an abdandonware
+
+  - type: input
+    attributes:
+      label: Name
+      description: |
+        Name of the app.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Description
+      description: |
+        Please provide a brief description of this app in 1-2 sentences.
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Website
+      description: |
+        Link to app's website or GitHub repository.
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: License
+      description: |
+        License of the app (e.g. Freeware, OSS, GPL, MIT, ...)
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: TOS link
+      description: |
+        Link to app's Terms of Service (if applicable).
+
+  - type: textarea
+    attributes:
+      label: Additional info
+      description: |
+        Please provide any additional information that seem useful.
