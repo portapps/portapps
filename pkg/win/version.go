@@ -22,7 +22,6 @@ func GetVersion() (Version, error) {
 	if err != nil {
 		return Version{}, err
 	}
-
 	return Version{
 		Major: int(ver & 0xFF),
 		Minor: int(ver >> 8 & 0xFF),

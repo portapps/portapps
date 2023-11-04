@@ -8,24 +8,23 @@ import (
 )
 
 // RefreshEnv refresh Windows environment
-// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-sendmessagetimeoutw
+// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessagetimeoutw
 func RefreshEnv() error {
-	buffer, err := windows.UTF16PtrFromString("Environment")
-	if err != nil {
-		return err
-	}
-
+	wmSettingChange := uint32(0x001A)
+	smtoNormal := uint32(0x0000)
+	smtoAbortIfHung := uint32(0x0002)
+	uTimeout := 5000
 	ret, _, err := user32.NewProc("SendMessageTimeoutW").Call(
-		uintptr(0xFFFF),
-		uintptr(0x001A),
+		uintptr(windows.InvalidHandle),
+		uintptr(wmSettingChange),
 		0,
-		uintptr(unsafe.Pointer(buffer)),
-		uintptr(0x0002),
-		uintptr(5000))
+		uintptr(unsafe.Pointer(windows.StringToUTF16Ptr("Environment"))),
+		uintptr(smtoNormal|smtoAbortIfHung),
+		uintptr(uTimeout),
+		0)
 	if ret == 0 {
 		return err
 	}
-
 	return nil
 }
 
@@ -36,7 +35,6 @@ func SetPermEnv(env registry.Key, name string, value string) error {
 		return err
 	}
 	defer key.Close()
-
 	return key.SetStringValue(name, value)
 }
 
@@ -47,7 +45,6 @@ func DeletePermEnv(env registry.Key, name string) error {
 		return err
 	}
 	defer key.Close()
-
 	return key.DeleteValue(name)
 }
 
@@ -58,11 +55,9 @@ func GetPermEnv(env registry.Key, name string) (string, error) {
 		return "", nil
 	}
 	defer key.Close()
-
 	val, _, err := key.GetStringValue(name)
 	if err != nil {
 		return "", err
 	}
-
 	return val, nil
 }
