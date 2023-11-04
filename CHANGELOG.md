@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.9.0 (2023/11/04)
+
+* Go 1.21 (#335)
+* Update 7zip to 23.01 (#330)
+* Update asar to 3.2.7 (#329)
+* Update innosetup to 6.2.2 (#331)
+* Update upx to 4.2.1 (#332)
+* Bump github.com/go-ole/go-ole from 1.2.6 to 1.3.0 (#316)
+* Bump github.com/rs/zerolog from 1.29.1 to 1.31.0 (#325)
+* Bump golang.org/x/sys from 0.9.0 to 0.13.0 (#328)
+
 ## 3.8.0 (2023/07/02)
 
 * Go 1.20 (#312)
