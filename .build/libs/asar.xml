@@ -20,7 +20,8 @@
     <exec executable="npm.cmd" failonerror="true">
       <arg value="install"/>
       <arg value="-g"/>
-      <arg value="asar@${asar.version}"/>
+      <arg value="--force"/>
+      <arg value="@electron/asar@${asar.version}"/>
     </exec>
   </target>
 
