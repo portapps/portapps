@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/go-ole/go-ole v1.3.0
 	github.com/ilya1st/rotatewriter v0.0.0-20171126183947-3df0c1a3ed6d
-	github.com/josephspurrier/goversioninfo v1.4.0
+	github.com/josephspurrier/goversioninfo v1.4.1
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.33.0
