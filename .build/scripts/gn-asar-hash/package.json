@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@electron/asar": "^3.2.17"
+  }
+}
