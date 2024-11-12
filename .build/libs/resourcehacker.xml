@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="lib-resourcehacker" basedir=".">
+
+  <!-- Check required properties -->
+  <fail unless="core.lib.path" message="Property 'core.lib.path' must be defined before loading libs/resourcehacker.xml"/>
+
+  <!-- Load properties -->
+  <dirname property="resourcehacker.basedir" file="${ant.file.lib-resourcehacker}"/>
+  <property file="${resourcehacker.basedir}\resourcehacker.properties"/>
+
+  <!-- Properties -->
+  <property name="resourcehacker.path" location="${core.lib.path}\resourcehacker-${resourcehacker.version}"/>
+  <property name="resourcehacker.exe" location="${resourcehacker.path}\ResourceHacker.exe"/>
+
+  <!-- ResourceHacker.exe -open .\Signal.exe -save integrity.rc -action extract -mask INTEGRITY,ELECTRONASAR,1033 -log CON -->
+  <macrodef name="resourcehacker-x-integrity">
+    <attribute name="exe"/>
+    <attribute name="dest" default="integrity.rc"/>
+    <sequential>
+      <echo message="Extracting electron integrity from @{exe} to @{dest}..."/>
+      <exec executable="${resourcehacker.exe}" failonerror="true">
+        <arg value="-open"/>
+        <arg value="@{exe}"/>
+        <arg value="-save"/>
+        <arg value="@{dest}"/>
+        <arg value="-action"/>
+        <arg value="extract"/>
+        <arg value="-mask"/>
+        <arg value="INTEGRITY,ELECTRONASAR,1033"/>
+        <arg value="-log"/>
+        <arg value="CON"/>
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <!-- ResourceHacker.exe -open .\Signal.exe -save .\Signal.exe -action addoverwrite -res .\ELECTRONASAR.txt -mask "INTEGRITY,ELECTRONASAR,1033" -log CON -->
+  <macrodef name="resourcehacker-a-integrity">
+    <attribute name="exe"/>
+    <attribute name="hash"/>
+    <sequential>
+      <property name="integrityFile" value="${tmp.path}\asar-integrity.txt"/>
+      <echo file="${integrityFile}" message="[{&quot;file&quot;:&quot;resources\\app.asar&quot;,&quot;alg&quot;:&quot;SHA256&quot;,&quot;value&quot;:&quot;@{hash}&quot;}]"/>
+
+      <echo message="Updating electron integrity in @{exe} with @{hash}..."/>
+      <exec executable="${resourcehacker.exe}" failonerror="true">
+        <arg value="-open"/>
+        <arg value="@{exe}"/>
+        <arg value="-save"/>
+        <arg value="@{exe}"/>
+        <arg value="-action"/>
+        <arg value="addoverwrite"/>
+        <arg value="-res"/>
+        <arg value="${integrityFile}"/>
+        <arg value="-mask"/>
+        <arg value="INTEGRITY,ELECTRONASAR,1033"/>
+        <arg value="-log"/>
+        <arg value="CON"/>
+      </exec>
+
+      <delete file="${integrityFile}"/>
+    </sequential>
+  </macrodef>
+
+  <target name="load.lib.resourcehacker" unless="is.lib.loaded">
+    <echo message="Load Resource Hacker"/>
+    <get dest="${core.lib.path}\resourcehacker-${resourcehacker.version}.zip" src="${resourcehacker.url}" skipexisting="true"/>
+    <if>
+      <not><available file="${core.lib.path}\resourcehacker-${resourcehacker.version}" type="dir"/></not>
+      <then>
+        <unzip src="${core.lib.path}\resourcehacker-${resourcehacker.version}.zip" dest="${core.lib.path}\resourcehacker-${resourcehacker.version}"/>
+      </then>
+    </if>
+    <assertfile file="${resourcehacker.exe}"/>
+  </target>
+
+</project>
