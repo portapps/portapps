@@ -147,6 +147,7 @@
   <import file="${build.basedir}\libs\hashmyfiles.xml"/>
   <import file="${build.basedir}\libs\asar.xml"/>
   <import file="${build.basedir}\libs\lessmsi.xml"/>
+  <import file="${build.basedir}\libs\resourcehacker.xml"/>
 
   <target name="load.libs" unless="is.lib.loaded" depends="
       load.lib.antcontrib,
@@ -158,7 +159,8 @@
       load.lib.innoextract,
       load.lib.innosetup,
       load.lib.upx,
-      load.lib.hashmyfiles">
+      load.lib.hashmyfiles,
+      load.lib.resourcehacker">
     <var name="is.lib.loaded" value="true"/>
   </target>
 
