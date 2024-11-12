@@ -115,6 +115,31 @@
     </sequential>
   </macrodef>
 
+  <macrodef name="gn-asar-hash">
+    <attribute name="archive"/>
+    <attribute name="property"/>
+    <sequential>
+      <property name="hashFile" value="${tmp.path}\asar-hash.txt"/>
+
+      <echo message="Installing node modules..."/>
+      <exec executable="npm.cmd" dir="${build.basedir}\scripts\gn-asar-hash" failonerror="true">
+        <arg value="install"/>
+      </exec>
+
+      <echo message="Generating hash of @{archive}..."/>
+      <exec executable="node" failonerror="true">
+        <arg value="${build.basedir}\scripts\gn-asar-hash\index.js"/>
+        <arg value="@{archive}"/>
+        <arg value="${hashFile}"/>
+      </exec>
+
+      <loadfile property="asarhash" srcFile="${hashFile}"/>
+      <echo message="Hash: ${asarhash}"/>
+      <delete file="${hashFile}"/>
+      <property name="@{property}" value="${asarhash}"/>
+    </sequential>
+  </macrodef>
+
   <!-- Targets -->
   <target name="start">
     <echo message="*** Start building ${app}"/>
