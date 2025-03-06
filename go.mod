@@ -1,7 +1,6 @@
 module github.com/portapps/portapps/v3
 
 go 1.23
-
 require (
 	github.com/go-ole/go-ole v1.3.0
 	github.com/go-viper/mapstructure/v2 v2.2.1
@@ -10,7 +9,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.10.0
-	golang.org/x/sys v0.29.0
+	golang.org/x/sys v0.31.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
