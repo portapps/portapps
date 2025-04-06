@@ -1,6 +1,7 @@
 module github.com/portapps/portapps/v3
 
-go 1.23
+go 1.24.0
+
 require (
 	github.com/go-ole/go-ole v1.3.0
 	github.com/go-viper/mapstructure/v2 v2.2.1
