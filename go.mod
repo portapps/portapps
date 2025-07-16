@@ -4,7 +4,7 @@ go 1.24.0
 
 require (
 	github.com/go-ole/go-ole v1.3.0
-	github.com/go-viper/mapstructure/v2 v2.3.0
+	github.com/go-viper/mapstructure/v2 v2.4.0
 	github.com/ilya1st/rotatewriter v0.0.0-20171126183947-3df0c1a3ed6d
 	github.com/josephspurrier/goversioninfo v1.5.0
 	github.com/pkg/errors v0.9.1
