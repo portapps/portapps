@@ -47,7 +47,10 @@ func (app *App) loadConfig(appcfg interface{}) (err error) {
 
 	// Skip if config file not found
 	if _, err := os.Stat(cfgPath); err != nil {
-		return nil
+		if os.IsNotExist(err) {
+			return nil
+		}
+		return err
 	}
 
 	// Read config
