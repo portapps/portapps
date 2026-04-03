@@ -28,3 +28,22 @@ func TestCopyFolderReturnsSourceError(t *testing.T) {
 	require.Error(t, err)
 	assert.ErrorIs(t, err, os.ErrNotExist)
 }
+
+func TestWriteToFileWritesContent(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "file.txt")
+
+	require.NoError(t, WriteToFile(path, "portapps"))
+
+	content, err := os.ReadFile(path)
+	require.NoError(t, err)
+	assert.Equal(t, "portapps", string(content))
+}
+
+func TestWriteToFileReturnsCreateErrorWithoutPanicking(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "missing", "file.txt")
+
+	require.NotPanics(t, func() {
+		err := WriteToFile(path, "portapps")
+		require.Error(t, err)
+	})
+}

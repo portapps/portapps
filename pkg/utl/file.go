@@ -153,10 +153,10 @@ func Exists(name string) bool {
 // WriteToFile writes content to a file
 func WriteToFile(name string, content string) error {
 	fo, err := os.Create(name)
-	defer fo.Close()
 	if err != nil {
 		return err
 	}
+	defer fo.Close()
 	if _, err = io.Copy(fo, strings.NewReader(content)); err != nil {
 		return err
 	}
