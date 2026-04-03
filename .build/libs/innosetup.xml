@@ -29,6 +29,8 @@
 
   <target name="load.lib.innosetup" unless="is.lib.loaded">
     <echo message="Load InnoSetup"/>
+    <propertyregex property="innosetup.tag.version" input="${innosetup.version}" regexp="\." replace="_" global="true"/>
+    <property name="innosetup.url" value="https://github.com/jrsoftware/issrc/releases/download/is-${innosetup.tag.version}/innosetup-${innosetup.version}.exe"/>
     <get dest="${core.lib.path}\innosetup-${innosetup.version}.exe" src="${innosetup.url}" skipexisting="true"/>
     <if>
       <not><available file="${innosetup.path}\app" type="dir"/></not>
