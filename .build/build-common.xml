@@ -121,16 +121,14 @@
     <sequential>
       <property name="hashFile" value="${tmp.path}\asar-hash.txt"/>
 
-      <echo message="Installing node modules..."/>
-      <exec executable="npm.cmd" dir="${build.basedir}\scripts\gn-asar-hash" failonerror="true">
-        <arg value="install"/>
-      </exec>
-
       <echo message="Generating hash of @{archive}..."/>
-      <exec executable="node" failonerror="true">
-        <arg value="${build.basedir}\scripts\gn-asar-hash\index.js"/>
-        <arg value="@{archive}"/>
-        <arg value="${hashFile}"/>
+      <exec executable="powershell.exe" failonerror="true">
+        <arg value="-NoProfile"/>
+        <arg value="-NonInteractive"/>
+        <arg value="-ExecutionPolicy"/>
+        <arg value="Bypass"/>
+        <arg value="-Command"/>
+        <arg value="$archive = '@{archive}'; $hashFile = '${hashFile}'; $stream = [System.IO.File]::OpenRead($archive); try { $sizeBuf = [byte[]]::new(8); if ($stream.Read($sizeBuf, 0, 8) -ne 8) { throw 'Unable to read ASAR header size' }; $headerPickleSize = [BitConverter]::ToUInt32($sizeBuf, 4); if ($headerPickleSize -lt 8) { throw 'ASAR header pickle too small' }; $headerBuf = [byte[]]::new($headerPickleSize); if ($stream.Read($headerBuf, 0, $headerPickleSize) -ne $headerPickleSize) { throw 'Unable to read ASAR header' }; $headerStringSize = [BitConverter]::ToInt32($headerBuf, 4); if ($headerStringSize -lt 0 -or $headerStringSize -gt ($headerBuf.Length - 8)) { throw 'ASAR header string is invalid' }; $headerBytes = [byte[]]::new($headerStringSize); [Array]::Copy($headerBuf, 8, $headerBytes, 0, $headerStringSize); $sha256 = [System.Security.Cryptography.SHA256]::Create(); try { $hashBytes = $sha256.ComputeHash($headerBytes) } finally { $sha256.Dispose() } } finally { $stream.Dispose() }; $hash = -join ($hashBytes | ForEach-Object { $_.ToString('x2') }); [System.IO.File]::WriteAllText($hashFile, $hash, [System.Text.Encoding]::ASCII)"/>
       </exec>
 
       <loadfile property="asarhash" srcFile="${hashFile}"/>
