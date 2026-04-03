@@ -4,17 +4,24 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"time"
+
+	"github.com/pkg/errors"
 )
 
 // DownloadFile will download a url to a local file
 func DownloadFile(filepath string, url string) error {
-	resp, err := http.Get(url)
+	client := &http.Client{Timeout: 30 * time.Second}
+	resp, err := client.Get(url)
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
 
-	// Create the file
+	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
+		return errors.Errorf("unexpected HTTP status %s", resp.Status)
+	}
+
 	out, err := os.Create(filepath)
 	if err != nil {
 		return err
