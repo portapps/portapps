@@ -3,7 +3,6 @@ package utl
 import (
 	"io"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 
@@ -55,11 +54,14 @@ func CopyFolder(source string, dest string) (err error) {
 		return err
 	}
 
-	folder, _ := os.Open(source)
-	objects, err := folder.Readdir(-1)
+	objects, err := os.ReadDir(source)
+	if err != nil {
+		return err
+	}
+
 	for _, object := range objects {
-		sourceFile := path.Join(source, object.Name())
-		destFile := path.Join(dest, object.Name())
+		sourceFile := filepath.Join(source, object.Name())
+		destFile := filepath.Join(dest, object.Name())
 		if object.IsDir() {
 			err = CopyFolder(sourceFile, destFile)
 			if err != nil {
