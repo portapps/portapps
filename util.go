@@ -1,6 +1,8 @@
 package portapps
 
 import (
+	"path/filepath"
+
 	"github.com/portapps/portapps/v3/pkg/utl"
 )
 
@@ -10,5 +12,5 @@ func (app *App) ElectronAppPath() string {
 	if err != nil {
 		app.FatalBoxLog(err.Error())
 	}
-	return utl.PathJoin(app.AppPath, electronAppFolder)
+	return filepath.Join(app.AppPath, electronAppFolder)
 }

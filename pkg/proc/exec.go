@@ -2,12 +2,11 @@ package proc
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"os/exec"
 	"strings"
 	"syscall"
-
-	"github.com/pkg/errors"
 )
 
 // CmdOptions options of command

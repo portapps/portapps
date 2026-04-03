@@ -1,6 +1,7 @@
 package utl
 
 import (
+	"errors"
 	"io"
 	"os"
 	"path/filepath"
@@ -100,10 +101,11 @@ func RemoveContents(dir string) error {
 
 // CreateFolder to create a folder and get its path
 func CreateFolder(path ...string) string {
-	if err := os.MkdirAll(PathJoin(path...), 777); err != nil {
-		log.Error().Err(err).Msgf("Cannot create folder %s", PathJoin(path...))
+	folder := filepath.Join(path...)
+	if err := os.MkdirAll(folder, 777); err != nil {
+		log.Error().Err(err).Msgf("Cannot create folder %s", folder)
 	}
-	return PathJoin(path...)
+	return folder
 }
 
 // CreateFile creates / overwrites a file with content
@@ -120,30 +122,20 @@ func CreateFile(path string, content string) error {
 	return nil
 }
 
-// PathJoin to join paths
-func PathJoin(elem ...string) string {
-	for i, e := range elem {
-		if e != "" {
-			return strings.Join(elem[i:], `\`)
-		}
-	}
-	return ""
-}
-
 // FormatUnixPath to format a path for unix
 func FormatUnixPath(path string) string {
-	return strings.Replace(path, `\`, `/`, -1)
+	return strings.ReplaceAll(path, `\`, `/`)
 }
 
 // FormatWindowsPath to format a path for windows
 func FormatWindowsPath(path string) string {
-	return strings.Replace(path, `/`, `\`, -1)
+	return strings.ReplaceAll(path, `/`, `\`)
 }
 
 // Exists reports whether the named file or directory exists
 func Exists(name string) bool {
 	if _, err := os.Stat(name); err != nil {
-		if os.IsNotExist(err) {
+		if errors.Is(err, os.ErrNotExist) {
 			return false
 		}
 	}
@@ -215,7 +207,7 @@ func Replace(filename string, old string, new string) error {
 		return err
 	}
 
-	err = os.WriteFile(filename, []byte(strings.Replace(string(input), old, new, -1)), 0o644)
+	err = os.WriteFile(filename, []byte(strings.ReplaceAll(string(input), old, new)), 0o644)
 	if err != nil {
 		return err
 	}
@@ -245,7 +237,7 @@ func RoamingPath() string {
 
 // StartMenuPath returns the user start menu path
 func StartMenuPath() string {
-	return PathJoin(RoamingPath(), "Microsoft", "Windows", "Start Menu", "Programs")
+	return filepath.Join(RoamingPath(), "Microsoft", "Windows", "Start Menu", "Programs")
 }
 
 // Cleanup removes leftover folders

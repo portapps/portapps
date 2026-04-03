@@ -1,9 +1,9 @@
 package mutex
 
 import (
+	"errors"
 	"strings"
 
-	"github.com/pkg/errors"
 	"golang.org/x/sys/windows"
 )
 
@@ -22,7 +22,7 @@ func Create(name string) (windows.Handle, error) {
 	handle, err := windows.OpenMutex(windows.MUTEX_ALL_ACCESS, false, muName)
 	if err == nil {
 		windows.CloseHandle(handle)
-		return 0, errors.Errorf("already running")
+		return 0, errors.New("already running")
 	}
 
 	return windows.CreateMutex(nil, false, muName)

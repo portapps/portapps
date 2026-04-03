@@ -1,10 +1,9 @@
 package utl
 
 import (
+	"fmt"
 	"os"
 	"strings"
-
-	"github.com/pkg/errors"
 )
 
 // FindElectronAppFolder returns the app electron folder
@@ -18,5 +17,5 @@ func FindElectronAppFolder(prefix string, source string) (string, error) {
 			return f.Name(), nil
 		}
 	}
-	return "", errors.Errorf("Electron main path does not exist with prefix '%s' in %s", prefix, source)
+	return "", fmt.Errorf("Electron main path does not exist with prefix '%s' in %s", prefix, source)
 }
