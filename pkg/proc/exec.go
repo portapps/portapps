@@ -6,6 +6,8 @@ import (
 	"os/exec"
 	"strings"
 	"syscall"
+
+	"github.com/pkg/errors"
 )
 
 // CmdOptions options of command
@@ -43,7 +45,12 @@ func Cmd(options CmdOptions) (CmdResult, error) {
 		return result, err
 	}
 
-	command.Wait()
+	waitErr := command.Wait()
+	if waitErr != nil {
+		if _, ok := waitErr.(*exec.ExitError); !ok {
+			return result, waitErr
+		}
+	}
 	waitStatus := command.ProcessState.Sys().(syscall.WaitStatus)
 
 	result.ExitCode = waitStatus.ExitCode
@@ -60,17 +67,24 @@ func QuickCmd(command string, args []string) error {
 		Args:       args,
 		HideWindow: true,
 	})
+	return cmdError(cmdResult, err)
+}
 
-	if err != nil {
-		var errorOutput string
-		if cmdResult.ExitCode != 0 {
-			errorOutput = fmt.Sprintf(" (exit code %d)", cmdResult.ExitCode)
-			if len(cmdResult.Stderr) > 0 {
-				errorOutput += fmt.Sprintf("\n%s\n", cmdResult.Stderr)
-			}
-		}
-		return fmt.Errorf("%s%s", err.Error(), errorOutput)
+func cmdError(cmdResult CmdResult, err error) error {
+	var message string
+	switch {
+	case err != nil:
+		message = err.Error()
+	case cmdResult.ExitCode != 0:
+		message = fmt.Sprintf("exit code %d", cmdResult.ExitCode)
+	default:
+		return nil
 	}
-
-	return nil
+	if err != nil && cmdResult.ExitCode != 0 {
+		message += fmt.Sprintf(" (exit code %d)", cmdResult.ExitCode)
+	}
+	if cmdResult.Stderr != "" {
+		message += fmt.Sprintf("\n%s\n", cmdResult.Stderr)
+	}
+	return errors.New(message)
 }
