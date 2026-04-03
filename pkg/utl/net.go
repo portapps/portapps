@@ -1,12 +1,11 @@
 package utl
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"time"
-
-	"github.com/pkg/errors"
 )
 
 // DownloadFile will download a url to a local file
@@ -19,7 +18,7 @@ func DownloadFile(filepath string, url string) error {
 	defer resp.Body.Close()
 
 	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
-		return errors.Errorf("unexpected HTTP status %s", resp.Status)
+		return fmt.Errorf("unexpected HTTP status %s", resp.Status)
 	}
 
 	out, err := os.Create(filepath)

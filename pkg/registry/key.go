@@ -1,6 +1,7 @@
 package registry
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -8,7 +9,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/pkg/errors"
 	"github.com/portapps/portapps/v3/pkg/proc"
 	"golang.org/x/sys/windows/registry"
 )
@@ -40,7 +40,7 @@ func (k *Key) Add(force bool) error {
 		HideWindow: true,
 	})
 	if err != nil {
-		return fmt.Errorf("cannot add registry key '%s': %v", k.Key, err)
+		return fmt.Errorf("cannot add registry key '%s': %w", k.Key, err)
 	}
 
 	if cmdResult.ExitCode != 0 {
@@ -66,7 +66,7 @@ func (k *Key) Delete(force bool) error {
 		HideWindow: true,
 	})
 	if err != nil {
-		return fmt.Errorf("cannot remove registry key '%s': %v", k.Key, err)
+		return fmt.Errorf("cannot remove registry key '%s': %w", k.Key, err)
 	}
 
 	if cmdResult.ExitCode != 0 {
@@ -104,7 +104,7 @@ func (k *Key) Export(file string) error {
 		HideWindow: true,
 	})
 	if err != nil {
-		return fmt.Errorf("cannot export registry key '%s': %v", k.Key, err)
+		return fmt.Errorf("cannot export registry key '%s': %w", k.Key, err)
 	}
 
 	if cmdResult.ExitCode != 0 {
@@ -129,7 +129,7 @@ func (k *Key) Export(file string) error {
 		return nil
 	})
 	if err != nil {
-		return errors.Wrap(err, "Cannot retrieve files from reg directory")
+		return fmt.Errorf("Cannot retrieve files from reg directory: %w", err)
 	}
 
 	sort.Strings(regFiles)
@@ -157,7 +157,10 @@ func (k *Key) Import(file string) error {
 
 	// Check if reg file exists
 	if _, err := os.Stat(file); err != nil {
-		return fmt.Errorf("reg file %s not found", file)
+		if errors.Is(err, os.ErrNotExist) {
+			return fmt.Errorf("reg file %s not found", file)
+		}
+		return fmt.Errorf("cannot stat reg file %s: %w", file, err)
 	}
 
 	// Import
@@ -167,7 +170,7 @@ func (k *Key) Import(file string) error {
 		HideWindow: true,
 	})
 	if err != nil {
-		return fmt.Errorf("cannot import registry key '%s': %v", k.Key, err)
+		return fmt.Errorf("cannot import registry key '%s': %w", k.Key, err)
 	}
 
 	if cmdResult.ExitCode != 0 {

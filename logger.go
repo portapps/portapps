@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"time"
 
 	"github.com/ilya1st/rotatewriter"
@@ -30,8 +31,8 @@ func (app *App) InitLogger() error {
 	var err error
 	zerolog.ErrorStackMarshaler = pkgerrors.MarshalStack
 
-	logfolder := utl.CreateFolder(utl.PathJoin(app.RootPath, "log"))
-	logfile := utl.PathJoin(logfolder, fmt.Sprintf("%s.log", app.ID))
+	logfolder := utl.CreateFolder(filepath.Join(app.RootPath, "log"))
+	logfile := filepath.Join(logfolder, fmt.Sprintf("%s.log", app.ID))
 	app.logfile, err = os.OpenFile(logfile, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0o644)
 	if err != nil {
 		return err

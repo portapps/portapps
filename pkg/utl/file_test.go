@@ -47,3 +47,23 @@ func TestWriteToFileReturnsCreateErrorWithoutPanicking(t *testing.T) {
 		require.Error(t, err)
 	})
 }
+
+func TestFormatPathHelpersReplaceAllSeparators(t *testing.T) {
+	assert.Equal(t, "a/b/c", FormatUnixPath(`a\b\c`))
+	assert.Equal(t, `a\b\c`, FormatWindowsPath("a/b/c"))
+}
+
+func TestExistsReturnsFalseForMissingPath(t *testing.T) {
+	assert.False(t, Exists(filepath.Join(t.TempDir(), "missing")))
+}
+
+func TestReplaceRewritesAllOccurrences(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "file.txt")
+	require.NoError(t, os.WriteFile(path, []byte("portapps portapps"), 0o644))
+
+	require.NoError(t, Replace(path, "portapps", "done"))
+
+	content, err := os.ReadFile(path)
+	require.NoError(t, err)
+	assert.Equal(t, "done done", string(content))
+}

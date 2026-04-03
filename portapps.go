@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/go-viper/mapstructure/v2"
-	"github.com/pkg/errors"
 	"github.com/portapps/portapps/v3/pkg/log"
 	"github.com/portapps/portapps/v3/pkg/utl"
 	"github.com/portapps/portapps/v3/pkg/win"
@@ -76,42 +75,42 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 	// WinVersion
 	app.WinVersion, err = win.GetVersion()
 	if err != nil {
-		app.FatalBox(errors.Wrap(err, "Cannot get Windows version"))
+		app.FatalBox(fmt.Errorf("Cannot get Windows version: %w", err))
 	}
 
 	// Root path
 	ex, err := os.Executable()
 	if err != nil {
-		app.FatalBox(errors.Wrap(err, "Cannot get path name of the executable"))
+		app.FatalBox(fmt.Errorf("Cannot get path name of the executable: %w", err))
 	}
 	app.RootPath, err = filepath.Abs(filepath.Dir(ex))
 	if err != nil {
-		app.FatalBox(errors.Wrap(err, "Cannot get root absolute path"))
+		app.FatalBox(fmt.Errorf("Cannot get root absolute path: %w", err))
 	}
 
 	// Load info
-	infoFile := utl.PathJoin(app.RootPath, "portapp.json")
+	infoFile := filepath.Join(app.RootPath, "portapp.json")
 	infoRaw, err := os.ReadFile(infoFile)
 	if err != nil {
-		app.FatalBox(errors.Wrap(err, "Cannot load portapps.json"))
+		app.FatalBox(fmt.Errorf("Cannot load portapps.json: %w", err))
 	}
 	if err = json.Unmarshal(infoRaw, &app.Info); err != nil {
-		app.FatalBox(errors.Wrap(err, "Cannot unmarshal portapps.json"))
+		app.FatalBox(fmt.Errorf("Cannot unmarshal portapps.json: %w", err))
 	}
 
 	// Load config
 	if err = app.loadConfig(appcfg); err != nil {
-		app.FatalBox(errors.Wrap(err, "Cannot load configuration"))
+		app.FatalBox(fmt.Errorf("Cannot load configuration: %w", err))
 	}
 	if appcfg != nil {
 		if err = mapstructure.Decode(app.config.App, appcfg); err != nil {
-			app.FatalBox(errors.Wrap(err, fmt.Sprintf("Cannot decode %s configuration", app.Name)))
+			app.FatalBox(fmt.Errorf("Cannot decode %s configuration: %w", app.Name, err))
 		}
 	}
 
 	// Init logger
 	if err = app.InitLogger(); err != nil {
-		app.FatalBox(errors.Wrap(err, "Cannot configure logger"))
+		app.FatalBox(fmt.Errorf("Cannot configure logger: %w", err))
 	}
 
 	// Startup
@@ -127,19 +126,19 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 	log.Info().Msgf("Configuration:\n%s", string(b))
 
 	// Set paths
-	app.AppPath = utl.PathJoin(app.RootPath, "app")
+	app.AppPath = filepath.Join(app.RootPath, "app")
 	if app.config.Common.AppPath != "" {
 		app.AppPath = app.config.Common.AppPath
 	}
-	app.DataPath = utl.PathJoin(app.RootPath, "data")
+	app.DataPath = filepath.Join(app.RootPath, "data")
 	app.WorkingDir = app.AppPath
 
 	// Load previous
-	prevFile := utl.PathJoin(app.RootPath, "portapp-prev.json")
+	prevFile := filepath.Join(app.RootPath, "portapp-prev.json")
 	if utl.Exists(prevFile) {
 		prevRaw, err := os.ReadFile(prevFile)
 		if err != nil {
-			app.FatalBox(errors.Wrap(err, "Cannot load portapp-prev"))
+			app.FatalBox(fmt.Errorf("Cannot load portapp-prev: %w", err))
 		}
 		if err = json.Unmarshal(prevRaw, &app.Prev); err != nil {
 			log.Error().Err(err).Msgf("Cannot unmarshal portapp-prev")
@@ -202,7 +201,7 @@ func (app *App) extendPlaceholders(value string) string {
 		"@DRIVE_LETTER@": app.RootPath[:1],
 	}
 	for placeholder, ext := range placeholders {
-		value = strings.Replace(value, placeholder, ext, -1)
+		value = strings.ReplaceAll(value, placeholder, ext)
 	}
 	return value
 }
@@ -212,7 +211,7 @@ func (app *App) Close() {
 	log.Info().Msgf("Closing %s", app.Name)
 
 	// Update previous
-	prevFile := utl.PathJoin(app.RootPath, "portapp-prev.json")
+	prevFile := filepath.Join(app.RootPath, "portapp-prev.json")
 	jsonPrev, err := json.MarshalIndent(AppPrev{
 		Info:       app.Info,
 		WinVersion: app.WinVersion,
