@@ -9,7 +9,10 @@ import (
 
 // FindElectronAppFolder returns the app electron folder
 func FindElectronAppFolder(prefix string, source string) (string, error) {
-	rootFiles, _ := os.ReadDir(source)
+	rootFiles, err := os.ReadDir(source)
+	if err != nil {
+		return "", err
+	}
 	for _, f := range rootFiles {
 		if strings.HasPrefix(f.Name(), prefix) && f.IsDir() {
 			return f.Name(), nil
