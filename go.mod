@@ -6,7 +6,7 @@ require (
 	github.com/go-ole/go-ole v1.3.0
 	github.com/go-viper/mapstructure/v2 v2.5.0
 	github.com/ilya1st/rotatewriter v0.0.0-20171126183947-3df0c1a3ed6d
-	github.com/rs/zerolog v1.35.0
+	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.11.1
 	go.yaml.in/yaml/v3 v3.0.4
 	golang.org/x/sys v0.43.0
