@@ -50,7 +50,7 @@ func CopyFile(src string, dest string) error {
 
 // CopyFolder copy a folder
 func CopyFolder(source string, dest string) (err error) {
-	err = os.MkdirAll(dest, 777)
+	err = os.MkdirAll(dest, 0o755)
 	if err != nil {
 		return err
 	}
@@ -102,7 +102,7 @@ func RemoveContents(dir string) error {
 // CreateFolder to create a folder and get its path
 func CreateFolder(path ...string) string {
 	folder := filepath.Join(path...)
-	if err := os.MkdirAll(folder, 777); err != nil {
+	if err := os.MkdirAll(folder, 0o755); err != nil {
 		log.Error().Err(err).Msgf("Cannot create folder %s", folder)
 	}
 	return folder
