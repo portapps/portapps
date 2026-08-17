@@ -21,7 +21,8 @@ type Key struct {
 }
 
 const (
-	maxBackup = 19
+	backupTimestampFormat = "20060102150405"
+	maxBackup             = 19
 )
 
 // Add add a registry key
@@ -114,45 +115,17 @@ func (k *Key) Export(file string) error {
 		return fmt.Errorf("exit code %d", cmdResult.ExitCode)
 	}
 
-	var regFiles []string
-	err = filepath.Walk(filepath.Dir(file), func(path string, info os.FileInfo, err error) error {
-		if info == nil {
-			return err
-		}
-		if info.IsDir() {
-			return nil
-		}
-		if filepath.Ext(path) == ".reg" {
-			return nil
-		}
-		regFiles = append(regFiles, path)
-		return nil
-	})
-	if err != nil {
-		return fmt.Errorf("Cannot retrieve files from reg directory: %w", err)
-	}
-
-	sort.Strings(regFiles)
-	if len(regFiles) <= maxBackup {
-		return nil
-	}
-
-	for len(regFiles) > maxBackup {
-		regFilePath := regFiles[0]
-		if err := os.Remove(regFilePath); err != nil {
-			return err
-		}
-		regFiles = append(regFiles[:0], regFiles[1:]...)
-	}
-
 	return nil
 }
 
 // Import imports a registry key
 func (k *Key) Import(file string) error {
 	// Save current reg key
-	if err := k.Export(fmt.Sprintf("%s.%s", file, time.Now().Format("20060102150405"))); err != nil {
+	if err := k.Export(fmt.Sprintf("%s.%s", file, time.Now().Format(backupTimestampFormat))); err != nil {
 		return err
+	}
+	if err := pruneRegistryBackups(file); err != nil {
+		return fmt.Errorf("cannot prune registry backups: %w", err)
 	}
 
 	// Check if reg file exists
@@ -204,4 +177,44 @@ func (k *Key) Open() (registry.Key, error) {
 	}
 
 	return registry.OpenKey(regKey, regSpl[1], registry.ALL_ACCESS)
+}
+
+func pruneRegistryBackups(file string) error {
+	dir := filepath.Dir(file)
+	backupPrefix := filepath.Base(file) + "."
+
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return err
+	}
+
+	var backups []string
+	for _, entry := range entries {
+		if entry.IsDir() || !strings.HasPrefix(entry.Name(), backupPrefix) {
+			continue
+		}
+		if !isRegistryBackup(entry.Name(), backupPrefix) {
+			continue
+		}
+		backups = append(backups, filepath.Join(dir, entry.Name()))
+	}
+
+	sort.Strings(backups)
+	for len(backups) > maxBackup {
+		if err := os.Remove(backups[0]); err != nil {
+			return err
+		}
+		backups = backups[1:]
+	}
+
+	return nil
+}
+
+func isRegistryBackup(name string, prefix string) bool {
+	timestamp := strings.TrimPrefix(name, prefix)
+	if len(timestamp) != len(backupTimestampFormat) {
+		return false
+	}
+	_, err := time.Parse(backupTimestampFormat, timestamp)
+	return err == nil
 }
