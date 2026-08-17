@@ -50,9 +50,9 @@ func DeletePermEnv(env registry.Key, name string) error {
 
 // GetPermEnv gets an environment variable value on Windows
 func GetPermEnv(env registry.Key, name string) (string, error) {
-	key, err := registry.OpenKey(env, "Environment", registry.ALL_ACCESS)
+	key, err := registry.OpenKey(env, "Environment", registry.QUERY_VALUE)
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 	defer key.Close()
 	val, _, err := key.GetStringValue(name)
