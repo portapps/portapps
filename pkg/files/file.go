@@ -1,4 +1,4 @@
-package utl
+package files
 
 import (
 	"errors"

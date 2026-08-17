@@ -9,8 +9,8 @@ import (
 	"strings"
 
 	"github.com/go-viper/mapstructure/v2"
+	"github.com/portapps/portapps/v3/pkg/files"
 	"github.com/portapps/portapps/v3/pkg/log"
-	"github.com/portapps/portapps/v3/pkg/utl"
 	"github.com/portapps/portapps/v3/pkg/win"
 	"go.yaml.in/yaml/v3"
 )
@@ -135,7 +135,7 @@ func NewWithCfg(id string, name string, appcfg interface{}) (app *App, err error
 
 	// Load previous
 	prevFile := filepath.Join(app.RootPath, "portapp-prev.json")
-	if utl.Exists(prevFile) {
+	if files.Exists(prevFile) {
 		prevRaw, err := os.ReadFile(prevFile)
 		if err != nil {
 			app.FatalBox(fmt.Errorf("Cannot load portapp-prev: %w", err))
@@ -173,7 +173,7 @@ func (app *App) Launch(args []string) {
 	log.Info().Msgf("Data path: %s", app.DataPath)
 	log.Info().Msgf("Previous path: %s", app.Prev.RootPath)
 
-	if !utl.Exists(app.Process) {
+	if !files.Exists(app.Process) {
 		log.Fatal().Msgf("Application not found in %s", app.Process)
 	}
 
