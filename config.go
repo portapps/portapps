@@ -60,5 +60,5 @@ func (app *App) loadConfig(appcfg interface{}) (err error) {
 		return err
 	}
 
-	return yaml.Unmarshal(raw, &app.config)
+	return yaml.Unmarshal(raw, app.config)
 }

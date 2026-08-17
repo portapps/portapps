@@ -26,3 +26,10 @@ func TestPermEnv(t *testing.T) {
 	err = DeletePermEnv(registry.CURRENT_USER, keyName)
 	assert.NoError(t, err)
 }
+
+func TestGetPermEnvReturnsOpenKeyError(t *testing.T) {
+	value, err := GetPermEnv(registry.NONE, "TEST_PERM_ENV")
+
+	assert.Error(t, err)
+	assert.Empty(t, value)
+}
