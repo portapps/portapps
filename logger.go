@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/ilya1st/rotatewriter"
-	"github.com/portapps/portapps/v3/pkg/utl"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/rs/zerolog/pkgerrors"
@@ -37,7 +36,10 @@ func (app *App) InitLogger() error {
 	var err error
 	zerolog.ErrorStackMarshaler = pkgerrors.MarshalStack
 
-	logfolder := utl.CreateFolder(filepath.Join(app.RootPath, "log"))
+	logfolder := filepath.Join(app.RootPath, "log")
+	if err := os.MkdirAll(logfolder, 0o755); err != nil {
+		return err
+	}
 	logfile := filepath.Join(logfolder, fmt.Sprintf("%s.log", app.ID))
 	rwriter, err := rotatewriter.NewRotateWriter(logfile, 5)
 	if err != nil {
