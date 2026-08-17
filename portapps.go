@@ -31,7 +31,7 @@ type App struct {
 	WorkingDir string
 	Process    string
 
-	logfile *os.File
+	logfile logWriter
 	config  *Config
 }
 
@@ -225,5 +225,11 @@ func (app *App) Close() {
 	err = os.WriteFile(prevFile, jsonPrev, 0o644)
 	if err != nil {
 		log.Error().Err(err).Msg("Cannot write portapp-prev")
+	}
+
+	if app.logfile != nil {
+		if err := app.logfile.CloseWriteFile(); err != nil {
+			log.Error().Err(err).Msg("Cannot close log file")
+		}
 	}
 }

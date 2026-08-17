@@ -2,6 +2,7 @@ package portapps
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"os/signal"
 	"path/filepath"
@@ -14,6 +15,11 @@ import (
 	"github.com/rs/zerolog/pkgerrors"
 	"golang.org/x/sys/windows"
 )
+
+type logWriter interface {
+	io.Writer
+	CloseWriteFile() error
+}
 
 // InitLogger configures logger
 func (app *App) InitLogger() error {
@@ -33,15 +39,11 @@ func (app *App) InitLogger() error {
 
 	logfolder := utl.CreateFolder(filepath.Join(app.RootPath, "log"))
 	logfile := filepath.Join(logfolder, fmt.Sprintf("%s.log", app.ID))
-	app.logfile, err = os.OpenFile(logfile, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0o644)
-	if err != nil {
-		return err
-	}
-
 	rwriter, err := rotatewriter.NewRotateWriter(logfile, 5)
 	if err != nil {
 		return err
 	}
+	app.logfile = rwriter
 
 	sighupChan := make(chan os.Signal, 1)
 	signal.Notify(sighupChan, windows.SIGHUP)
