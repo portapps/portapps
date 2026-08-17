@@ -41,6 +41,24 @@ func TestPruneRegistryBackupsOnlyRemovesOldBackupsForFile(t *testing.T) {
 	}
 }
 
+func TestOpenReturnsErrorForMalformedKey(t *testing.T) {
+	tests := []string{
+		"",
+		"HKCU",
+		`HKCU\`,
+		`NOPE\Software`,
+	}
+
+	for _, tt := range tests {
+		t.Run(tt, func(t *testing.T) {
+			key, err := (&Key{Key: tt}).Open()
+
+			assert.Error(t, err)
+			assert.Zero(t, key)
+		})
+	}
+}
+
 func requireFileExists(t *testing.T, path string) {
 	t.Helper()
 	_, err := os.Stat(path)

@@ -159,6 +159,9 @@ func (k *Key) Import(file string) error {
 // Open opens a registry key
 func (k *Key) Open() (registry.Key, error) {
 	regSpl := strings.SplitN(k.Key, `\`, 2)
+	if len(regSpl) != 2 || regSpl[1] == "" {
+		return registry.NONE, fmt.Errorf("registry key %q must include a hive and path", k.Key)
+	}
 
 	var regKey registry.Key
 	switch regSpl[0] {
