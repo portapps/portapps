@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestGetConsoleTitle(t *testing.T) {
@@ -14,7 +15,13 @@ func TestGetConsoleTitle(t *testing.T) {
 }
 
 func TestSetConsoleTitle(t *testing.T) {
-	err := SetConsoleTitle("Test Console Title")
+	original, err := GetConsoleTitle()
+	require.NoError(t, err)
+	t.Cleanup(func() {
+		assert.NoError(t, SetConsoleTitle(original))
+	})
+
+	err = SetConsoleTitle("Test Console Title")
 	assert.NoError(t, err)
 
 	title, err := GetConsoleTitle()

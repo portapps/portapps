@@ -1,30 +1,39 @@
 package win
 
 import (
-	"fmt"
+	"crypto/rand"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"golang.org/x/sys/windows/registry"
 )
 
-func TestRefreshEnv(t *testing.T) {
-	err := RefreshEnv()
-	assert.NoError(t, err)
-}
-
 func TestPermEnv(t *testing.T) {
-	keyName := fmt.Sprintf("TEST_PERM_ENV_%d", time.Now().Unix())
-	err := SetPermEnv(registry.CURRENT_USER, keyName, "portapps")
-	assert.NoError(t, err)
+	path := `Software\portapps-test-` + rand.Text()
+	root, _, err := registry.CreateKey(registry.CURRENT_USER, path, registry.ALL_ACCESS)
+	require.NoError(t, err)
+	t.Cleanup(func() {
+		assert.NoError(t, registry.DeleteKey(registry.CURRENT_USER, path))
+	})
+	t.Cleanup(func() {
+		assert.NoError(t, root.Close())
+	})
+	env, _, err := registry.CreateKey(root, "Environment", registry.ALL_ACCESS)
+	require.NoError(t, err)
+	t.Cleanup(func() {
+		assert.NoError(t, registry.DeleteKey(root, "Environment"))
+	})
+	require.NoError(t, env.Close())
 
-	keyValue, err := GetPermEnv(registry.CURRENT_USER, keyName)
-	assert.NoError(t, err)
-	assert.Equal(t, keyValue, "portapps")
+	const keyName = "TEST_PERM_ENV"
+	require.NoError(t, SetPermEnv(root, keyName, "portapps"))
 
-	err = DeletePermEnv(registry.CURRENT_USER, keyName)
-	assert.NoError(t, err)
+	keyValue, err := GetPermEnv(root, keyName)
+	require.NoError(t, err)
+	assert.Equal(t, "portapps", keyValue)
+
+	require.NoError(t, DeletePermEnv(root, keyName))
 }
 
 func TestGetPermEnvReturnsOpenKeyError(t *testing.T) {
